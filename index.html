@@ -1394,7 +1394,7 @@ function renderSaved() {
   const dateChipHtml = state.dateMode !== 'all'
     ? `<div class="active-chips" id="savedDateChip"><span class="active-chip a">${dateFilterLabel()}<button data-clear-date>×</button></span></div>`
     : '';
-  const list = EVENTS.filter(ev => state.saved.has(ev.id));
+  const list = EVENTS.filter(ev => state.saved.has(ev.id) && ev.city === state.city);
   if (!list.length) {
     contentEl.innerHTML = `${dateChipHtml}<div class="empty">${t('emptySaved')}<br>${t('emptySavedHint')}</div>`;
   } else {
