@@ -1,7 +1,7 @@
 {
-  "name": "Porto em Família",
-  "short_name": "Porto Família",
-  "description": "Eventos para famílias, crianças (2-15 anos) e adultos no Porto.",
+  "name": "MINImapp",
+  "short_name": "MINImapp",
+  "description": "Eventos para famílias, crianças (2-15 anos) e adultos — Porto, Lisboa, Madrid, Barcelona, Copenhaga, Paris e Londres.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
