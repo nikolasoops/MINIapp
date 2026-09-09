@@ -1,4 +1,4 @@
-const CACHE_NAME = 'porto-familia-v3';
+const CACHE_NAME = 'porto-familia-v6';
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -7,10 +7,10 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {})
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -24,18 +24,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  // Network-first: always try to get the latest version so app updates
+  // (new events, new categories, bug fixes) show up immediately. Only
+  // fall back to the cached copy when there's no network (offline use).
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const fetchPromise = fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || fetchPromise;
-    })
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
