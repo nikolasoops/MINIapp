@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.gotitasarrumadas.miniapp",
+    "sha256_cert_fingerprints": ["FA:94:66:4E:F1:10:CA:42:7A:2A:31:C0:C0:82:F4:0E:CF:D3:B5:DE:42:7B:28:20:3F:BF:93:AF:00:B1:09:60"]
+  }
+}]
