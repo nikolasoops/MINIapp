@@ -7795,7 +7795,8 @@
     "title_en": "MACBA for Families",
     "venue": "MACBA, Plaça dels Àngels, 1 (Raval)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/Barcelona_-_Museu_d%27Art_Contemporani_de_Barcelona_%28MACBA%29.jpg"
   },
   {
     "ageMax": null,
@@ -7820,7 +7821,8 @@
     "title_en": "Family Workshops — MNAC",
     "venue": "MNAC, Palau Nacional, Parc de Montjuïc",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Palau_Nacional._Museu_Nacional_d'Art_de_Catalunya.jpg"
   },
   {
     "ageMax": null,
@@ -7845,7 +7847,8 @@
     "title_en": "Picasso Convida — Free Family Entry",
     "venue": "Museu Picasso, Carrer de Montcada, 15-23 (Born)",
     "when": "Jueves, viernes y sábado, 19:00-21:00",
-    "when_en": "Thu-Sat, 19:00-21:00"
+    "when_en": "Thu-Sat, 19:00-21:00",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/48/Museu_Picasso_Barcelona.jpg"
   },
   {
     "ageMax": 14,
@@ -7870,7 +7873,8 @@
     "title_en": "Fundació Joan Miró for Families",
     "venue": "Fundació Joan Miró, Parc de Montjuïc, s/n",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/Fundaci%C3%B3_Joan_Miro_outdoors_view.JPG"
   },
   {
     "ageMax": 16,
@@ -7895,7 +7899,8 @@
     "title_en": "CaixaForum — Family Program",
     "venue": "CaixaForum Barcelona, Av. de Francesc Ferrer i Guàrdia, 6-8 (Montjuïc)",
     "when": "Fines de semana",
-    "when_en": "Weekends"
+    "when_en": "Weekends",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/32/225_CaixaForum%2C_antiga_f%C3%A0brica_Casaramona_%28Barcelona%29.jpg"
   },
   {
     "ageMax": null,
@@ -7920,7 +7925,8 @@
     "title_en": "Children's & Family Activities — Museum of the History of Catalonia",
     "venue": "Plaça de Pau Vila, 3 (Palau de Mar, Port Vell)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/90/Magatzems_generals_del_Dip%C3%B2sit_-_museu.JPG"
   },
   {
     "ageMax": null,
@@ -7945,7 +7951,8 @@
     "title_en": "Children's Activities — Disseny Hub Barcelona",
     "venue": "Plaça de les Glòries Catalanes, 37-38",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Disseny_Hub_Barcelona.JPG"
   },
   {
     "ageMax": 12,
@@ -7970,7 +7977,8 @@
     "title_en": "Petit Mercat — Family Dance",
     "venue": "Mercat de les Flors, Montjuïc",
     "when": "Según temporada",
-    "when_en": "Seasonal programming"
+    "when_en": "Seasonal programming",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/59/(Barcelona)_Mercat_de_les_Flors,_Teatre_Lliure.jpg"
   },
   {
     "ageMax": 1,
@@ -7995,7 +8003,8 @@
     "title_en": "Concert for Babies — L'Auditori",
     "venue": "L'Auditori, Carrer de Lepant, 150",
     "when": "Según temporada",
-    "when_en": "Seasonal programming"
+    "when_en": "Seasonal programming",
+    "image": "https://www.auditori.cat/wp-content/uploads/Temporada%2022-23/LAuditori-de-Barcelona.jpg"
   },
   {
     "ageMax": 12,
@@ -8020,7 +8029,8 @@
     "title_en": "El Petit Liceu",
     "venue": "Gran Teatre del Liceu, La Rambla, 51-59",
     "when": "Según temporada",
-    "when_en": "Seasonal programming"
+    "when_en": "Seasonal programming",
+    "image": "https://liceubarcelona.cat/sites/default/files/2024-03/gran-teatre-del-liceu-on-dorm-una-per_0.jpg"
   },
   {
     "ageMax": 10,
@@ -8045,7 +8055,8 @@
     "title_en": "La Puntual — Puppet Theatre",
     "venue": "Carrer Allada Vermell, 15 (Born)",
     "when": "Fines de semana",
-    "when_en": "Weekends"
+    "when_en": "Weekends",
+    "image": "https://www.titeresante.es/wp-content/uploads/2021/10/bemvinguts-a-la-mpuntual-3.jpg"
   },
   {
     "ageMax": 17,
@@ -8070,7 +8081,8 @@
     "title_en": "L'Autèntica Teatre",
     "venue": "Carrer de Martí, 18 (Gràcia)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2020/12/unnamed-1180x664.jpg"
   },
   {
     "ageMax": 9,
@@ -8095,7 +8107,8 @@
     "title_en": "Lluïsos de Gràcia — Children's Theatre",
     "venue": "Gràcia",
     "when": "Temporada septiembre-junio",
-    "when_en": "September-June season"
+    "when_en": "September-June season",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Pla%C3%A7aRiusiTaulet-ViladeGracia-Barcelona-Catalunya.jpg"
   },
   {
     "ageMax": null,
@@ -8120,7 +8133,8 @@
     "title_en": "La Casa dels Contes",
     "venue": "Carrer de Ramón y Cajal, 35 (Gràcia)",
     "when": "Fines de semana",
-    "when_en": "Weekends"
+    "when_en": "Weekends",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2021/05/2021-05-22-012722731-1180x885.jpg"
   },
   {
     "ageMax": 16,
@@ -8145,7 +8159,8 @@
     "title_en": "SAT! Sant Andreu Theatre",
     "venue": "Carrer de Neopàtria, 54 (Sant Andreu)",
     "when": "Temporada septiembre-junio",
-    "when_en": "September-June season"
+    "when_en": "September-June season",
+    "image": "https://www.sat-teatre.cat/img/image/fotos/sat-interior.webp"
   },
   {
     "ageMax": null,
@@ -8170,7 +8185,8 @@
     "title_en": "Children's & Youth Circus School — Ateneu Popular 9 Barris",
     "venue": "Carrer de Portlligat, 11-15 (Nou Barris)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://ajuntament.barcelona.cat/fabriquescreacio/sites/default/files/styles/large/public/Fab_AteneuPortada.jpg?itok=UVYolqMu"
   },
   {
     "ageMax": 12,
@@ -8195,7 +8211,8 @@
     "title_en": "Water Play — Jardins de Sant Joan de Déu",
     "venue": "Carrer de Constança, 18 (Les Corts)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://a2.elespanol.com/metropoliabierta/2025/09/18/les-corts/1003742689910_15166744_1706x960.jpg"
   },
   {
     "ageMax": 12,
@@ -8220,7 +8237,8 @@
     "title_en": "Water Play — Parc de les Glòries",
     "venue": "Plaça de les Glòries Catalanes, 1",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://www.barcelona-metropolitan.com/downloads/49012/download/Water-Park-at-Parc-de-les-Gl%C3%B2ries-photo-courtesy-of-Ajuntament-de-Barcelona-%28CC-BY-NC-NC-4.0%29-02.jpg?cb=54091aac9f45d1a73f14424462a2fe9c&w=1200"
   },
   {
     "ageMax": 12,
@@ -8245,7 +8263,8 @@
     "title_en": "Casa de l'Aigua de Trinitat Vella — Water Play",
     "venue": "Carretera de Ribes, 103-111 (Sant Andreu)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://www.poblesdecatalunya.cat/fotos/normal/074546.jpeg"
   },
   {
     "ageMax": 12,
@@ -8270,7 +8289,8 @@
     "title_en": "Water Play — Plaça del Maresme",
     "venue": "Plaça del Maresme, 1 (Sant Martí)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://img.beteve.cat/wp-content/uploads/2025/06/01cec5f8-bc0d-4ee3-afb6-242e7658b418-1024x576.jpg"
   },
   {
     "ageMax": 12,
@@ -8295,7 +8315,8 @@
     "title_en": "Water Play — Parc de les Rieres d'Horta",
     "venue": "Av. de l'Estatut de Catalunya, 2-14 (Horta-Guinardó)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://www.barcelona-metropolitan.com/downloads/49003/download/la-zona-d%27aigua-del-parc-de-les-Rieres-d%27Horta-photo-by-Paula-Jaume-courtesy-of-Ajuntament-de-Barcelona-%28CC-BY-NC-ND-4.0%29.jpg?cb=c557b06a5f79357d9b45c1fdb4df0254&w=1200"
   },
   {
     "ageMax": 12,
@@ -8320,7 +8341,8 @@
     "title_en": "Water Play — Plaça de la Lluita per les Llibertats",
     "venue": "Bon Pastor (Sant Andreu)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://img.beteve.cat/wp-content/uploads/2024/07/jocs-aigua-bon-pastor-090724.jpg"
   },
   {
     "ageMax": 12,
@@ -8345,7 +8367,8 @@
     "title_en": "Water Play — Plaça del Canòdrom",
     "venue": "Vallcarca (Gràcia)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://canodrom.barcelona/sites/default/files/styles/max_2600x2600/public/2022-10/Can%C3%B2drom_web_1.png.webp?itok=r4yweW1l"
   },
   {
     "ageMax": 12,
@@ -8370,7 +8393,8 @@
     "title_en": "Canyelles Water Play Area",
     "venue": "Carrer de Miguel Hernández, 7 (Nou Barris)",
     "when": "Junio-septiembre, aprox. 10-13h y 17-20h",
-    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm"
+    "when_en": "June-Sept, approx. 10am-1pm & 5-8pm",
+    "image": "https://img.beteve.cat/wp-content/uploads/2020/08/canyelles-estrena-fons.jpg"
   },
   {
     "ageMax": 12,
@@ -8395,7 +8419,8 @@
     "title_en": "Parc de l'Espanya Industrial — The Dragon Slide",
     "venue": "Sants-Montjuïc",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/16/El_drac.JPG"
   },
   {
     "ageMax": 12,
@@ -8420,7 +8445,8 @@
     "title_en": "Parc Central de Nou Barris — The Whale",
     "venue": "Plaça Major de Nou Barris, 1",
     "when": "Abierto 24h",
-    "when_en": "Open 24h"
+    "when_en": "Open 24h",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Parc_Central_de_Nou_Barris_P1520535.jpg"
   },
   {
     "ageMax": 12,
@@ -8445,7 +8471,8 @@
     "title_en": "Parc de la Pegaso — The Octopus",
     "venue": "Carrer de la Sagrera, 179 (Sant Martí)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://thisisbarcelona.com/content/dam/web-this-is/poi/espais-urbans/parc-de-la-pegaso/imatges/espais-urbans-parc-de-la-pegaso-barcelona-1.jpg"
   },
   {
     "ageMax": 12,
@@ -8470,7 +8497,8 @@
     "title_en": "Can Batlló Playground",
     "venue": "Carrer de la Constitución, 19 (La Bordeta, Sants-Montjuïc)",
     "when": "10:00-22:00",
-    "when_en": "10:00am-10:00pm"
+    "when_en": "10:00am-10:00pm",
+    "image": "https://www.totbarcelona.cat/app/uploads/sites/11/2023/05/fwegretwwaeklgz.jpeg"
   },
   {
     "ageMax": 10,
@@ -8495,7 +8523,8 @@
     "title_en": "Pou de la Figuera Playground",
     "venue": "Plaça del Pou de la Figuera (Santa Caterina, Ciutat Vella)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://img.beteve.cat/wp-content/uploads/2024/05/nous-jocs-infantils-pou-figuera-070524.jpg"
   },
   {
     "ageMax": 12,
@@ -8520,7 +8549,8 @@
     "title_en": "Parc de la Colònia Castells — Sea Urchin",
     "venue": "Les Corts",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://totnens.cat/wp-content/uploads/2024/06/parc-de-la-colonia-castells-.jpg"
   },
   {
     "ageMax": 8,
@@ -8545,7 +8575,8 @@
     "title_en": "La Platgeta del Poblenou",
     "venue": "Poblenou (Sant Martí)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://media.timeout.com/images/106109869/750/422/image.jpg"
   },
   {
     "ageMax": 12,
@@ -8570,7 +8601,8 @@
     "title_en": "Parc Diagonal Mar Playground",
     "venue": "Sant Martí / Poblenou",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/31/090_Parc_de_Diagonal_Mar,_pg._Taulat_(Barcelona),_al_fons_les_torres_Diagonal_Litoral.jpg"
   },
   {
     "ageMax": 17,
@@ -8595,7 +8627,8 @@
     "title_en": "Mar Bella Skatepark",
     "venue": "Platja de la Mar Bella (Sant Martí)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://landezine.com/wp-content/uploads/2015/10/MarBella_MG_5105+06_Goula1280px.jpg"
   },
   {
     "ageMax": 17,
@@ -8620,7 +8653,8 @@
     "title_en": "Baró de Viver Skatepark",
     "venue": "Sant Andreu",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://static.inseguridad.org/2016/skateparks/barcelona/viver-1.jpg"
   },
   {
     "ageMax": 17,
@@ -8645,7 +8679,8 @@
     "title_en": "Favència Skatepark",
     "venue": "Nou Barris",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://images.adsttc.com/media/images/557a/56be/e58e/cedc/e500/01f7/large_jpg/PORTADA_NouBarris_MG_0657_58_Goula_2880px.jpg?1434080951"
   },
   {
     "ageMax": 17,
@@ -8695,7 +8730,8 @@
     "title_en": "Paral·lel Pumptrack",
     "venue": "Av. del Paral·lel, cerca del metro Paral·lel (Poble Sec)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://pequemap.com/wp-content/uploads/2022/08/AF1QipM-HImH9935KkbYH_QHPFHVIZlQWZDxejeqilunw408-h544-k-no.jpeg"
   },
   {
     "ageMax": 17,
@@ -8720,7 +8756,8 @@
     "title_en": "MACBA Plaza — Skate Spot",
     "venue": "Plaça dels Àngels, frente al MACBA (Raval)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Skateboarding_in_Barcelona_MACBA.jpg"
   },
   {
     "ageMax": null,
@@ -8745,7 +8782,8 @@
     "title_en": "Parc de la Creueta del Coll — Summer Pool",
     "venue": "Passeig Mare de Déu del Coll, 77 (Gràcia)",
     "when": "Verano",
-    "when_en": "Summer season"
+    "when_en": "Summer season",
+    "image": "https://media.timeout.com/images/100615969/image.jpg"
   },
   {
     "ageMax": null,
@@ -8770,7 +8808,8 @@
     "title_en": "Piscines Bernat Picornell — Kids' Swim Courses",
     "venue": "Av. de l'Estadi, 30-40 (Montjuïc)",
     "when": "Todo el año",
-    "when_en": "Year-round"
+    "when_en": "Year-round",
+    "image": "https://www.barcelona-metropolitan.com/downloads/21512/download/piscina-Bernat-Picornell.jpg?cb=3b4040d336f43df0873881cb0e6ddb7c&w=1200"
   },
   {
     "ageMax": null,
@@ -8820,7 +8859,8 @@
     "title_en": "Sharma Climbing Barcelona Poble Nou — Kids",
     "venue": "Poblenou (Sant Martí)",
     "when": "Todo el año",
-    "when_en": "Year-round"
+    "when_en": "Year-round",
+    "image": "https://media.timeout.com/images/106109869/750/422/image.jpg"
   },
   {
     "ageMax": null,
@@ -8845,7 +8885,8 @@
     "title_en": "Climbat La Foixarda",
     "venue": "Camí de la Foixarda, 14-18 (Montjuïc)",
     "when": "Todo el año",
-    "when_en": "Year-round"
+    "when_en": "Year-round",
+    "image": "https://climbat.com/wp-content/uploads/2026/05/NRG05398-scaled.jpg"
   },
   {
     "ageMax": 7,
@@ -8870,7 +8911,8 @@
     "title_en": "The Indoor Jumping Club — Kids Area",
     "venue": "Carrer de Perú, 230 (Sant Martí)",
     "when": "Todo el año",
-    "when_en": "Year-round"
+    "when_en": "Year-round",
+    "image": "https://theindoorjumpingclub.com/wp-content/uploads/2024/10/llits-elastics.webp"
   },
   {
     "ageMax": null,
@@ -8895,7 +8937,8 @@
     "title_en": "FC Barcelona Ice Rink",
     "venue": "Carrer de Carles Ferrer i Salat, 7 (Les Corts)",
     "when": "Todos los días, 7:00-23:50",
-    "when_en": "Daily, 7:00am-11:50pm"
+    "when_en": "Daily, 7:00am-11:50pm",
+    "image": "https://www.fcbarcelona.com/photo-resources/2026/08/24/88855aa1-4443-4eee-a482-1be7c5736686/pista-de-gel.jpg?width=1200&height=525"
   },
   {
     "ageMax": null,
@@ -8920,7 +8963,8 @@
     "title_en": "Som-hi Dansa — Kids' Classes",
     "venue": "Carrer del Comte Borrell, 334 (Eixample) y Av. de Sarrià, 35",
     "when": "Curso escolar",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://static.wixstatic.com/media/3bb587_73ef5eddf28e4cf095067ceb34f4b19a~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3bb587_73ef5eddf28e4cf095067ceb34f4b19a~mv2.jpg"
   },
   {
     "ageMax": 11,
@@ -8945,7 +8989,8 @@
     "title_en": "Clik — CosmoCaixa",
     "venue": "CosmoCaixa, Carrer d'Isaac Newton, 26",
     "when": "Todo el año",
-    "when_en": "Year-round"
+    "when_en": "Year-round",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9f/CosmoCaixa_Museu_Barcelona.JPG"
   },
   {
     "ageMax": 11,
@@ -8970,7 +9015,8 @@
     "title_en": "Children's Ceramics Workshop — Museu Picasso",
     "venue": "Museu Picasso, Carrer de Montcada, 15-23 (Born)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/48/Museu_Picasso_Barcelona.jpg"
   },
   {
     "ageMax": null,
@@ -8995,7 +9041,8 @@
     "title_en": "Learn to Code with Scratch — Horta-Can Mariner Library",
     "venue": "Biblioteca Horta-Can Mariner (Horta)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://live.staticflickr.com/6013/5977751862_5c1dccbd00_h.jpg"
   },
   {
     "ageMax": null,
@@ -9020,7 +9067,8 @@
     "title_en": "Children's Workshops — Barcelona Public Libraries",
     "venue": "Red de bibliotecas públicas de toda la ciudad",
     "when": "Consultar calendario por biblioteca",
-    "when_en": "Check schedule per branch"
+    "when_en": "Check schedule per branch",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Biblioteca_Jaume_Fuster_Gr%C3%A0cia_Barcelona.jpg"
   },
   {
     "ageMax": null,
@@ -9045,7 +9093,8 @@
     "title_en": "Cibernàrium Tech Outreach at Libraries",
     "venue": "Varias bibliotecas de la ciudad",
     "when": "Consultar calendario por biblioteca",
-    "when_en": "Check schedule per branch"
+    "when_en": "Check schedule per branch",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Biblioteca_Jaume_Fuster_Gr%C3%A0cia_Barcelona.jpg"
   },
   {
     "ageMax": null,
@@ -9070,7 +9119,8 @@
     "title_en": "Fab Casa del Mig — Fabrication & Robotics Classes",
     "venue": "Casa del Mig (Sants-Montjuïc)",
     "when": "Curso escolar",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://www.antiga.onadesants.cat/wp-content/uploads/2025/10/2017_Casa_del_Mig_lEspanya_Indus.jpg"
   },
   {
     "ageMax": 12,
@@ -9095,7 +9145,8 @@
     "title_en": "Recrea Ceramics Workshop",
     "venue": "Carrer de Balmes, 417 (Sant Gervasi)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2024/10/IMG_6432-1180x885.jpg"
   },
   {
     "ageMax": 11,
@@ -9120,7 +9171,8 @@
     "title_en": "Ceramic LAB — Kids' Pottery Wheel",
     "venue": "Carrer de Quevedo, 12 (Gràcia)",
     "when": "Fines de semana",
-    "when_en": "Weekends"
+    "when_en": "Weekends",
+    "image": "https://www.ceramic-l-a-b.com/wp-content/uploads/2022/06/coworking-3-683x1024.jpg"
   },
   {
     "ageMax": null,
@@ -9145,7 +9197,8 @@
     "title_en": "Waku — Ceramics Workshop",
     "venue": "Carrer de Marià Aguiló, 1, local 3 (Poblenou)",
     "when": "Consultar calendario",
-    "when_en": "Check schedule"
+    "when_en": "Check schedule",
+    "image": "https://wakuceramics.com/wp-content/uploads/2026/06/PHOTO-2026-06-15-15-33-38-15-scaled.jpg"
   },
   {
     "ageMax": 14,
@@ -9170,7 +9223,8 @@
     "title_en": "Peques & Robots",
     "venue": "Carrer de Rocafort, 67-69, local B7 (Eixample Esquerra)",
     "when": "Curso escolar",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2016/02/pequesyrobots3-2.jpg"
   },
   {
     "ageMax": 15,
@@ -9245,7 +9299,8 @@
     "title_en": "Scratch Barcelona — STEAM Classes",
     "venue": "Carrer Rosselló, 303, 6º (Eixample/Sagrada Família)",
     "when": "Curso escolar",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://scratch.barcelona/wp-content/uploads/2014/10/Extraescolar-Robotica-programacio-Scratch-Barcelona.jpg"
   },
   {
     "ageMax": 13,
@@ -9270,7 +9325,8 @@
     "title_en": "Smart Barcelona — Science Workshops & Camp",
     "venue": "Centre Cívic Joan Oliver — Pere Quart, Carrer del Comandant Benítez, 6 (Les Corts)",
     "when": "Curso escolar y verano",
-    "when_en": "School year & summer"
+    "when_en": "School year & summer",
+    "image": "https://content.gnoss.ws/carq//imagenes/Documentos/imgsem/3c/3cda/3cda47ea-a086-46c3-a8d3-f8e768545899/3671756c-3f05-4da4-87e5-fb8ba80772f4.jpg"
   },
   {
     "ageMax": 12,
@@ -9295,7 +9351,8 @@
     "title_en": "Mamüll — Kids' Woodworking",
     "venue": "Carrer Gran de Sant Andreu, 53 (Sant Andreu)",
     "when": "Martes (extraescolar)",
-    "when_en": "Tuesdays (after-school)"
+    "when_en": "Tuesdays (after-school)",
+    "image": "https://mamullcarpinteria.com/wp-content/uploads/2025/02/mamull-instalaciones-03.jpg"
   },
   {
     "ageMax": 12,
@@ -9320,7 +9377,8 @@
     "title_en": "Petits Xefs — Su2311 Cooking Space",
     "venue": "Dirección exacta no confirmada",
     "when": "Mensual, viernes 17:30-19:30",
-    "when_en": "Monthly, Fridays 5:30-7:30pm"
+    "when_en": "Monthly, Fridays 5:30-7:30pm",
+    "image": "https://static.wixstatic.com/media/f193d5_fa3a19d985064f378c0eec6c9bfa598d~mv2.jpg/v1/fill/w_460,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9810.jpg"
   },
   {
     "ageMax": 19,
@@ -9345,7 +9403,8 @@
     "title_en": "The Playcook Kids",
     "venue": "Carrer Sèneca, 17 (Gràcia/Sant Gervasi)",
     "when": "Curso escolar y verano",
-    "when_en": "School year & summer"
+    "when_en": "School year & summer",
+    "image": "https://theplaycookkids.com/wp-content/uploads/2025/12/3-768x512.jpg"
   },
   {
     "ageMax": null,
@@ -9370,7 +9429,8 @@
     "title_en": "Cotxeres-Casinet Children & Youth Corner",
     "venue": "Cotxeres de Sants, Carrer de Sants, 79 / Casinet d'Hostafrancs, Carrer del Rector Triadó, 53 (Sants)",
     "when": "Curso escolar",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://www.cotxeres-casinet.cat/app/uploads/2021/11/Casinet_01.jpg"
   },
   {
     "ageMax": 16,
@@ -9420,7 +9480,8 @@
     "title_en": "Barcelona Aquarium",
     "venue": "Moll d'Espanya del Port Vell",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Aquarium_de_Barcelona.jpg"
   },
   {
     "ageMax": null,
@@ -9445,7 +9506,8 @@
     "title_en": "Barcelona Zoo",
     "venue": "Carrer de Wellington (Parc de la Ciutadella)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://zoobarcelona.cat/sites/default/files/paragraphs/page/2016-12/Zoo%20Barcelona.jpg"
   },
   {
     "ageMax": null,
@@ -9470,7 +9532,8 @@
     "title_en": "Parc del Laberint d'Horta",
     "venue": "Passeig dels Castanyers, 1 (Horta-Guinardó)",
     "when": "Todos los días; gratis miércoles y domingos",
-    "when_en": "Every day; free Wed & Sun"
+    "when_en": "Every day; free Wed & Sun",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Parc_del_Laberint_d%27Horta_Lake.jpg"
   },
   {
     "ageMax": null,
@@ -9495,7 +9558,8 @@
     "title_en": "CosmoCaixa — General Visit",
     "venue": "Carrer d'Isaac Newton, 26 (Sarrià-Sant Gervasi)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9f/CosmoCaixa_Museu_Barcelona.JPG"
   },
   {
     "ageMax": 6,
@@ -9520,7 +9584,8 @@
     "title_en": "Museu Blau — Science Nest",
     "venue": "Parc del Fòrum (Sant Martí)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Barcelona_-_Museu_Blau_de_les_Ci%C3%A8ncies_Naturals_%283%29.jpg"
   },
   {
     "ageMax": null,
@@ -9545,7 +9610,8 @@
     "title_en": "Barcelona Botanical Garden",
     "venue": "Montjuïc",
     "when": "Todos los días; gratis primer domingo de mes",
-    "when_en": "Every day; free first Sunday of the month"
+    "when_en": "Every day; free first Sunday of the month",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/20/Jard%C3%AD_Bot%C3%A0nic_de_Barcelona_scene.JPG"
   },
   {
     "ageMax": null,
@@ -9570,7 +9636,8 @@
     "title_en": "Can Cadena — Farmhouse & Urban Garden",
     "venue": "Parc de Sant Martí (Sant Martí)",
     "when": "Fines de semana y festivos por la mañana",
-    "when_en": "Weekend & holiday mornings"
+    "when_en": "Weekend & holiday mornings",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2012/11/IMAG3060-2.jpg"
   },
   {
     "ageMax": null,
@@ -9595,7 +9662,8 @@
     "title_en": "Collserola Natural Park Information Centre",
     "venue": "Ctra. de l'Església, 92 (Vallvidrera, Sarrià-Sant Gervasi)",
     "when": "Fines de semana",
-    "when_en": "Weekends"
+    "when_en": "Weekends",
+    "image": "https://parcnaturalcollserola.cat/wp-content/uploads/2018/04/DSC05343.jpg"
   },
   {
     "ageMax": null,
@@ -9620,7 +9688,8 @@
     "title_en": "Mercat de la Terra Barcelona (Slow Food Market)",
     "venue": "Parc de les Tres Xemeneies (Poble-sec)",
     "when": "Sábados, 9:00-15:00",
-    "when_en": "Saturdays, 9am-3pm"
+    "when_en": "Saturdays, 9am-3pm",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Parc_de_les_Tres_Xemeneies.JPG"
   },
   {
     "ageMax": null,
@@ -9646,7 +9715,8 @@
     "title_en": "Fira de Santa Llúcia (Christmas Market)",
     "venue": "Av. de la Catedral / Plaça Nova (Ciutat Vella)",
     "when": "Finales de noviembre - 23 de diciembre",
-    "when_en": "Late Nov - Dec 23"
+    "when_en": "Late Nov - Dec 23",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/41/595_Fira_de_Santa_Ll%C3%BAcia%2C_av._de_la_Catedral_%28Barcelona%29%2C_parada.jpg"
   },
   {
     "ageMax": null,
@@ -9696,7 +9766,8 @@
     "title_en": "Aventurico Barcelona — Tetuan",
     "venue": "Carrer de Roger de Flor, 89 (Eixample)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/ee/4c/9a/alicia-en-el-pais-de.jpg?w=700&h=-1&s=1"
   },
   {
     "ageMax": null,
@@ -9721,7 +9792,8 @@
     "title_en": "Xcape Room Barcelona — Family Room",
     "venue": "Dirección exacta no confirmada",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://static.wixstatic.com/media/f193d5_fa3a19d985064f378c0eec6c9bfa598d~mv2.jpg/v1/fill/w_460,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9810.jpg"
   },
   {
     "ageMax": null,
@@ -9746,7 +9818,8 @@
     "title_en": "Kaburi",
     "venue": "Passeig de Sant Joan, 11 (Eixample)",
     "when": "Todos los días",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://www.eixfortpienc.com/media/fortpienc/image/fotos/2764_Foto.1742683586.jpg"
   },
   {
     "ageMax": null,
@@ -9771,7 +9844,8 @@
     "title_en": "Menuts — Family Play Space",
     "venue": "Carrer de Fígols, 27 (Les Corts)",
     "when": "Consultar horario",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://menuts.es/_next/image?url=%2Fimages%2Fhome%2Fjuego-piscina.webp&w=3840&q=75&dpl=dpl_H7pytQotqV4NE8DAAkHWsF2YxJK5"
   },
   {
     "ageMax": null,
@@ -9796,7 +9870,8 @@
     "title_en": "Tribu House",
     "venue": "Carrer de Pujades, 174 (Poblenou)",
     "when": "Consultar horario",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://tribuhouse.com/images/space-ballpit-kid-playing.jpg"
   },
   {
     "ageMax": 8,
@@ -9821,7 +9896,8 @@
     "title_en": "L'Esbarjo — Kids & Family",
     "venue": "Carrer de València, 91 (Eixample)",
     "when": "Consultar horario",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2024/03/MammaProof_LEsbarjo-Kids-Family_Eixample_espai-de-joc_Barcelona_Cristina-Rius_12-1180x787.jpg"
   },
   {
     "ageMax": 12,
@@ -9846,7 +9922,8 @@
     "title_en": "Casal Infantil Cotxeres Borrell",
     "venue": "Carrer de Viladomat, 2-8 (Eixample)",
     "when": "Consultar horario",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2023/02/casal_infantil_cotxeres_borrell_juego-1-1180x885.jpg"
   },
   {
     "ageMax": null,
@@ -9871,7 +9948,8 @@
     "title_en": "Play and Party",
     "venue": "Carrer del Pintor Mir, 5 (Horta-Guinardó)",
     "when": "Consultar horario",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://www.mammaproof.org/barcelona/wp-content/uploads/sites/11/2025/04/play-and-party-1180x787.jpg"
   },
   {
     "ageMax": 17,
