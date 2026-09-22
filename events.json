@@ -9974,7 +9974,8 @@
     "title_en": "The Children's Museum — National Museum of Denmark",
     "venue": "Ny Vestergade 10, 1471 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/321721_MellanieGand_Nationalmuseet-24.jpg"
   },
   {
     "ageMax": 17,
@@ -9999,7 +10000,8 @@
     "title_en": "Glyptoteket — Children's Experiences",
     "venue": "Dantes Plads 7, 1556 København V",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://glyptoteket.com/media/zetjbtfg/bag-facaden-postkort-til-butikken-a5-cm-glyptoteket_v24.jpg"
   },
   {
     "ageMax": 16,
@@ -10024,7 +10026,8 @@
     "title_en": "Design Museum Denmark — Children & Families",
     "venue": "Bredgade 68, 1260 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/288404_Design_Museum_Danmark.jpg"
   },
   {
     "ageMax": 22,
@@ -10049,7 +10052,8 @@
     "title_en": "Billedskolen — Art School for Children & Youth",
     "venue": "Staldgade 35, 1699 København V (Vesterbro)",
     "when": "Skoleår",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://billedskolen.kk.dk/sites/default/files/styles/hero_desktop/public/2024-01/Forside_1920x544px.jpg?itok=HVbgqfAJ"
   },
   {
     "ageMax": 10,
@@ -10074,7 +10078,8 @@
     "title_en": "Puppet Theatre in the King's Garden",
     "venue": "Kronprinsessegade 21, 1306 København K (indgang fra Kongens Have)",
     "when": "Slut maj-august",
-    "when_en": "Late May-August"
+    "when_en": "Late May-August",
+    "image": "https://detlilleteater.dk/sites/default/files/styles/1200w/public/2026-09/hjemmeside.jpg?itok=ubW9tvvi"
   },
   {
     "ageMax": 10,
@@ -10099,7 +10104,8 @@
     "title_en": "Det Lille Teater",
     "venue": "Lavendelstræde 5-7, 1462 København K",
     "when": "Efter sæsonprogram",
-    "when_en": "Per season program"
+    "when_en": "Per season program",
+    "image": "https://files.guidedanmark.org/files/382/1119_Det_lille_teater.jpg"
   },
   {
     "ageMax": 12,
@@ -10124,7 +10130,8 @@
     "title_en": "Copenhagen Contemporary — Kids CCircle",
     "venue": "Refshalevej 173A, 1432 København K (Refshaleøen)",
     "when": "Weekender, drop-in uden tilmelding",
-    "when_en": "Weekends, drop-in, no registration"
+    "when_en": "Weekends, drop-in, no registration",
+    "image": "https://files.guidedanmark.org/files/382/273083_CC1.png"
   },
   {
     "ageMax": null,
@@ -10149,7 +10156,8 @@
     "title_en": "KU.BE — Culture & Movement House",
     "venue": "Dirch Passers Allé 4, 2000 Frederiksberg",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/348051_KU.BE.jpg"
   },
   {
     "ageMax": null,
@@ -10174,7 +10182,8 @@
     "title_en": "World's Smallest Culture House",
     "venue": "Bag Nørrebrohallen, Mimersgade-området (Nørrebro)",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://images.squarespace-cdn.com/content/v1/65d65d813f52b26597c4a0d0/b84f5544-dc8e-4b2e-a569-3deae78cf1c4/Om+Verdens+Mindste+Kulturhus+-+VMK.JPG"
   },
   {
     "ageMax": null,
@@ -10199,7 +10208,8 @@
     "title_en": "Osramhuset — Play Room & Family Activities",
     "venue": "Nørrebro",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://kulturogfritidn.kk.dk/sites/default/files/styles/hero_desktop/public/2021-09/DanielLiversage_Osramhuset1.jpg?itok=53tuSBId"
   },
   {
     "ageMax": 12,
@@ -10224,7 +10234,8 @@
     "title_en": "Børnemuseet (Children's Museum), Frederiksberg",
     "venue": "Svanholmsvej 3A, 1905 Frederiksberg C",
     "when": "Se åbningstider",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://oplevelser-i-koebenhavn.dk/wp-content/uploads/2023/07/facadejpg-768x500.jpg"
   },
   {
     "ageMax": null,
@@ -10249,7 +10260,8 @@
     "title_en": "Børnekulturhus Ama'r (Children's Culture House, Amager)",
     "venue": "Øresundsvej 8B, 2300 København S (Amager)",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://bornekulturhusamar.kk.dk/sites/default/files/styles/hero_desktop/public/2021-11/Hero_forside600.png?itok=ckI_mFJf"
   },
   {
     "ageMax": 16,
@@ -10274,7 +10286,8 @@
     "title_en": "Zone2 / Børnekulturstedet — Valby Kulturhus",
     "venue": "Valby Kulturhus, Valgårdsvej 4-8, 2500 Valby (2. sal)",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://kulturogfritidv.kk.dk/sites/default/files/styles/hero_desktop/public/2024-11/ForsidenOm%20os%20%281%29.png?itok=wB1w7qS_"
   },
   {
     "ageMax": null,
@@ -10299,7 +10312,8 @@
     "title_en": "Kulturstationen Vanløse — Culture for Children & Youth",
     "venue": "Jernbane Allé 38, 2720 Vanløse",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://kulturogfritidv.kk.dk/sites/default/files/styles/4_3_1392/public/2022-08/Kulturstation-Vanloese-DanielLiversage-6.jpg?itok=-cX1Fe8U"
   },
   {
     "ageMax": null,
@@ -10324,7 +10338,8 @@
     "title_en": "Østerbrohuset",
     "venue": "Århusgade 103, 2100 København Ø",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://kulturogfritidoe.kk.dk/sites/default/files/styles/hero_desktop/public/2021-07/%C3%98BH%20facade%20besk%C3%A5ret.png?itok=Ih09yW2O"
   },
   {
     "ageMax": null,
@@ -10349,7 +10364,8 @@
     "title_en": "Amager Kulturpunkt",
     "venue": "Amagerbrogade-området, Amager",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://kulturogfritids.kk.dk/sites/default/files/styles/hero_desktop/public/2021-11/AmagerKulturpunkt-FotoJacobSchneider_7999hero.JPG?itok=QRw9gpnI"
   },
   {
     "ageMax": 12,
@@ -10374,7 +10390,8 @@
     "title_en": "BestTellers — Storytelling Stage",
     "venue": "Krusågade 25-27, 1719 København V (Vesterbro)",
     "when": "Månedlig søndagsforestilling for familier",
-    "when_en": "Monthly Sunday family show"
+    "when_en": "Monthly Sunday family show",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/c_fill%2Cw_580%2Ch_397%2Cg_auto/jlo2uscnq47izhudgvo9.jpg"
   },
   {
     "ageMax": 10,
@@ -10399,7 +10416,8 @@
     "title_en": "Teater Hund & Co",
     "venue": "Krudttønden, Serridslevvej 2, 2100 København Ø (Østerbro)",
     "when": "Efter forestillingsplan",
-    "when_en": "Per show schedule"
+    "when_en": "Per show schedule",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Krudtt%C3%B8nden_01.JPG"
   },
   {
     "ageMax": 13,
@@ -10424,7 +10442,8 @@
     "title_en": "Rytmisk Center — Music, Dance & Theatre for Kids",
     "venue": "Vesterbrogade 107E, 1620 København V",
     "when": "Skoleår",
-    "when_en": "School-year courses"
+    "when_en": "School-year courses",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/c_fill%2Cw_580%2Ch_397%2Cg_auto/lqs8vrpm1bilitoqvcn3.jpg"
   },
   {
     "ageMax": 12,
@@ -10449,7 +10468,8 @@
     "title_en": "Skydebanehaven — The Parrot Playground",
     "venue": "Absalonsgade 12, 1658 København V (Vesterbro)",
     "when": "Se åbningstider",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/hero_desktop/public/2023-06/Skydebanen.jpg?itok=EGeHI_Ni"
   },
   {
     "ageMax": 12,
@@ -10474,7 +10494,8 @@
     "title_en": "Dinosaur Playground, Terrassen i Kronen",
     "venue": "Vanløse Torv 1, 2720 Vanløse",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://www.kronenvanlose.dk/images/activities/gratis-dinosaur-legeplads.jpg"
   },
   {
     "ageMax": 8,
@@ -10499,7 +10520,8 @@
     "title_en": "Frederiksberg Have Playground",
     "venue": "Frederiksberg Runddel, 2000 Frederiksberg",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://migogkbh.dk/wp-content/uploads/2021/09/Frederiksberg-Have-Legeplads.jpeg"
   },
   {
     "ageMax": null,
@@ -10524,7 +10546,8 @@
     "title_en": "Nature Playground, Valbyparken",
     "venue": "Hammelstrupvej 41, 2450 København SV (Valby)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/166885_UrsulaBachYY5A9492.jpg"
   },
   {
     "ageMax": null,
@@ -10549,7 +10572,8 @@
     "title_en": "Superkilen",
     "venue": "Mimersgade 71, 2200 København N (Nørrebro)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/ce/K%C3%B8benhavn_-_Superkilen_(22820621028).jpg"
   },
   {
     "ageMax": null,
@@ -10574,7 +10598,8 @@
     "title_en": "Emdrup Junk Playground",
     "venue": "Keldsøvej 5, 2100 København Ø",
     "when": "Se åbningstider",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://www.tv2kosmopol.dk/img/asset/aW1hZ2VzLzIwMjAvMDkvMjEvc2tyYW1tZWxsZWdlcGxhZHNlbi1mb2VyLW9nLW51LmpwZw/skrammellegepladsen-foer-og-nu.jpg"
   },
   {
     "ageMax": 12,
@@ -10600,7 +10625,8 @@
     "title_en": "Fælledparken — Water Playground & Tower Playground",
     "venue": "Fælledparken, 2100 København Ø (Østerbro)",
     "when": "Ca. medio juni-25. august (sæson)",
-    "when_en": "Approx. mid-June-25 Aug (seasonal)"
+    "when_en": "Approx. mid-June-25 Aug (seasonal)",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/ive4eiohmduqp47z3gzq.jpg"
   },
   {
     "ageMax": null,
@@ -10625,7 +10651,8 @@
     "title_en": "Islands Brygge Harbour Bath",
     "venue": "Islands Brygge 11, 2300 København S",
     "when": "Livreddere 1. juni-31. august",
-    "when_en": "Lifeguards Jun 1-Aug 31"
+    "when_en": "Lifeguards Jun 1-Aug 31",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Harbour_Bath,_Islands_Brygge.jpg"
   },
   {
     "ageMax": null,
@@ -10650,7 +10677,8 @@
     "title_en": "Sluseholmen Harbour Bath",
     "venue": "Ben Websters Vej 69, 2450 København SV (Sydhavnen)",
     "when": "Livreddere juni-august",
-    "when_en": "Lifeguards Jun-Aug"
+    "when_en": "Lifeguards Jun-Aug",
+    "image": "https://svoemkbh.kk.dk/sites/default/files/styles/hero_desktop/public/2021-06/Havnebadet%20Sluseholmen.png?itok=zX-U29Xh"
   },
   {
     "ageMax": null,
@@ -10675,7 +10703,8 @@
     "title_en": "Fisketorvet Harbour Bath",
     "venue": "Kalvebod Brygge 55, 1560 København V",
     "when": "1. maj-31. marts; livreddere juni-august",
-    "when_en": "May 1-Mar 31; lifeguards Jun-Aug"
+    "when_en": "May 1-Mar 31; lifeguards Jun-Aug",
+    "image": "https://svoemkbh.kk.dk/sites/default/files/styles/hero_desktop/public/2026-09/fisk1.png?itok=Qf2zYFNn"
   },
   {
     "ageMax": 17,
@@ -10700,7 +10729,8 @@
     "title_en": "Fælledparken Skatepark",
     "venue": "Edel Sauntes Allé 3, 2100 København Ø (Østerbro)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/117574_Flledparken_Skatepark.jpg"
   },
   {
     "ageMax": null,
@@ -10725,7 +10755,8 @@
     "title_en": "Copenhagen Skatepark (Indoor)",
     "venue": "Enghavevej 80, 2450 København SV",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://gadeidraet.kk.dk/sites/default/files/styles/4_3_696px/public/2026-06/hip_0.jpg?itok=JIomER3D"
   },
   {
     "ageMax": 17,
@@ -10750,7 +10781,8 @@
     "title_en": "Israels Plads — \"Concrete Paradise\"",
     "venue": "Israels Plads, ved Ahlefeldtsgade, 1361 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/hero_desktop/public/2023-02/UrsulaBachYY5A2266.jpg?itok=UuGwnETD"
   },
   {
     "ageMax": 15,
@@ -10775,7 +10807,8 @@
     "title_en": "Remiseparken — Movement Square",
     "venue": "Peder Lykkes Vej 71, 2300 København S (Amager)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/hero_desktop/public/2023-06/Remiseparken2.jpg?itok=Ss1qagV4"
   },
   {
     "ageMax": 17,
@@ -10800,7 +10833,8 @@
     "title_en": "Islands Brygge Skate Area",
     "venue": "Islands Brygge, overfor Vestmannagade, 2300 København S",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://gadeidraet.kk.dk/sites/default/files/styles/hero_desktop/public/2021-10/1920x%20554%20px%20TOP%20BIllede%20wIDE-hERO_DSC3927.jpg?itok=HTpJGtxN"
   },
   {
     "ageMax": null,
@@ -10850,7 +10884,8 @@
     "title_en": "Boulders — Kids' Climbing Classes",
     "venue": "Kronen 1, Vanløse (samt Sydhavn, Amager og Hvidovre)",
     "when": "Ugentlige hold, sæsonbaseret",
-    "when_en": "Weekly classes, seasonal"
+    "when_en": "Weekly classes, seasonal",
+    "image": "https://www.kronenvanlose.dk/images/stores/facades/boulders.jpg"
   },
   {
     "ageMax": 17,
@@ -10875,7 +10910,8 @@
     "title_en": "Blocs & Walls",
     "venue": "Refshalevej 163D, 1432 København K (Refshaleøen)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://refshaleoen.dk/wp-content/uploads/2019/03/06_Discover_locations_Blocs_walls.jpeg"
   },
   {
     "ageMax": 6,
@@ -10900,7 +10936,8 @@
     "title_en": "DGI-byen — Vandkulturhuset (Water Culture House)",
     "venue": "Tietgensgade 65, 1704 København V",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://umbraco-content-api.prod.dgibyen.dk/media/wpger3be/vandkulturhuset-bassiner-1.jpg?width=1200&height=630"
   },
   {
     "ageMax": null,
@@ -10925,7 +10962,8 @@
     "title_en": "Sundby Bad",
     "venue": "Sundbyvestervej 50, 2300 København S (Amager)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://svoemkbh.kk.dk/sites/default/files/styles/hero_desktop/public/2021-06/Bassin.png?itok=LG0FIZJg"
   },
   {
     "ageMax": null,
@@ -10951,7 +10989,8 @@
     "title_en": "Bellahøj Swim Stadium / Outdoor Pool",
     "venue": "Bellahøjvej 1-3, 2700 Brønshøj",
     "when": "Friluftsbad: 1. juni-31. august",
-    "when_en": "Outdoor pool: Jun 1-Aug 31"
+    "when_en": "Outdoor pool: Jun 1-Aug 31",
+    "image": "https://svoemkbh.kk.dk/sites/default/files/styles/hero_desktop/public/2021-06/Sk%C3%A6rmmbillede%202021-06-14%20090442.jpg?itok=OMmCagSt"
   },
   {
     "ageMax": null,
@@ -11001,7 +11040,8 @@
     "title_en": "GAME Streetmekka Copenhagen",
     "venue": "Enghavevej 82D, 2450 København SV",
     "when": "Alle dage; gratis \"Gadedage\" i skoleferier",
-    "when_en": "Every day; free \"Gadedage\" events during school holidays"
+    "when_en": "Every day; free \"Gadedage\" events during school holidays",
+    "image": "https://loa-fonden.dk/wp-content/uploads/2023/01/0568.jpg"
   },
   {
     "ageMax": null,
@@ -11027,7 +11067,8 @@
     "title_en": "Ice Rink at Frederiksberg Runddel",
     "venue": "Frederiksberg Runddel, 2000 Frederiksberg",
     "when": "Slut november-slut februar",
-    "when_en": "Late Nov-late Feb"
+    "when_en": "Late Nov-late Feb",
+    "image": "https://migogkbh.dk/wp-content/uploads/2021/09/Frederiksberg-Have-Legeplads.jpeg"
   },
   {
     "ageMax": null,
@@ -11052,7 +11093,8 @@
     "title_en": "Østerbro Ice Rink",
     "venue": "Svendborggade 34-36, 2100 København Ø",
     "when": "Alle dage (undtagen sommer)",
-    "when_en": "Every day (except summer)"
+    "when_en": "Every day (except summer)",
+    "image": "https://kulturogfritidoe.kk.dk/sites/default/files/styles/hero_desktop/public/2021-07/sk%C3%B8jtehal%20is%20besk%C3%A5ret.png?itok=fnTsc-cS"
   },
   {
     "ageMax": null,
@@ -11077,7 +11119,8 @@
     "title_en": "Children's Workshop — SMK (National Gallery)",
     "venue": "Statens Museum for Kunst, Sølvgade 48-50, 1307 København K",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://www.smk.dk/wp-content/uploads/2019/08/RI_0057-1-e1731944103391.jpg"
   },
   {
     "ageMax": null,
@@ -11102,7 +11145,8 @@
     "title_en": "Line Rønnest Ceramics — Kids' Pottery Workshop",
     "venue": "Smallegade 28, 2000 Frederiksberg",
     "when": "Lørdage (lige uger) og torsdage",
-    "when_en": "Saturdays (even weeks) and Thursdays"
+    "when_en": "Saturdays (even weeks) and Thursdays",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/rapdvwx4vx7o69y6d6xm.jpg"
   },
   {
     "ageMax": null,
@@ -11127,7 +11171,8 @@
     "title_en": "Coding Pirates — Kultur og Fritid V Chapter",
     "venue": "Kultur og Fritid V, København",
     "when": "Tirsdage 17:00-19:00",
-    "when_en": "Tuesdays 5-7pm"
+    "when_en": "Tuesdays 5-7pm",
+    "image": "https://kulturogfritidv.kk.dk/sites/default/files/styles/hero_desktop/public/2021-11/coding_pirates.jpg?itok=nTKXzWm8"
   },
   {
     "ageMax": 17,
@@ -11152,7 +11197,8 @@
     "title_en": "Coding Pirates DIKU",
     "venue": "Vermundsgade 5, 2100 København Ø (Datalogisk Institut, KU)",
     "when": "Ugentligt",
-    "when_en": "Weekly"
+    "when_en": "Weekly",
+    "image": "https://di.ku.dk/oplev-datalogi/billeder/Grundskolen1100x600.jpg"
   },
   {
     "ageMax": null,
@@ -11177,7 +11223,8 @@
     "title_en": "Frederiksberg Library — Makerspace Workshops",
     "venue": "Frederiksberg Bibliotek",
     "when": "Se arrangementskalender",
-    "when_en": "Check event calendar"
+    "when_en": "Check event calendar",
+    "image": "https://fkb.dk/sites/default/files/styles/open_graph/public/2025-09/Hovedbib_web.jpg"
   },
   {
     "ageMax": null,
@@ -11202,7 +11249,8 @@
     "title_en": "Copenhagen Fablab",
     "venue": "Julius Andersens Vej 1, 2450 København SV, samt Valby Kulturhus",
     "when": "Se åbningstider (Valby: onsdage 16-20)",
-    "when_en": "Check opening hours (Valby: Wednesdays 4-8pm)"
+    "when_en": "Check opening hours (Valby: Wednesdays 4-8pm)",
+    "image": "https://copenhagenfablab.kk.dk/sites/default/files/styles/hero_desktop/public/2024-02/97497ea5-5a08-4a8e-a91a-da1a389f6b8a.jpg?itok=-teQ0a2I"
   },
   {
     "ageMax": null,
@@ -11227,7 +11275,8 @@
     "title_en": "Kildevæld Kulturcenter — 3D Print, Vinyl & Laser Cutter Workshop",
     "venue": "Kildevæld Kulturcenter, Østerbro",
     "when": "Onsdage 17:00-21:00",
-    "when_en": "Wednesdays 5-9pm"
+    "when_en": "Wednesdays 5-9pm",
+    "image": "https://kulturogfritidoe.kk.dk/sites/default/files/styles/hero_desktop/public/2022-11/Building%20-%20Laura%20Stamer%2022_0.jpg?itok=9f37MGwJ"
   },
   {
     "ageMax": 9,
@@ -11252,7 +11301,8 @@
     "title_en": "Valby Kulturhus — Ceramics Workshop & Monster Workshop",
     "venue": "Valby Kulturhus, Valby",
     "when": "Monsterværksted mandage 14:00-17:00",
-    "when_en": "Monster Workshop Mondays 2-5pm"
+    "when_en": "Monster Workshop Mondays 2-5pm",
+    "image": "https://kulturogfritidv.kk.dk/sites/default/files/styles/hero_desktop/public/2026-06/Keramik1920x1599.jpg?itok=jgD4Q_jy"
   },
   {
     "ageMax": 14,
@@ -11277,7 +11327,8 @@
     "title_en": "Kulturstationen Vanløse — Stop Motion Film Course",
     "venue": "Kulturstationen Vanløse",
     "when": "Se kalender",
-    "when_en": "Check calendar"
+    "when_en": "Check calendar",
+    "image": "https://kulturogfritidv.kk.dk/sites/default/files/styles/4_3_1392/public/2022-08/Kulturstation-Vanloese-DanielLiversage-6.jpg?itok=-cX1Fe8U"
   },
   {
     "ageMax": null,
@@ -11302,7 +11353,8 @@
     "title_en": "Sundby Library — Creative Workshop",
     "venue": "Kvarterhuset, 1. sal (Sundby Bibliotek, Amager)",
     "when": "Se ugeskema",
-    "when_en": "Check weekly schedule"
+    "when_en": "Check weekly schedule",
+    "image": "https://bibliotek.kk.dk/sites/default/files/styles/hero_wide/public/2024-05/kvarterhuset_ny.jpeg?h=78baadc1&itok=QVZ5x4Pg"
   },
   {
     "ageMax": 10,
@@ -11327,7 +11379,8 @@
     "title_en": "FOF Copenhagen — Cooking School for Children & Youth",
     "venue": "Flere lokationer i København",
     "when": "Efter kursusprogram",
-    "when_en": "Per course schedule"
+    "when_en": "Per course schedule",
+    "image": "https://www.fof.dk/_next/image?url=%2Fmedia%2Fnjxnh223%2Fkokkeskole-fofkn-aftenskolen-boern-og-unge-dmf-4.jpg%3Fwidth%3D1200&w=1920&q=75"
   },
   {
     "ageMax": 14,
@@ -11352,7 +11405,8 @@
     "title_en": "Copenhagen School Gardens",
     "venue": "Bispebjerg Bakke 8, 2400 København NV (samt Ellebjerg, Valby)",
     "when": "Se sæsonprogram",
-    "when_en": "Check seasonal program"
+    "when_en": "Check seasonal program",
+    "image": "https://kbhskolehaver.dk/wp-content/uploads/2024/06/signal-2024-06-07-121716_002.jpeg"
   },
   {
     "ageMax": null,
@@ -11377,7 +11431,8 @@
     "title_en": "Tivoli Gardens",
     "venue": "Vesterbrogade 3, 1620 København V",
     "when": "Se sæsonåbningstider",
-    "when_en": "Check seasonal opening hours"
+    "when_en": "Check seasonal opening hours",
+    "image": "https://cdn.tivoli.dk/media/gdvfnt22/tivoli_sommer_svingkarrusellen_blomster_2022_003004_1.jpg?height=2160&width=3840&format=jpeg&quality=75"
   },
   {
     "ageMax": 11,
@@ -11402,7 +11457,8 @@
     "title_en": "Den Blå Planet (National Aquarium Denmark)",
     "venue": "Jacob Fortlingsvej 1, 2770 Kastrup (Tårnby Kommune, ved København)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Den_Bl%C3%A5_Planet_(Kastrup).JPG"
   },
   {
     "ageMax": 14,
@@ -11427,7 +11483,8 @@
     "title_en": "Copenhagen Zoo",
     "venue": "Roskildevej 32, 2000 Frederiksberg",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/362481_Copenhagen_Zoo.jpg"
   },
   {
     "ageMax": 12,
@@ -11452,7 +11509,8 @@
     "title_en": "Experimentarium",
     "venue": "Tuborg Havnevej 7, 2900 Hellerup (Gentofte Kommune, ved København)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/329973_Experimentarium.png"
   },
   {
     "ageMax": 11,
@@ -11477,7 +11535,8 @@
     "title_en": "Tycho Brahe Planetarium",
     "venue": "Gl. Kongevej 10, 1610 København V (Vesterbro)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/41/Tycho_Brahe_Planetarium_%26_IMAX_at_Copenhagen_Lakes.JPG"
   },
   {
     "ageMax": null,
@@ -11502,7 +11561,8 @@
     "title_en": "Botanical Garden",
     "venue": "Nær Nørreport/Østerbro, København",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://img2.storyblok.com/1440x978/smart/filters:quality(90)/f/95297/1840x1250/598e3ad318/palmehuset_1840x1250pix_jens-astrup_snm.jpg"
   },
   {
     "ageMax": null,
@@ -11527,7 +11587,8 @@
     "title_en": "Frederiksberg Have",
     "venue": "Frederiksberg (ved siden af Zoo)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/202325_PANA6070.jpg"
   },
   {
     "ageMax": null,
@@ -11552,7 +11613,8 @@
     "title_en": "Bondens Marked (Farmers' Market)",
     "venue": "Sankt Jakobs Plads (lørdag) / Sankt Thomas Plads (fredag)",
     "when": "Lørdage 10-15 (Østerbro), fredage 12-18 (Frederiksberg)",
-    "when_en": "Saturdays 10am-3pm (Østerbro), Fridays noon-6pm (Frederiksberg)"
+    "when_en": "Saturdays 10am-3pm (Østerbro), Fridays noon-6pm (Frederiksberg)",
+    "image": "https://kulturdistriktet.dk/pladser/wp-content/uploads/2026/06/Bondens_marked1.jpg"
   },
   {
     "ageMax": null,
@@ -11577,7 +11639,8 @@
     "title_en": "Torvehallerne Market Halls",
     "venue": "Frederiksborggade 21, 1360 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://files.guidedanmark.org/files/382/202266_Torvehallerne1_Martin_Heiberg.jpg"
   },
   {
     "ageMax": null,
@@ -11602,7 +11665,8 @@
     "title_en": "BRÆT Board Game Café",
     "venue": "Jægersborggade 14, Nørrebro",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://static.wixstatic.com/media/f9b02a_e6a78dd543864288b79734642cc41a90~mv2.jpeg"
   },
   {
     "ageMax": null,
@@ -11627,7 +11691,8 @@
     "title_en": "Bastard Café",
     "venue": "Rådhusstræde 13, 1466 København K (samt en filial i Valby)",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://migogkbh.dk/wp-content/uploads/2018/10/Bastard-Cafe-1024x774.jpg"
   },
   {
     "ageMax": 15,
@@ -11677,7 +11742,8 @@
     "title_en": "Royal Escapes",
     "venue": "Fredericiagade 30, 1310 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://d2z3luly8bezbw.cloudfront.net/fit-in/1440x800/questrooms_photos/1717408879723-theroyalplayroom0.webp"
   },
   {
     "ageMax": null,
@@ -11702,7 +11768,8 @@
     "title_en": "Riddlehouse",
     "venue": "Gothersgade 35 (1. sal), 1123 København K",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://escaperoom-riddlehouse.dk/wp-content/uploads/2023/07/P1388196-scaled.jpg"
   },
   {
     "ageMax": null,
@@ -11727,7 +11794,8 @@
     "title_en": "Bredegrund Adventure Playground",
     "venue": "Bredegrund 8, 2300 København S (Amager)",
     "when": "Legeplads: alle dage; bemandet område har åbningstider",
-    "when_en": "Playground: every day; staffed area has set hours"
+    "when_en": "Playground: every day; staffed area has set hours",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/hero_desktop/public/2023-06/Bredegrund1.jpg?itok=ZhCgEtUc"
   },
   {
     "ageMax": null,
@@ -11752,7 +11820,8 @@
     "title_en": "ByOasen (City Oasis Farm Playground)",
     "venue": "Agnes Henningsens Vej 11, 2200 København N (Nørrebro)",
     "when": "Se åbningstider",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/4_3_696px/public/2023-03/ByOasen.jpg?h=dd2c22bd&itok=LObKPZb-"
   },
   {
     "ageMax": 15,
@@ -11777,7 +11846,8 @@
     "title_en": "Kulværket",
     "venue": "Kulbanevej 16, 2500 Valby",
     "when": "Se åbningstider",
-    "when_en": "Check opening hours"
+    "when_en": "Check opening hours",
+    "image": "https://legeplads.kk.dk/sites/default/files/styles/hero_desktop/public/2023-06/Kulv%C3%A6rket.jpg?itok=jayT9sKq"
   },
   {
     "ageMax": null,
@@ -11802,7 +11872,8 @@
     "title_en": "Amager Strandpark Playground",
     "venue": "For enden af Italiensvej, ved Kilometerbroen, 2300 København S",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/ijuh3mpvqfnxmqxrylq9.jpg"
   },
   {
     "ageMax": null,
@@ -11827,7 +11898,8 @@
     "title_en": "ØsterGRO — Volunteer Visiting Days",
     "venue": "Æbeløgade 4, 2100 København Ø (Østerbro)",
     "when": "Tirsdage, april-midt november, 10-17",
-    "when_en": "Tuesdays, April-mid November, 10am-5pm"
+    "when_en": "Tuesdays, April-mid November, 10am-5pm",
+    "image": "https://dac.kontainer.com/cdn/ePqguBSKT2EY/2.webp"
   },
   {
     "ageMax": null,
@@ -11852,7 +11924,8 @@
     "title_en": "The Organic Urban Garden at Enghave Plads",
     "venue": "Enghave Plads, Vesterbro",
     "when": "Alle dage",
-    "when_en": "Every day"
+    "when_en": "Every day",
+    "image": "https://res.cloudinary.com/bornibyen/image/upload/tyletn05nebbaz17mhoc.jpg"
   },
   {
     "ageMax": null,
@@ -11877,7 +11950,8 @@
     "title_en": "Ungdomshuset (Youth House)",
     "venue": "Dortheavej 61, 2400 København NV",
     "when": "Se program",
-    "when_en": "Check program"
+    "when_en": "Check program",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Dortheavej_61.jpg"
   },
   {
     "ageMax": null,
@@ -11902,7 +11976,8 @@
     "title_en": "Kulturhuset Islands Brygge — Play Room & Dance Classes",
     "venue": "Islands Brygge 18, 2300 København S",
     "when": "Legestue: uden tilmelding; dansehold efter program",
-    "when_en": "Play room: no registration needed; dance classes per schedule"
+    "when_en": "Play room: no registration needed; dance classes per schedule",
+    "image": "https://files.guidedanmark.org/files/382/1095_KIB.jpg"
   },
   {
     "ageMax": null,
@@ -11928,7 +12003,8 @@
     "title_en": "Sommerbio at BaneGaarden",
     "venue": "Otto Busses Vej 45, 2450 København SV",
     "when": "Udvalgte tors–søn, til 30 sep",
-    "when_en": "Select Thu–Sun, through Sept 30"
+    "when_en": "Select Thu–Sun, through Sept 30",
+    "image": "https://www.banegaarden.com/videos/header-poster-v2.webp"
   },
   {
     "ageMax": null,
