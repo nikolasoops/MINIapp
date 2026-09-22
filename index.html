@@ -262,7 +262,16 @@
   .modal-handle { width: 36px; height: 4px; background: var(--line); border-radius: 999px; }
   .modal .m-thumb { width: 100%; height: 120px; border-radius: 14px; background: #e7eef5; display:flex; align-items:center; justify-content:center; font-size: 40px; margin-bottom: 14px; position: relative; overflow: hidden; }
   .modal .m-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
-  .modal .m-thumb .heart { position:absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.85); border-radius: 50%; }
+  .modal .m-thumb .heart { position:absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.85); border-radius: 50%; z-index: 2; }
+  .gallery { position: absolute; inset: 0; }
+  .gallery-track { display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gallery-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
+  .gallery-fallback { display: none; font-size: 40px; }
+  .gallery-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
+  .gallery-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.55); transition: background .15s ease, transform .15s ease; }
+  .gallery-dots .dot.active { background: #fff; transform: scale(1.3); }
   .modal h2 { font-size: 18px; margin: 4px 0 8px; color: var(--primary); }
   .modal .m-meta { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
   .modal .m-meta .pin { color: var(--orange); }
@@ -486,14 +495,43 @@ function evWhen(ev)  { return state.lang === 'en' ? ev.when_en  : ev.when; }
 function evAges(ev)  { return state.lang === 'en' ? ev.ages_en  : ev.ages; }
 function evDesc(ev)  { return state.lang === 'en' ? ev.desc_en  : ev.desc; }
 
-// Real venue photo when we have one, falling back to the emoji icon —
-// including at runtime via onerror, in case a hotlinked image goes down.
+// Works for ANY event in ANY city — not Porto-specific. Most events today
+// only have 0 or 1 photo, but this supports however many exist (ev.images,
+// an array) and falls back to ev.image (single, older field) for events
+// that only ever got one. Both are optional; no photo at all is fine too.
+function evImages(ev) {
+  if (Array.isArray(ev.images) && ev.images.length) return ev.images;
+  if (ev.image) return [ev.image];
+  return [];
+}
+
+// Small card thumbnail — always just the first photo, no swipe (too small
+// for it to be usable). Falls back to the emoji icon, including at runtime
+// via onerror, in case a hotlinked image goes down.
 function thumbHtml(ev) {
-  if (ev.image) {
-    const src = String(ev.image).replace(/"/g, '&quot;');
+  const imgs = evImages(ev);
+  if (imgs.length) {
+    const src = String(imgs[0]).replace(/"/g, '&quot;');
     return `<img src="${src}" alt="" loading="lazy" onerror="this.outerHTML='${ev.icon}'">`;
   }
   return ev.icon;
+}
+
+// Big detail-view thumbnail — a swipeable gallery when there's more than one
+// photo (dots + horizontal swipe/scroll-snap), a single static photo when
+// there's exactly one, and the plain emoji icon when there are none. Each
+// slide falls back to the icon individually if its image fails to load.
+function galleryHtml(ev) {
+  const imgs = evImages(ev);
+  if (!imgs.length) return ev.icon;
+  const slides = imgs.map(u => {
+    const src = String(u).replace(/"/g, '&quot;');
+    return `<div class="gallery-slide"><img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="gallery-fallback">${ev.icon}</span></div>`;
+  }).join('');
+  const dots = imgs.length > 1
+    ? `<div class="gallery-dots">${imgs.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>`
+    : '';
+  return `<div class="gallery"><div class="gallery-track" id="galleryTrack">${slides}</div>${dots}</div>`;
 }
 
 const MONTHS = {
@@ -1967,7 +2005,7 @@ function openDetail(id) {
   modalEl.innerHTML = `
     <div class="modal-handle-zone" id="modalHandleZone"><div class="modal-handle"></div></div>
     <div class="m-thumb">
-      ${thumbHtml(ev)}
+      ${galleryHtml(ev)}
       <button class="heart ${isSaved ? 'on' : ''}" id="modalSave">${isSaved ? '♥' : '♡'}</button>
     </div>
     <h2>${evTitle(ev)}</h2>
@@ -1995,6 +2033,23 @@ function openDetail(id) {
     persistSaved();
     render();
   };
+  // Keep the dots in sync while swiping through the gallery (if there's more
+  // than one photo — a single-photo or no-photo event has no track to bind).
+  const track = document.getElementById('galleryTrack');
+  if (track) {
+    const dots = modalEl.querySelectorAll('.gallery-dots .dot');
+    if (dots.length) {
+      let raf = null;
+      track.addEventListener('scroll', () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = null;
+          const i = Math.round(track.scrollLeft / track.clientWidth);
+          dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+        });
+      }, { passive: true });
+    }
+  }
 }
 function closeDetail() { backdrop.classList.remove('open'); openDetailId = null; }
 backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDetail(); });
