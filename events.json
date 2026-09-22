@@ -75,7 +75,11 @@
   "venue": "Casa da Música, Sala 2",
   "when": "Sex 14 ago, 18:00",
   "when_en": "Fri 14 Aug, 18:00",
-  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg"
+  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+  "images": [
+   "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/0/08/Casa_da_M%C3%BAsica_-_Porto%2C_Portugal%2C_2012_-_001.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -255,7 +259,11 @@
   "venue": "Casa da Música, Sala 2",
   "when": "Ter 18 ago, 18:00",
   "when_en": "Tue 18 Aug, 18:00",
-  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg"
+  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+  "images": [
+   "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/0/08/Casa_da_M%C3%BAsica_-_Porto%2C_Portugal%2C_2012_-_001.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -281,7 +289,11 @@
   "venue": "Casa da Música, Sala 2",
   "when": "Qua 19 ago, 18:00",
   "when_en": "Wed 19 Aug, 18:00",
-  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg"
+  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+  "images": [
+   "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/0/08/Casa_da_M%C3%BAsica_-_Porto%2C_Portugal%2C_2012_-_001.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -411,7 +423,11 @@
   "venue": "Castelo do Queijo",
   "when": "Todos os dias",
   "when_en": "Every day",
-  "image": "https://www.visitsealife.com/porto/media/4rfpxzqo/raia-no-tunel.jpg"
+  "image": "https://www.visitsealife.com/porto/media/4rfpxzqo/raia-no-tunel.jpg",
+  "images": [
+   "https://www.visitsealife.com/porto/media/4rfpxzqo/raia-no-tunel.jpg",
+   "https://www.visitsealife.com/porto/media/rvxfr2rs/9139_blacktip-shark.jpg"
+  ]
  },
  {
   "ageMax": 12,
@@ -925,7 +941,11 @@
   "venue": "Rua D. João de Castro 210, Porto",
   "when": "Consultar horário",
   "when_en": "Check hours",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg",
+  "images": [
+   "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/8/8c/Parque_de_Serralves_1.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -977,7 +997,11 @@
   "venue": "Rua das Carmelitas 144, Porto",
   "when": "Consultar horário",
   "when_en": "Check hours",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/5/50/Livraria_Lello_e_Irm%C3%A3o_(Porto).jpg"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/5/50/Livraria_Lello_e_Irm%C3%A3o_(Porto).jpg",
+  "images": [
+   "https://upload.wikimedia.org/wikipedia/commons/5/50/Livraria_Lello_e_Irm%C3%A3o_(Porto).jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/3/3a/Livraria_Lello_Bookshop%2C_staircase%2C_skylight_and_bookcases%2C_Porto_%2838218323992%29.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -1107,7 +1131,11 @@
   "venue": "Rua de São Filipe de Nery, Porto",
   "when": "Consultar horário",
   "when_en": "Check hours",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/6/62/Porto_-_Torres_dos_cl%C3%A9rigos.JPG"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/62/Porto_-_Torres_dos_cl%C3%A9rigos.JPG",
+  "images": [
+   "https://upload.wikimedia.org/wikipedia/commons/6/62/Porto_-_Torres_dos_cl%C3%A9rigos.JPG",
+   "https://upload.wikimedia.org/wikipedia/commons/7/79/Torre_dos_Cl%C3%A9rigos%2C_Igreja_dos_Cl%C3%A9rigos%2C_Porto.JPG"
+  ]
  },
  {
   "ageMax": null,
@@ -1421,7 +1449,11 @@
   "venue": "Parque de Serralves, Rua D. João de Castro 210, Porto",
   "when": "Sáb–Dom 26–27 set, 10:00–19:00",
   "when_en": "Sat–Sun 26–27 Sep, 10am–7pm",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg",
+  "images": [
+   "https://upload.wikimedia.org/wikipedia/commons/6/60/Museum_Serralves_View.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/8/8c/Parque_de_Serralves_1.jpg"
+  ]
  },
  {
   "ageMax": null,
@@ -2172,7 +2204,11 @@
   "venue": "Sala Ensaio 2, Casa da Música, Av. da Boavista 604-610, Porto",
   "when": "27 set, 10:00 e 11:30",
   "when_en": "Sep 27, 10:00am and 11:30am",
-  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg"
+  "image": "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+  "images": [
+   "https://casadamusica.com/wp-content/uploads/2023/09/Visitasv1.jpg",
+   "https://upload.wikimedia.org/wikipedia/commons/0/08/Casa_da_M%C3%BAsica_-_Porto%2C_Portugal%2C_2012_-_001.jpg"
+  ]
  },
  {
   "ageMax": null,
