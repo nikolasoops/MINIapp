@@ -919,7 +919,11 @@ async function sendSignInLink(email) {
     // happens on Netlify deploy-preview URLs, which change every deploy).
     console.error('[MINImapp auth] sendSignInLinkToEmail failed:', e && e.code, e && e.message, e);
     state.authModalView = 'error';
-    state.authError = t('authGenericError');
+    // Append the real Firebase error code to the on-screen message too, not
+    // just the console — installed apps (TWA / home-screen PWA) are hard to
+    // get console access on from a phone, so this is often the only way to
+    // see what actually failed.
+    state.authError = t('authGenericError') + (e && e.code ? ' (' + e.code + ')' : '');
   }
   render();
 }
