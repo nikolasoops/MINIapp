@@ -10,8 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Quicksand:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MINImapp">
@@ -168,8 +166,7 @@
   .list { padding: 0 18px; display: flex; flex-direction: column; gap: 12px; }
   .card { background: var(--card); border: 2px solid var(--primary); border-radius: 18px; padding: 12px; display:flex; gap:11px; cursor: pointer; text-align: left; }
   .card:nth-child(even) { border-color: var(--orange); }
-  .thumb { width: 54px; height: 54px; border-radius: 12px; flex: none; display:flex; align-items:center; justify-content:center; font-size: 22px; background: #e7eef5; overflow: hidden; }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb { width: 54px; height: 54px; border-radius: 12px; flex: none; display:flex; align-items:center; justify-content:center; font-size: 22px; background: #e7eef5; }
   .card-body { flex: 1; min-width: 0; }
   .card-title { font-size: 13.5px; font-weight: 800; margin: 0 0 3px; line-height: 1.3; color: var(--primary); }
   .card-meta { font-size: 11.5px; margin: 0 0 8px; color: var(--muted); }
@@ -260,18 +257,8 @@
   }
   .modal-handle-zone { display: flex; justify-content: center; padding: 10px 0 14px; cursor: pointer; margin: -10px -20px 0; }
   .modal-handle { width: 36px; height: 4px; background: var(--line); border-radius: 999px; }
-  .modal .m-thumb { width: 100%; height: 120px; border-radius: 14px; background: #e7eef5; display:flex; align-items:center; justify-content:center; font-size: 40px; margin-bottom: 14px; position: relative; overflow: hidden; }
-  .modal .m-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
-  .modal .m-thumb .heart { position:absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.85); border-radius: 50%; z-index: 2; }
-  .gallery { position: absolute; inset: 0; }
-  .gallery-track { display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .gallery-track::-webkit-scrollbar { display: none; }
-  .gallery-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
-  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
-  .gallery-fallback { display: none; font-size: 40px; }
-  .gallery-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
-  .gallery-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.55); transition: background .15s ease, transform .15s ease; }
-  .gallery-dots .dot.active { background: #fff; transform: scale(1.3); }
+  .modal .m-thumb { width: 100%; height: 120px; border-radius: 14px; background: #e7eef5; display:flex; align-items:center; justify-content:center; font-size: 40px; margin-bottom: 14px; position: relative; }
+  .modal .m-thumb .heart { position:absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.85); border-radius: 50%; }
   .modal h2 { font-size: 18px; margin: 4px 0 8px; color: var(--primary); }
   .modal .m-meta { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
   .modal .m-meta .pin { color: var(--orange); }
@@ -295,9 +282,6 @@
   .profile-card.legal p { color: #5c3d05; margin-bottom: 10px; }
   .profile-card.legal p:last-child { margin-bottom: 0; }
   .profile-card.legal b { color: #4a3000; }
-  .account-card .account-btn { display: block; width: 100%; }
-  .auth-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 2px solid var(--line); font-size: 15px; margin-bottom: 12px; font-family: inherit; }
-  .auth-error { color: var(--danger); font-size: 12.5px; margin: -6px 0 12px; }
   .notif-toggle { display:flex; gap: 10px; margin-top: 6px; }
   .notif-toggle button { width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 17px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-family: inherit; }
   .notif-toggle button.yes { background: var(--primary); color: #fff; }
@@ -495,45 +479,6 @@ function evWhen(ev)  { return state.lang === 'en' ? ev.when_en  : ev.when; }
 function evAges(ev)  { return state.lang === 'en' ? ev.ages_en  : ev.ages; }
 function evDesc(ev)  { return state.lang === 'en' ? ev.desc_en  : ev.desc; }
 
-// Works for ANY event in ANY city — not Porto-specific. Most events today
-// only have 0 or 1 photo, but this supports however many exist (ev.images,
-// an array) and falls back to ev.image (single, older field) for events
-// that only ever got one. Both are optional; no photo at all is fine too.
-function evImages(ev) {
-  if (Array.isArray(ev.images) && ev.images.length) return ev.images;
-  if (ev.image) return [ev.image];
-  return [];
-}
-
-// Small card thumbnail — always just the first photo, no swipe (too small
-// for it to be usable). Falls back to the emoji icon, including at runtime
-// via onerror, in case a hotlinked image goes down.
-function thumbHtml(ev) {
-  const imgs = evImages(ev);
-  if (imgs.length) {
-    const src = String(imgs[0]).replace(/"/g, '&quot;');
-    return `<img src="${src}" alt="" loading="lazy" onerror="this.outerHTML='${ev.icon}'">`;
-  }
-  return ev.icon;
-}
-
-// Big detail-view thumbnail — a swipeable gallery when there's more than one
-// photo (dots + horizontal swipe/scroll-snap), a single static photo when
-// there's exactly one, and the plain emoji icon when there are none. Each
-// slide falls back to the icon individually if its image fails to load.
-function galleryHtml(ev) {
-  const imgs = evImages(ev);
-  if (!imgs.length) return ev.icon;
-  const slides = imgs.map(u => {
-    const src = String(u).replace(/"/g, '&quot;');
-    return `<div class="gallery-slide"><img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="gallery-fallback">${ev.icon}</span></div>`;
-  }).join('');
-  const dots = imgs.length > 1
-    ? `<div class="gallery-dots">${imgs.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>`
-    : '';
-  return `<div class="gallery"><div class="gallery-track" id="galleryTrack">${slides}</div>${dots}</div>`;
-}
-
 const MONTHS = {
   pt: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
   en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
@@ -605,12 +550,6 @@ const T = {
     profileNotifTitle: 'Notificações', profileNotifText: 'Esta opção permite que a aplicação envie um lembrete 1 dia e 2 horas antes do evento guardado.',
     legalText1: 'Esta aplicação apenas reúne e organiza informações sobre atividades e eventos para crianças. <b>Não organiza, produz nem é responsável por nenhum dos eventos ou atividades mencionados.</b>',
     legalText2: 'Embora procuremos manter a informação o mais atualizada possível, recomendamos que <b>confirme sempre os detalhes diretamente com o organizador</b> (horários, preços, inscrições, cancelamentos, etc.). A responsabilidade final pela realização e condições de cada evento é inteiramente do seu organizador.',
-    authTitle: 'Entrar', authSubtitle: 'Cria uma conta para guardar eventos e aceder à tua subscrição em qualquer aparelho.',
-    authEmailPlaceholder: 'O teu email', authSendLink: 'Enviar link de acesso', authSending: 'A enviar…',
-    authCheckEmailTitle: 'Verifica o teu email', authCheckEmailText: 'Enviámos um link de acesso para {email}. Toca nele neste aparelho para entrares. Não vês o email? Verifica a pasta de spam/lixo.',
-    authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão',
-    authInvalidEmail: 'Introduz um email válido.', authGenericError: 'Algo correu mal. Tenta novamente.',
-    authOpenOnThisDevice: 'Abre este link no mesmo aparelho onde o pediste.',
   },
   en: {
     searchPlaceholder: 'Search events, places…',
@@ -649,12 +588,6 @@ const T = {
     profileNotifTitle: 'Notifications', profileNotifText: 'This option lets the app send a reminder 1 day and 2 hours before a saved event.',
     legalText1: 'This app only gathers and organises information about activities and events for children. <b>It does not organise, produce, or take responsibility for any of the events or activities listed.</b>',
     legalText2: 'While we try to keep information as up to date as possible, we recommend you <b>always confirm details directly with the organiser</b> (times, prices, bookings, cancellations, etc.). Final responsibility for how each event runs and its conditions rests entirely with its organiser.',
-    authTitle: 'Sign in', authSubtitle: 'Create an account to save events and access your subscription on any device.',
-    authEmailPlaceholder: 'Your email', authSendLink: 'Send sign-in link', authSending: 'Sending…',
-    authCheckEmailTitle: 'Check your email', authCheckEmailText: "We sent a sign-in link to {email}. Tap it on this device to finish signing in. Don't see it? Check your spam folder.",
-    authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out',
-    authInvalidEmail: 'Enter a valid email.', authGenericError: 'Something went wrong. Try again.',
-    authOpenOnThisDevice: 'Open this link on the same device you requested it from.',
   },
   es: {
     searchPlaceholder: 'Buscar eventos, lugares…',
@@ -693,12 +626,6 @@ const T = {
     profileNotifTitle: 'Notificaciones', profileNotifText: 'Esta opción permite que la aplicación envíe un recordatorio 1 día y 2 horas antes del evento guardado.',
     legalText1: 'Esta aplicación solo recopila y organiza información sobre actividades y eventos para niños. <b>No organiza, produce ni se responsabiliza de ninguno de los eventos o actividades mencionados.</b>',
     legalText2: 'Aunque intentamos mantener la información lo más actualizada posible, te recomendamos <b>confirmar siempre los detalles directamente con el organizador</b> (horarios, precios, inscripciones, cancelaciones, etc.). La responsabilidad final por la realización y las condiciones de cada evento es enteramente de su organizador.',
-    authTitle: 'Iniciar sesión', authSubtitle: 'Crea una cuenta para guardar eventos y acceder a tu suscripción en cualquier dispositivo.',
-    authEmailPlaceholder: 'Tu email', authSendLink: 'Enviar enlace de acceso', authSending: 'Enviando…',
-    authCheckEmailTitle: 'Revisa tu email', authCheckEmailText: 'Te enviamos un enlace de acceso a {email}. Tócalo en este dispositivo para completar el inicio de sesión. ¿No lo ves? Revisa la carpeta de spam.',
-    authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión',
-    authInvalidEmail: 'Introduce un email válido.', authGenericError: 'Algo salió mal. Inténtalo de nuevo.',
-    authOpenOnThisDevice: 'Abre este enlace en el mismo dispositivo desde el que lo solicitaste.',
   },
   fr: {
     searchPlaceholder: 'Rechercher des événements, des lieux…',
@@ -737,12 +664,6 @@ const T = {
     profileNotifTitle: 'Notifications', profileNotifText: "Cette option permet à l'application d'envoyer un rappel 1 jour et 2 heures avant l'événement sauvegardé.",
     legalText1: "Cette application se contente de rassembler et d'organiser des informations sur des activités et événements pour enfants. <b>Elle n'organise, ne produit ni n'est responsable d'aucun des événements ou activités mentionnés.</b>",
     legalText2: "Bien que nous essayions de maintenir les informations aussi à jour que possible, nous te recommandons de <b>toujours confirmer les détails directement avec l'organisateur</b> (horaires, prix, inscriptions, annulations, etc.). La responsabilité finale de la tenue et des conditions de chaque événement incombe entièrement à son organisateur.",
-    authTitle: 'Se connecter', authSubtitle: "Crée un compte pour sauvegarder des événements et accéder à ton abonnement sur n'importe quel appareil.",
-    authEmailPlaceholder: 'Ton email', authSendLink: 'Envoyer le lien de connexion', authSending: 'Envoi…',
-    authCheckEmailTitle: 'Vérifie tes emails', authCheckEmailText: "Nous avons envoyé un lien de connexion à {email}. Touche-le sur cet appareil pour terminer la connexion. Tu ne le vois pas ? Vérifie ton dossier spam.",
-    authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter',
-    authInvalidEmail: 'Saisis un email valide.', authGenericError: "Une erreur s'est produite. Réessaie.",
-    authOpenOnThisDevice: "Ouvre ce lien sur le même appareil que celui utilisé pour la demande.",
   },
   da: {
     searchPlaceholder: 'Søg efter events, steder…',
@@ -781,12 +702,6 @@ const T = {
     profileNotifTitle: 'Notifikationer', profileNotifText: 'Denne indstilling giver appen mulighed for at sende en påmindelse 1 dag og 2 timer før det gemte event.',
     legalText1: 'Denne app indsamler og organiserer udelukkende information om aktiviteter og events for børn. <b>Den arrangerer, producerer eller påtager sig ikke ansvaret for nogen af de nævnte events eller aktiviteter.</b>',
     legalText2: 'Selvom vi bestræber os på at holde informationen så opdateret som muligt, anbefaler vi, at du <b>altid bekræfter detaljerne direkte med arrangøren</b> (tidspunkter, priser, tilmelding, aflysninger osv.). Det endelige ansvar for afholdelsen og betingelserne for hvert event ligger udelukkende hos arrangøren.',
-    authTitle: 'Log ind', authSubtitle: 'Opret en konto for at gemme events og få adgang til dit abonnement på enhver enhed.',
-    authEmailPlaceholder: 'Din email', authSendLink: 'Send login-link', authSending: 'Sender…',
-    authCheckEmailTitle: 'Tjek din email', authCheckEmailText: 'Vi har sendt et login-link til {email}. Tryk på det på denne enhed for at fuldføre login. Kan du ikke se det? Tjek din spammappe.',
-    authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud',
-    authInvalidEmail: 'Indtast en gyldig email.', authGenericError: 'Noget gik galt. Prøv igen.',
-    authOpenOnThisDevice: 'Åbn dette link på den samme enhed, du anmodede det fra.',
   },
 };
 function t(key) { return T[state.lang][key]; }
@@ -840,13 +755,6 @@ const state = {
     return map;
   })(),
   notifOptIn: JSON.parse(localStorage.getItem('pf_notif_opt_in') || 'null'), // null | true | false
-  // Signed-in Firebase user, or null. { email, uid } — kept minimal, mirrors
-  // Firebase's own onAuthStateChanged callback so the UI can just read this.
-  user: null,
-  authModalOpen: false,
-  authModalView: 'form', // 'form' | 'sent' | 'error'
-  authError: null,
-  authPendingEmail: '',
 };
 
 function persistSaved() {
@@ -866,124 +774,6 @@ function setLang(lang) {
   localStorage.setItem('pf_lang', lang);
   document.documentElement.lang = lang;
   render();
-}
-
-/* ===================== AUTH (Firebase email-link sign-in) =====================
-   Project: minimappkids (Firebase console → Project settings → General →
-   Your apps → Web app → firebaseConfig). Until Email link sign-in is
-   enabled and app.minimappkids.com is added under Authorized domains,
-   this initializes fine but sendSignInLinkToEmail will fail — the app
-   surfaces that as a translated error rather than crashing. */
-const firebaseConfig = {
-  apiKey: 'AIzaSyAJm8YT6W-yUK0BohEZpGNXVJlWoHjrFaQ',
-  authDomain: 'minimappkids.firebaseapp.com',
-  projectId: 'minimappkids',
-  storageBucket: 'minimappkids.firebasestorage.app',
-  messagingSenderId: '131605341403',
-  appId: '1:131605341403:web:7d77950470275e103418fe',
-  measurementId: 'G-BX4ZVDTP0L',
-};
-const AUTH_EMAIL_STORAGE_KEY = 'pf_auth_email_pending';
-let authReady = false;
-try {
-  if (window.firebase && firebaseConfig.apiKey !== 'REPLACE_ME') {
-    firebase.initializeApp(firebaseConfig);
-    authReady = true;
-  }
-} catch (e) { /* leave authReady false — app still works fully logged-out */ }
-
-function currentAuth() { return authReady ? firebase.auth() : null; }
-
-function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-
-async function sendSignInLink(email) {
-  const auth = currentAuth();
-  if (!auth) { state.authModalView = 'error'; state.authError = t('authGenericError'); render(); return; }
-  if (!isValidEmail(email)) { state.authModalView = 'error'; state.authError = t('authInvalidEmail'); render(); return; }
-  const actionCodeSettings = {
-    url: window.location.origin + window.location.pathname,
-    handleCodeInApp: true,
-  };
-  try {
-    await auth.sendSignInLinkToEmail(email, actionCodeSettings);
-    localStorage.setItem(AUTH_EMAIL_STORAGE_KEY, email);
-    state.authPendingEmail = email;
-    state.authModalView = 'sent';
-    state.authError = null;
-  } catch (e) {
-    state.authModalView = 'error';
-    state.authError = t('authGenericError');
-  }
-  render();
-}
-
-// Called once on page load, before the first render — completes sign-in if
-// the page was opened from the emailed magic link.
-async function completeSignInFromLinkIfPresent() {
-  const auth = currentAuth();
-  if (!auth) return;
-  if (!auth.isSignInWithEmailLink(window.location.href)) return;
-  let email = localStorage.getItem(AUTH_EMAIL_STORAGE_KEY);
-  if (!email) {
-    // Link opened on a different device than it was requested from — Firebase
-    // can't know the email without asking again.
-    email = window.prompt(t('authOpenOnThisDevice') + ' — ' + t('authEmailPlaceholder'));
-  }
-  if (!email) return;
-  try {
-    await auth.signInWithEmailLink(email, window.location.href);
-    localStorage.removeItem(AUTH_EMAIL_STORAGE_KEY);
-    // Clean the sign-in params out of the URL so a refresh doesn't retry it.
-    window.history.replaceState({}, document.title, window.location.pathname);
-  } catch (e) { /* invalid/expired link — user can just request a new one */ }
-}
-
-function doSignOut() {
-  const auth = currentAuth();
-  if (auth) auth.signOut();
-}
-
-function openAuthModal() {
-  state.authModalOpen = true;
-  state.authModalView = 'form';
-  state.authError = null;
-  renderAuthModal();
-  backdrop.classList.add('open');
-}
-function closeAuthModal() {
-  state.authModalOpen = false;
-  backdrop.classList.remove('open');
-}
-function renderAuthModal() {
-  const view = state.authModalView;
-  modalEl.innerHTML = `
-    <div class="modal-handle-zone" id="authModalHandleZone"><div class="modal-handle"></div></div>
-    <h2>${t('authTitle')}</h2>
-    <p class="m-desc">${t('authSubtitle')}</p>
-    ${view === 'sent' ? `
-      <p class="m-desc"><b>${t('authCheckEmailTitle')}</b><br>${t('authCheckEmailText').replace('{email}', state.authPendingEmail)}</p>
-      <button class="btn ghost" id="authResendBtn">${t('authResend')}</button>
-    ` : `
-      <input type="email" id="authEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" />
-      ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
-      <button class="btn primary" id="authSendBtn">${t('authSendLink')}</button>
-    `}
-  `;
-  document.getElementById('authModalHandleZone').onclick = () => closeAuthModal();
-  const sendBtn = document.getElementById('authSendBtn');
-  if (sendBtn) {
-    sendBtn.onclick = async () => {
-      const email = document.getElementById('authEmailInput').value.trim();
-      sendBtn.disabled = true;
-      sendBtn.textContent = t('authSending');
-      await sendSignInLink(email);
-      renderAuthModal();
-    };
-  }
-  const resendBtn = document.getElementById('authResendBtn');
-  if (resendBtn) {
-    resendBtn.onclick = () => { state.authModalView = 'form'; renderAuthModal(); };
-  }
 }
 
 /* ===================== DATE HELPERS ===================== */
@@ -1380,7 +1170,7 @@ function cardHtml(ev) {
   const badgeHtml = badge ? `<span class="badge-soon">${badge === 'today' ? t('badgeToday') : t('badgeTomorrow')}</span>` : '';
   return `
     <div class="card" data-id="${ev.id}">
-      <div class="thumb">${thumbHtml(ev)}</div>
+      <div class="thumb">${ev.icon}</div>
       <div class="card-body">
         <div class="card-title">${evTitle(ev)}</div>
         <div class="card-meta">${ev.venue} · ${evWhen(ev)}</div>
@@ -1869,17 +1659,6 @@ function renderSaved() {
 function renderProfile() {
   filterBarEl.style.display = 'none';
   contentEl.innerHTML = `
-    <div class="profile-card solid account-card">
-      ${state.user ? `
-        <h3>${t('authSignedInAs')}</h3>
-        <p>${state.user.email}</p>
-        <button class="btn ghost account-btn" id="signOutBtn">${t('authSignOut')}</button>
-      ` : `
-        <h3>${t('authTitle')}</h3>
-        <p>${t('authSubtitle')}</p>
-        <button class="btn ghost account-btn" id="signInBtn">${t('authTitle')}</button>
-      `}
-    </div>
     <div class="profile-section-label">${t('profileSettingsHeader')}</div>
     <div class="profile-card">
       <h3>${t('profileNotifTitle')}</h3>
@@ -1905,7 +1684,7 @@ function renderProfile() {
     <div class="profile-card">
       <h3>${t('profileSuggestTitle')}</h3>
       <p>${t('profileSuggestText')}</p>
-      <a class="btn primary" href="mailto:admin@minimappkids.com?subject=Sugest%C3%A3o%20de%20evento">${t('profileSuggestBtn')}</a>
+      <a class="btn primary" href="mailto:gotitasarrumadas@gmail.com?subject=Sugest%C3%A3o%20de%20evento">${t('profileSuggestBtn')}</a>
     </div>
     <div class="profile-card legal">
       <p>${t('legalText1')}</p>
@@ -1917,10 +1696,6 @@ function renderProfile() {
   });
   document.getElementById('notifYes').onclick = () => { state.notifOptIn = true; persistNotifOptIn(); render(); };
   document.getElementById('notifNo').onclick = () => { state.notifOptIn = false; persistNotifOptIn(); render(); };
-  const signInBtn = document.getElementById('signInBtn');
-  if (signInBtn) signInBtn.onclick = () => openAuthModal();
-  const signOutBtn = document.getElementById('signOutBtn');
-  if (signOutBtn) signOutBtn.onclick = () => doSignOut();
 }
 
 function render() {
@@ -1983,20 +1758,6 @@ function syncModalHeart() {
   btn.textContent = nowSaved ? '♥' : '♡';
 }
 
-function mapsQuery(ev) {
-  // Prefer a text query (venue name + city) over raw lat/lng: Google resolves
-  // it to the venue's real, verified place listing (correct address, properly
-  // centered) rather than an approximate dropped pin from our stored coords,
-  // which are often only accurate to 2-3 decimal places (100m+ off).
-  const venue = (ev.venue || '').trim();
-  if (venue) {
-    const cityObj = CITIES.find(c => c.key === ev.city);
-    const cityName = cityObj ? cityObj.names.en : '';
-    return encodeURIComponent(venue + (cityName ? ', ' + cityName : ''));
-  }
-  return `${ev.lat},${ev.lng}`;
-}
-
 function openDetail(id) {
   const ev = EVENTS.find(e => e.id === id);
   if (!ev) return;
@@ -2005,7 +1766,7 @@ function openDetail(id) {
   modalEl.innerHTML = `
     <div class="modal-handle-zone" id="modalHandleZone"><div class="modal-handle"></div></div>
     <div class="m-thumb">
-      ${galleryHtml(ev)}
+      ${ev.icon}
       <button class="heart ${isSaved ? 'on' : ''}" id="modalSave">${isSaved ? '♥' : '♡'}</button>
     </div>
     <h2>${evTitle(ev)}</h2>
@@ -2014,7 +1775,7 @@ function openDetail(id) {
     <div class="m-desc">${evDesc(ev)}</div>
     <div class="m-actions">
       ${ev.source ? `<a class="btn primary" href="${ev.source}" target="_blank" rel="noopener">${t('viewSource')}</a>` : ''}
-      <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
+      <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${ev.lat},${ev.lng}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
     </div>
   `;
   backdrop.classList.add('open');
@@ -2033,23 +1794,6 @@ function openDetail(id) {
     persistSaved();
     render();
   };
-  // Keep the dots in sync while swiping through the gallery (if there's more
-  // than one photo — a single-photo or no-photo event has no track to bind).
-  const track = document.getElementById('galleryTrack');
-  if (track) {
-    const dots = modalEl.querySelectorAll('.gallery-dots .dot');
-    if (dots.length) {
-      let raf = null;
-      track.addEventListener('scroll', () => {
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          raf = null;
-          const i = Math.round(track.scrollLeft / track.clientWidth);
-          dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
-        });
-      }, { passive: true });
-    }
-  }
 }
 function closeDetail() { backdrop.classList.remove('open'); openDetailId = null; }
 backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDetail(); });
@@ -2138,13 +1882,7 @@ async function loadEventsAndInit() {
   }
   render();
 }
-completeSignInFromLinkIfPresent().finally(loadEventsAndInit);
-if (authReady) {
-  firebase.auth().onAuthStateChanged((user) => {
-    state.user = user ? { email: user.email, uid: user.uid } : null;
-    render();
-  });
-}
+loadEventsAndInit();
 </script>
 </body>
 </html>
