@@ -1,0 +1,12 @@
+# Force the site's original default Netlify subdomain to always forward to
+# the one canonical production domain. Without this, anything still pointing
+# at the old address (a home-screen PWA icon added before app.minimappkids.com
+# existed, a bookmark, a stray build) keeps loading from an origin that is
+# NOT on Firebase's Authorized domains allowlist, which is what caused the
+# auth/unauthorized-continue-uri sign-in failures. This closes that off at
+# the infrastructure level instead of relying on everyone reinstalling.
+[[redirects]]
+  from = "https://astonishing-kataifi-c14442.netlify.app/*"
+  to = "https://app.minimappkids.com/:splat"
+  status = 301
+  force = true
