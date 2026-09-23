@@ -900,8 +900,17 @@ async function sendSignInLink(email) {
   const auth = currentAuth();
   if (!auth) { state.authModalView = 'error'; state.authError = t('authGenericError'); render(); return; }
   if (!isValidEmail(email)) { state.authModalView = 'error'; state.authError = t('authInvalidEmail'); render(); return; }
+  // Hardcoded to the one canonical production origin, NOT derived from
+  // window.location — sign-in has to keep working from wherever the page
+  // happens to be running (an installed Android app whose build predates a
+  // domain change, a home-screen PWA icon frozen to whatever origin was
+  // live when it was added, a stray netlify.app link), and Firebase's
+  // Authorized domains allowlist only ever has app.minimappkids.com on it.
+  // This is the fix for the auth/unauthorized-continue-uri class of bug —
+  // don't revert to window.location.origin.
+  const CANONICAL_APP_ORIGIN = 'https://app.minimappkids.com';
   const actionCodeSettings = {
-    url: window.location.origin + window.location.pathname,
+    url: CANONICAL_APP_ORIGIN + '/index.html',
     handleCodeInApp: true,
   };
   try {
