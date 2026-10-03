@@ -599,6 +599,7 @@ const T = {
     profileSuggestTitle: 'Conheces um evento ou espaço que devíamos incluir?',
     profileSuggestText: 'Sugere-nos diretamente — especialmente organizações pequenas ou independentes, que são as mais difíceis de encontrar sozinhos.',
     profileSuggestBtn: 'Sugerir um evento',
+    shareTitle: 'Gostas da app?', shareText: 'Partilha a MINImapp com outra família.', shareBtn: '📤 Partilhar app', shareCopied: 'Link copiado!',
     installText: 'Instala esta app no teu telemóvel para acesso rápido.', installBtn: 'Instalar',
     reminderToday: 'É hoje! Tens guardado:', reminderTomorrow: 'É amanhã! Tens guardado:',
     badgeToday: 'Hoje', badgeTomorrow: 'Amanhã',
@@ -643,6 +644,7 @@ const T = {
     profileSuggestTitle: 'Know an event or place we should include?',
     profileSuggestText: 'Suggest it to us directly — especially small or independent organisations, which are the hardest to find on our own.',
     profileSuggestBtn: 'Suggest an event',
+    shareTitle: 'Like the app?', shareText: 'Share MINImapp with another family.', shareBtn: '📤 Share app', shareCopied: 'Link copied!',
     installText: 'Install this app on your phone for quick access.', installBtn: 'Install',
     reminderToday: "It's today! You have saved:", reminderTomorrow: "It's tomorrow! You have saved:",
     badgeToday: 'Today', badgeTomorrow: 'Tomorrow',
@@ -687,6 +689,7 @@ const T = {
     profileSuggestTitle: '¿Conoces un evento o lugar que deberíamos incluir?',
     profileSuggestText: 'Sugiérenoslo directamente — sobre todo organizaciones pequeñas o independientes, que son las más difíciles de encontrar por nuestra cuenta.',
     profileSuggestBtn: 'Sugerir un evento',
+    shareTitle: '¿Te gusta la app?', shareText: 'Comparte MINImapp con otra familia.', shareBtn: '📤 Compartir app', shareCopied: '¡Enlace copiado!',
     installText: 'Instala esta app en tu móvil para un acceso rápido.', installBtn: 'Instalar',
     reminderToday: '¡Es hoy! Tienes guardado:', reminderTomorrow: '¡Es mañana! Tienes guardado:',
     badgeToday: 'Hoy', badgeTomorrow: 'Mañana',
@@ -731,6 +734,7 @@ const T = {
     profileSuggestTitle: 'Tu connais un événement ou un lieu que nous devrions inclure ?',
     profileSuggestText: 'Suggère-le-nous directement — surtout les petites organisations ou associations indépendantes, qui sont les plus difficiles à trouver seuls.',
     profileSuggestBtn: 'Suggérer un événement',
+    shareTitle: "Tu aimes l'app ?", shareText: "Partage MINImapp avec une autre famille.", shareBtn: "📤 Partager l'app", shareCopied: 'Lien copié !',
     installText: 'Installe cette app sur ton téléphone pour un accès rapide.', installBtn: 'Installer',
     reminderToday: "C'est aujourd'hui ! Tu as sauvegardé :", reminderTomorrow: "C'est demain ! Tu as sauvegardé :",
     badgeToday: "Aujourd'hui", badgeTomorrow: 'Demain',
@@ -775,6 +779,7 @@ const T = {
     profileSuggestTitle: 'Kender du et event eller sted, vi bør inkludere?',
     profileSuggestText: 'Foreslå det direkte til os — især små eller uafhængige organisationer, som er sværest at finde på egen hånd.',
     profileSuggestBtn: 'Foreslå et event',
+    shareTitle: 'Kan du lide appen?', shareText: 'Del MINImapp med en anden familie.', shareBtn: '📤 Del appen', shareCopied: 'Link kopieret!',
     installText: 'Installer denne app på din telefon for hurtig adgang.', installBtn: 'Installer',
     reminderToday: 'Det er i dag! Du har gemt:', reminderTomorrow: 'Det er i morgen! Du har gemt:',
     badgeToday: 'I dag', badgeTomorrow: 'I morgen',
@@ -1940,6 +1945,11 @@ function renderProfile() {
       <p>${t('profileSuggestText')}</p>
       <a class="btn primary" href="mailto:admin@minimappkids.com?subject=Sugest%C3%A3o%20de%20evento">${t('profileSuggestBtn')}</a>
     </div>
+    <div class="profile-card">
+      <h3>${t('shareTitle')}</h3>
+      <p>${t('shareText')}</p>
+      <button class="btn primary" id="shareAppBtn">${t('shareBtn')}</button>
+    </div>
     <div class="profile-card legal">
       <p>${t('legalText1')}</p>
       <p>${t('legalText2')}</p>
@@ -1954,6 +1964,27 @@ function renderProfile() {
   if (signInBtn) signInBtn.onclick = () => openAuthModal();
   const signOutBtn = document.getElementById('signOutBtn');
   if (signOutBtn) signOutBtn.onclick = () => doSignOut();
+  const shareAppBtn = document.getElementById('shareAppBtn');
+  if (shareAppBtn) shareAppBtn.onclick = () => shareApp(shareAppBtn);
+}
+
+// Shares the app via the native share sheet when available (mobile browsers,
+// installed PWA/Android app); falls back to copying the link to the
+// clipboard and briefly confirming on the button itself, since this app has
+// no separate toast/snackbar mechanism to reuse.
+async function shareApp(btn) {
+  const shareData = { title: 'MINImapp', text: t('shareText'), url: 'https://app.minimappkids.com/' };
+  if (navigator.share) {
+    try { await navigator.share(shareData); return; }
+    catch (err) { if (err && err.name === 'AbortError') return; /* user cancelled the native sheet; fall through to clipboard otherwise */ }
+  }
+  try {
+    await navigator.clipboard.writeText(shareData.url);
+    const original = btn.textContent;
+    btn.textContent = t('shareCopied');
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+  } catch (err) { /* clipboard unavailable (e.g. no permission) — nothing further we can do silently */ }
 }
 
 function render() {
