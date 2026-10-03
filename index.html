@@ -472,8 +472,15 @@ const CITIES = [
   { key: 'madrid',    names: { pt: 'Madrid',    en: 'Madrid',     es: 'Madrid',     fr: 'Madrid',     da: 'Madrid' } },
   { key: 'paris',     names: { pt: 'Paris',     en: 'Paris',      es: 'París',      fr: 'Paris',      da: 'Paris' } },
   { key: 'porto',     names: { pt: 'Porto',     en: 'Porto',      es: 'Oporto',     fr: 'Porto',      da: 'Porto' } },
+  { key: 'shanghai',  names: { pt: 'Xangai',    en: 'Shanghai',   es: 'Shanghái',   fr: 'Shanghai',   da: 'Shanghai' } },
 ];
 // Which languages are valid for each city (first entry is the default when switching to that city).
+// 'shanghai' is English-only for now (like 'londres') -- a future Mandarin
+// version would add 'zh' here, but that also needs zh added to LANG_NAMES,
+// MONTHS, WEEKDAYS, AGE_UNIT and every UI string in the t() translations
+// below, not just this list. Don't add 'zh' to a single city without doing
+// that whole pass, or the UI chrome will silently stay in whatever language
+// was active before the city switch.
 const CITY_LANGS = {
   barcelona: ['es', 'en'],
   copenhaga: ['da', 'en'],
@@ -482,6 +489,7 @@ const CITY_LANGS = {
   madrid:    ['es', 'en'],
   paris:     ['fr', 'en'],
   porto:     ['pt', 'en'],
+  shanghai:  ['en'],
 };
 const LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', da: 'Dansk' };
 function cityName(c) { return c.names[state.lang] || c.names.en; }
