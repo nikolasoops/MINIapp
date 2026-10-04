@@ -473,9 +473,10 @@ const CITIES = [
   { key: 'paris',     names: { pt: 'Paris',     en: 'Paris',      es: 'París',      fr: 'Paris',      da: 'Paris' } },
   { key: 'porto',     names: { pt: 'Porto',     en: 'Porto',      es: 'Oporto',     fr: 'Porto',      da: 'Porto' } },
   { key: 'shanghai',  names: { pt: 'Xangai',    en: 'Shanghai',   es: 'Shanghái',   fr: 'Shanghai',   da: 'Shanghai' } },
+  { key: 'shenzhen',  names: { pt: 'Shenzhen',  en: 'Shenzhen',   es: 'Shenzhen',   fr: 'Shenzhen',   da: 'Shenzhen' } },
 ];
 // Which languages are valid for each city (first entry is the default when switching to that city).
-// 'shanghai' is English-only for now (like 'londres') -- a future Mandarin
+// 'shanghai' and 'shenzhen' are English-only for now (like 'londres') -- a future Mandarin
 // version would add 'zh' here, but that also needs zh added to LANG_NAMES,
 // MONTHS, WEEKDAYS, AGE_UNIT and every UI string in the t() translations
 // below, not just this list. Don't add 'zh' to a single city without doing
@@ -490,6 +491,7 @@ const CITY_LANGS = {
   paris:     ['fr', 'en'],
   porto:     ['pt', 'en'],
   shanghai:  ['en'],
+  shenzhen:  ['en'],
 };
 const LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', da: 'Dansk' };
 function cityName(c) { return c.names[state.lang] || c.names.en; }
