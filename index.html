@@ -298,6 +298,15 @@
   .account-card .account-btn { display: block; width: 100%; }
   .auth-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 2px solid var(--line); font-size: 15px; margin-bottom: 12px; font-family: inherit; }
   .auth-error { color: var(--danger); font-size: 12.5px; margin: -6px 0 12px; }
+  /* ---------- login front page (welcome gate) ---------- */
+  .welcome-gate { position: absolute; inset: 0; z-index: 90; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 28px 26px; overflow-y: auto; text-align: center; }
+  .welcome-gate.show { display: flex; }
+  .welcome-gate img { width: 96px; height: 96px; border-radius: 22px; margin-bottom: 18px; }
+  .welcome-gate h1 { font-size: 24px; color: var(--primary); margin: 0 0 8px; }
+  .welcome-gate p.sub { font-size: 14px; color: var(--muted); margin: 0 0 22px; max-width: 320px; line-height: 1.45; }
+  .welcome-gate .wg-box { width: 100%; max-width: 340px; }
+  .welcome-gate .btn { width: 100%; }
+  .welcome-gate .wg-guest { background: none; border: none; color: var(--muted); font-size: 13px; font-family: inherit; text-decoration: underline; margin-top: 16px; cursor: pointer; padding: 8px; }
   .notif-toggle { display:flex; gap: 10px; margin-top: 6px; }
   .notif-toggle button { width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 17px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-family: inherit; }
   .notif-toggle button.yes { background: var(--primary); color: #fff; }
@@ -622,6 +631,7 @@ const T = {
     authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão',
     authInvalidEmail: 'Introduz um email válido.', authGenericError: 'Algo correu mal. Tenta novamente.',
     authOpenOnThisDevice: 'Abre este link no mesmo aparelho onde o pediste.',
+    welcomeTitle: 'Bem-vindo ao MINImapp', welcomeSubtitle: 'Entra para guardar os teus eventos favoritos e aceder à tua conta em qualquer aparelho.', welcomeGuest: 'Continuar sem conta',
   },
   en: {
     searchPlaceholder: 'Search events, places…',
@@ -667,6 +677,7 @@ const T = {
     authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out',
     authInvalidEmail: 'Enter a valid email.', authGenericError: 'Something went wrong. Try again.',
     authOpenOnThisDevice: 'Open this link on the same device you requested it from.',
+    welcomeTitle: 'Welcome to MINImapp', welcomeSubtitle: 'Sign in to save your favourite events and access your account on any device.', welcomeGuest: 'Continue without an account',
   },
   es: {
     searchPlaceholder: 'Buscar eventos, lugares…',
@@ -712,6 +723,7 @@ const T = {
     authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión',
     authInvalidEmail: 'Introduce un email válido.', authGenericError: 'Algo salió mal. Inténtalo de nuevo.',
     authOpenOnThisDevice: 'Abre este enlace en el mismo dispositivo desde el que lo solicitaste.',
+    welcomeTitle: 'Bienvenido a MINImapp', welcomeSubtitle: 'Inicia sesión para guardar tus eventos favoritos y acceder a tu cuenta en cualquier dispositivo.', welcomeGuest: 'Continuar sin cuenta',
   },
   fr: {
     searchPlaceholder: 'Rechercher des événements, des lieux…',
@@ -757,6 +769,7 @@ const T = {
     authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter',
     authInvalidEmail: 'Saisis un email valide.', authGenericError: "Une erreur s'est produite. Réessaie.",
     authOpenOnThisDevice: "Ouvre ce lien sur le même appareil que celui utilisé pour la demande.",
+    welcomeTitle: 'Bienvenue sur MINImapp', welcomeSubtitle: 'Connecte-toi pour sauvegarder tes événements favoris et accéder à ton compte sur n\'importe quel appareil.', welcomeGuest: 'Continuer sans compte',
   },
   da: {
     searchPlaceholder: 'Søg efter events, steder…',
@@ -802,6 +815,7 @@ const T = {
     authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud',
     authInvalidEmail: 'Indtast en gyldig email.', authGenericError: 'Noget gik galt. Prøv igen.',
     authOpenOnThisDevice: 'Åbn dette link på den samme enhed, du anmodede det fra.',
+    welcomeTitle: 'Velkommen til MINImapp', welcomeSubtitle: 'Log ind for at gemme dine favoritevents og få adgang til din konto på enhver enhed.', welcomeGuest: 'Fortsæt uden konto',
   },
 };
 function t(key) { return T[state.lang][key]; }
@@ -862,6 +876,8 @@ const state = {
   authModalView: 'form', // 'form' | 'sent' | 'error'
   authError: null,
   authPendingEmail: '',
+  authResolved: false, // true once Firebase has reported the initial signed-in/out state
+  guest: localStorage.getItem('pf_guest') === '1', // chose "Continue without an account"
 };
 
 function persistSaved() {
@@ -881,6 +897,7 @@ function setLang(lang) {
   localStorage.setItem('pf_lang', lang);
   document.documentElement.lang = lang;
   render();
+  updateGate();
 }
 
 /* ===================== AUTH (Firebase email-link sign-in) =====================
@@ -980,6 +997,8 @@ async function completeSignInFromLinkIfPresent() {
 
 function doSignOut() {
   const auth = currentAuth();
+  state.guest = false;
+  try { localStorage.removeItem('pf_guest'); } catch (e) {}
   if (auth) auth.signOut();
 }
 
@@ -1024,6 +1043,66 @@ function renderAuthModal() {
   if (resendBtn) {
     resendBtn.onclick = () => { state.authModalView = 'form'; renderAuthModal(); };
   }
+}
+
+/* ===================== LOGIN FRONT PAGE (welcome gate) =====================
+   First screen of the app. Shown only when Firebase is available, its initial
+   auth state has resolved, nobody is signed in, and the visitor hasn't chosen
+   "Continue without an account". If Firebase can't load (e.g. offline) the
+   gate never appears, so the app still works. Reuses sendSignInLink(). */
+function gateEl() {
+  let el = document.getElementById('welcomeGate');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'welcomeGate';
+    el.className = 'welcome-gate';
+    document.getElementById('app').appendChild(el);
+  }
+  return el;
+}
+function gateShouldShow() {
+  return authReady && state.authResolved && !state.user && !state.guest;
+}
+function updateGate() {
+  const el = gateEl();
+  if (!gateShouldShow()) { el.classList.remove('show'); return; }
+  const view = state.authModalView;
+  el.innerHTML = `
+    <img src="icons/icon-192.png" alt="MINImapp" />
+    <h1>${t('welcomeTitle')}</h1>
+    <p class="sub">${t('welcomeSubtitle')}</p>
+    <div class="wg-box">
+      ${view === 'sent' ? `
+        <p class="sub" style="max-width:none"><b>${t('authCheckEmailTitle')}</b><br>${t('authCheckEmailText').replace('{email}', state.authPendingEmail)}</p>
+        <button class="btn ghost" id="wgResendBtn">${t('authResend')}</button>
+      ` : `
+        <input type="email" id="wgEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" />
+        ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
+        <button class="btn primary" id="wgSendBtn">${t('authSendLink')}</button>
+      `}
+    </div>
+    <button class="wg-guest" id="wgGuestBtn">${t('welcomeGuest')}</button>
+  `;
+  el.classList.add('show');
+  const sendBtn = document.getElementById('wgSendBtn');
+  if (sendBtn) {
+    const go = async () => {
+      const email = document.getElementById('wgEmailInput').value.trim();
+      sendBtn.disabled = true;
+      sendBtn.textContent = t('authSending');
+      await sendSignInLink(email);
+      updateGate();
+    };
+    sendBtn.onclick = go;
+    document.getElementById('wgEmailInput').onkeydown = (e) => { if (e.key === 'Enter') go(); };
+  }
+  const resendBtn = document.getElementById('wgResendBtn');
+  if (resendBtn) resendBtn.onclick = () => { state.authModalView = 'form'; updateGate(); };
+  document.getElementById('wgGuestBtn').onclick = () => {
+    state.guest = true;
+    try { localStorage.setItem('pf_guest', '1'); } catch (e) {}
+    updateGate();
+  };
 }
 
 /* ===================== DATE HELPERS ===================== */
@@ -2208,7 +2287,9 @@ completeSignInFromLinkIfPresent().finally(loadEventsAndInit);
 if (authReady) {
   firebase.auth().onAuthStateChanged((user) => {
     state.user = user ? { email: user.email, uid: user.uid } : null;
+    state.authResolved = true;
     render();
+    updateGate();
   });
 }
 </script>
