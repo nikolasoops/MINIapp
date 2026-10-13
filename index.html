@@ -309,6 +309,9 @@
   .welcome-gate .wg-box { width: 100%; max-width: 340px; }
   .welcome-gate .btn { width: 100%; }
   .welcome-gate .wg-guest { background: none; border: none; color: var(--muted); font-size: 13px; font-family: inherit; text-decoration: underline; margin-top: 16px; cursor: pointer; padding: 8px; }
+  .welcome-gate a.wg-guest { display: block; margin-top: 0; font-size: 12px; }
+  .account-card .account-del { margin-top: 8px; color: var(--danger); border-color: var(--danger); }
+  .privacy-link { color: var(--primary); text-decoration: underline; font-size: 13px; }
   .notif-toggle { display:flex; gap: 10px; margin-top: 6px; }
   .notif-toggle button { width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 17px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-family: inherit; }
   .notif-toggle button.yes { background: var(--primary); color: #fff; }
@@ -630,7 +633,7 @@ const T = {
     authTitle: 'Entrar', authSubtitle: 'Cria uma conta para guardar eventos e aceder à tua subscrição em qualquer aparelho.',
     authEmailPlaceholder: 'O teu email', authSendLink: 'Enviar link de acesso', authSending: 'A enviar…',
     authCheckEmailTitle: 'Verifica o teu email', authCheckEmailText: 'Enviámos um link de acesso para {email}. Toca nele neste aparelho para entrares. Não vês o email? Verifica a pasta de spam/lixo.',
-    authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão',
+    authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão', privacyLink: 'Política de privacidade', deleteAccount: 'Eliminar a minha conta', deleteConfirm: 'Eliminar definitivamente a tua conta e o teu email? Esta ação não pode ser anulada.', deleteDone: 'A tua conta foi eliminada.', deleteReauth: 'Por segurança, enviámos um link para o teu email. Toca nele neste aparelho e depois confirma a eliminação.', deleteFailed: 'Não foi possível eliminar a conta. Tenta novamente ou escreve para admin@minimappkids.com.',
     authInvalidEmail: 'Introduz um email válido.', authGenericError: 'Algo correu mal. Tenta novamente.',
     authOpenOnThisDevice: 'Abre este link no mesmo aparelho onde o pediste.',
     welcomeTitle: 'Bem-vindo ao MINImapp', welcomeSubtitle: 'Entra para guardar os teus eventos favoritos e aceder à tua conta em qualquer aparelho.', welcomeGuest: 'Continuar sem conta',
@@ -676,7 +679,7 @@ const T = {
     authTitle: 'Sign in', authSubtitle: 'Create an account to save events and access your subscription on any device.',
     authEmailPlaceholder: 'Your email', authSendLink: 'Send sign-in link', authSending: 'Sending…',
     authCheckEmailTitle: 'Check your email', authCheckEmailText: "We sent a sign-in link to {email}. Tap it on this device to finish signing in. Don't see it? Check your spam folder.",
-    authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out',
+    authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out', privacyLink: 'Privacy policy', deleteAccount: 'Delete my account', deleteConfirm: 'Permanently delete your account and email address? This cannot be undone.', deleteDone: 'Your account has been deleted.', deleteReauth: 'For security, we sent a link to your email. Tap it on this device, then confirm the deletion.', deleteFailed: 'Could not delete the account. Try again or email admin@minimappkids.com.',
     authInvalidEmail: 'Enter a valid email.', authGenericError: 'Something went wrong. Try again.',
     authOpenOnThisDevice: 'Open this link on the same device you requested it from.',
     welcomeTitle: 'Welcome to MINImapp', welcomeSubtitle: 'Sign in to save your favourite events and access your account on any device.', welcomeGuest: 'Continue without an account',
@@ -722,7 +725,7 @@ const T = {
     authTitle: 'Iniciar sesión', authSubtitle: 'Crea una cuenta para guardar eventos y acceder a tu suscripción en cualquier dispositivo.',
     authEmailPlaceholder: 'Tu email', authSendLink: 'Enviar enlace de acceso', authSending: 'Enviando…',
     authCheckEmailTitle: 'Revisa tu email', authCheckEmailText: 'Te enviamos un enlace de acceso a {email}. Tócalo en este dispositivo para completar el inicio de sesión. ¿No lo ves? Revisa la carpeta de spam.',
-    authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión',
+    authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión', privacyLink: 'Política de privacidad', deleteAccount: 'Eliminar mi cuenta', deleteConfirm: '¿Eliminar definitivamente tu cuenta y tu correo electrónico? Esta acción no se puede deshacer.', deleteDone: 'Tu cuenta ha sido eliminada.', deleteReauth: 'Por seguridad, hemos enviado un enlace a tu correo. Tócalo en este dispositivo y luego confirma la eliminación.', deleteFailed: 'No se pudo eliminar la cuenta. Inténtalo de nuevo o escribe a admin@minimappkids.com.',
     authInvalidEmail: 'Introduce un email válido.', authGenericError: 'Algo salió mal. Inténtalo de nuevo.',
     authOpenOnThisDevice: 'Abre este enlace en el mismo dispositivo desde el que lo solicitaste.',
     welcomeTitle: 'Bienvenido a MINImapp', welcomeSubtitle: 'Inicia sesión para guardar tus eventos favoritos y acceder a tu cuenta en cualquier dispositivo.', welcomeGuest: 'Continuar sin cuenta',
@@ -768,7 +771,7 @@ const T = {
     authTitle: 'Se connecter', authSubtitle: "Crée un compte pour sauvegarder des événements et accéder à ton abonnement sur n'importe quel appareil.",
     authEmailPlaceholder: 'Ton email', authSendLink: 'Envoyer le lien de connexion', authSending: 'Envoi…',
     authCheckEmailTitle: 'Vérifie tes emails', authCheckEmailText: "Nous avons envoyé un lien de connexion à {email}. Touche-le sur cet appareil pour terminer la connexion. Tu ne le vois pas ? Vérifie ton dossier spam.",
-    authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter',
+    authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter', privacyLink: 'Politique de confidentialité', deleteAccount: 'Supprimer mon compte', deleteConfirm: 'Supprimer définitivement votre compte et votre adresse e-mail ? Cette action est irréversible.', deleteDone: 'Votre compte a été supprimé.', deleteReauth: 'Par sécurité, nous avons envoyé un lien à votre adresse e-mail. Ouvrez-le sur cet appareil, puis confirmez la suppression.', deleteFailed: 'Impossible de supprimer le compte. Réessayez ou écrivez à admin@minimappkids.com.',
     authInvalidEmail: 'Saisis un email valide.', authGenericError: "Une erreur s'est produite. Réessaie.",
     authOpenOnThisDevice: "Ouvre ce lien sur le même appareil que celui utilisé pour la demande.",
     welcomeTitle: 'Bienvenue sur MINImapp', welcomeSubtitle: 'Connecte-toi pour sauvegarder tes événements favoris et accéder à ton compte sur n\'importe quel appareil.', welcomeGuest: 'Continuer sans compte',
@@ -814,7 +817,7 @@ const T = {
     authTitle: 'Log ind', authSubtitle: 'Opret en konto for at gemme events og få adgang til dit abonnement på enhver enhed.',
     authEmailPlaceholder: 'Din email', authSendLink: 'Send login-link', authSending: 'Sender…',
     authCheckEmailTitle: 'Tjek din email', authCheckEmailText: 'Vi har sendt et login-link til {email}. Tryk på det på denne enhed for at fuldføre login. Kan du ikke se det? Tjek din spammappe.',
-    authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud',
+    authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud', privacyLink: 'Privatlivspolitik', deleteAccount: 'Slet min konto', deleteConfirm: 'Vil du slette din konto og e-mailadresse permanent? Det kan ikke fortrydes.', deleteDone: 'Din konto er slettet.', deleteReauth: 'Af sikkerhedshensyn har vi sendt et link til din e-mail. Tryk på det på denne enhed, og bekræft derefter sletningen.', deleteFailed: 'Kontoen kunne ikke slettes. Prøv igen, eller skriv til admin@minimappkids.com.',
     authInvalidEmail: 'Indtast en gyldig email.', authGenericError: 'Noget gik galt. Prøv igen.',
     authOpenOnThisDevice: 'Åbn dette link på den samme enhed, du anmodede det fra.',
     welcomeTitle: 'Velkommen til MINImapp', welcomeSubtitle: 'Log ind for at gemme dine favoritevents og få adgang til din konto på enhver enhed.', welcomeGuest: 'Fortsæt uden konto',
@@ -1028,6 +1031,39 @@ function doSignOut() {
   if (auth) auth.signOut();
 }
 
+const PRIVACY_URL = 'https://app.minimappkids.com/privacy.html';
+function privacyLinkHtml(cls) {
+  return `<a class="${cls}" href="${PRIVACY_URL}" target="_blank" rel="noopener">${t('privacyLink')}</a>`;
+}
+
+// Delete the signed-in account (Google Play / GDPR). Firebase only allows deleting
+// after a recent sign-in, so if it asks for one we email a fresh sign-in link and
+// finish the deletion when the person comes back through it.
+async function doDeleteAccount() {
+  const auth = currentAuth();
+  const user = auth && auth.currentUser;
+  if (!user) return;
+  if (!window.confirm(t('deleteConfirm'))) return;
+  try {
+    await user.delete();
+    try { localStorage.removeItem('pf_pending_delete'); localStorage.removeItem(AUTH_EMAIL_STORAGE_KEY); } catch (e) {}
+    window.alert(t('deleteDone'));
+  } catch (e) {
+    if (e && e.code === 'auth/requires-recent-login') {
+      try {
+        await auth.sendSignInLinkToEmail(user.email, { url: 'https://app.minimappkids.com/index.html', handleCodeInApp: true });
+        localStorage.setItem(AUTH_EMAIL_STORAGE_KEY, user.email);
+        localStorage.setItem('pf_pending_delete', '1');
+        window.alert(t('deleteReauth'));
+        return;
+      } catch (e2) { console.error('[MINImapp auth] reauth link failed:', e2 && e2.code, e2); }
+    } else {
+      console.error('[MINImapp auth] delete failed:', e && e.code, e);
+    }
+    window.alert(t('deleteFailed'));
+  }
+}
+
 function openAuthModal() {
   state.authModalOpen = true;
   state.authModalView = 'form';
@@ -1053,6 +1089,7 @@ function renderAuthModal() {
       ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
       <button class="btn primary" id="authSendBtn">${t('authSendLink')}</button>
     `}
+    <p style="text-align:center;margin-top:10px">${privacyLinkHtml('privacy-link')}</p>
   `;
   document.getElementById('authModalHandleZone').onclick = () => closeAuthModal();
   const sendBtn = document.getElementById('authSendBtn');
@@ -1108,6 +1145,7 @@ function updateGate() {
       `}
     </div>
     <button class="wg-guest" id="wgGuestBtn">${t('welcomeGuest')}</button>
+    ${privacyLinkHtml('wg-guest')}
   `;
   el.classList.add('show');
   const sendBtn = document.getElementById('wgSendBtn');
@@ -2019,6 +2057,7 @@ function renderProfile() {
         <h3>${t('authSignedInAs')}</h3>
         <p>${state.user.email}</p>
         <button class="btn ghost account-btn" id="signOutBtn">${t('authSignOut')}</button>
+        <button class="btn ghost account-btn account-del" id="deleteAccountBtn">${t('deleteAccount')}</button>
       ` : `
         <h3>${t('authTitle')}</h3>
         <p>${t('authSubtitle')}</p>
@@ -2060,6 +2099,7 @@ function renderProfile() {
     <div class="profile-card legal">
       <p>${t('legalText1')}</p>
       <p>${t('legalText2')}</p>
+      <p>${privacyLinkHtml('privacy-link')}</p>
     </div>
   `;
   contentEl.querySelectorAll('.lang-toggle [data-lang]').forEach(btn => {
@@ -2071,6 +2111,8 @@ function renderProfile() {
   if (signInBtn) signInBtn.onclick = () => openAuthModal();
   const signOutBtn = document.getElementById('signOutBtn');
   if (signOutBtn) signOutBtn.onclick = () => doSignOut();
+  const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+  if (deleteAccountBtn) deleteAccountBtn.onclick = () => doDeleteAccount();
   const shareAppBtn = document.getElementById('shareAppBtn');
   if (shareAppBtn) shareAppBtn.onclick = () => shareApp(shareAppBtn);
 }
@@ -2319,6 +2361,9 @@ loadFirebaseInBackground().then((ok) => {
       state.authResolved = true;
       render();
       updateGate();
+      let pendingDelete = false;
+      try { pendingDelete = !!user && localStorage.getItem('pf_pending_delete') === '1'; if (pendingDelete) localStorage.removeItem('pf_pending_delete'); } catch (e) {}
+      if (pendingDelete) setTimeout(() => doDeleteAccount(), 400);
     });
   });
 });
