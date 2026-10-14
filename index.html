@@ -271,6 +271,8 @@
   .gallery-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
   .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
   .gallery-fallback { display: none; font-size: 40px; }
+  .photo-credit { position: absolute; left: 8px; bottom: 8px; max-width: 74%; z-index: 2; font-size: 10px; line-height: 1.25; color: #fff; background: rgba(0,0,0,0.55); padding: 3px 7px; border-radius: 8px; }
+  .photo-credit a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
   .gallery-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
   .gallery-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.55); transition: background .15s ease, transform .15s ease; }
   .gallery-dots .dot.active { background: #fff; transform: scale(1.3); }
@@ -541,6 +543,32 @@ function thumbHtml(ev) {
   return ev.icon;
 }
 
+// Photo credits for Wikimedia Commons photos (author + licence + link to the
+// file page). Loaded from photo_credits.json, keyed by the Commons file name.
+// Photos from other sources get no credit line here.
+let PHOTO_CREDITS = {};
+const CREDIT_WORD = { pt: 'Foto', en: 'Photo', es: 'Foto', fr: 'Photo', da: 'Foto' };
+function crEsc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function creditKey(u) {
+  try {
+    const p = new URL(u);
+    if (!/wikimedia\.org$/.test(p.hostname)) return null;
+    const segs = p.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+    const i = segs.indexOf('thumb');
+    return i >= 0 ? (segs[i + 3] || null) : segs[segs.length - 1];
+  } catch (e) { return null; }
+}
+function creditHtml(u) {
+  const k = creditKey(u);
+  const c = k && PHOTO_CREDITS[k];
+  if (!c) return '';
+  const word = CREDIT_WORD[state.lang] || CREDIT_WORD.en;
+  const file = 'https://commons.wikimedia.org/wiki/File:' + c.f;
+  const who = c.a ? crEsc(c.a) : 'Wikimedia Commons';
+  const lic = c.l ? (c.lu ? ` · <a href="${crEsc(c.lu)}" target="_blank" rel="noopener">${crEsc(c.l)}</a>` : ` · ${crEsc(c.l)}`) : '';
+  return `<div class="photo-credit">${word}: <a href="${crEsc(file)}" target="_blank" rel="noopener">${who}</a>${lic} · Wikimedia Commons</div>`;
+}
+
 // Big detail-view thumbnail — a swipeable gallery when there's more than one
 // photo (dots + horizontal swipe/scroll-snap), a single static photo when
 // there's exactly one, and the plain emoji icon when there are none. Each
@@ -550,7 +578,7 @@ function galleryHtml(ev) {
   if (!imgs.length) return ev.icon;
   const slides = imgs.map(u => {
     const src = String(u).replace(/"/g, '&quot;');
-    return `<div class="gallery-slide"><img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="gallery-fallback">${ev.icon}</span></div>`;
+    return `<div class="gallery-slide"><img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="gallery-fallback">${ev.icon}</span>${creditHtml(u)}</div>`;
   }).join('');
   const dots = imgs.length > 1
     ? `<div class="gallery-dots">${imgs.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>`
@@ -2320,6 +2348,8 @@ setTimeout(() => {
 // file, not the whole app. Falls back to a cached copy when offline, and
 // never lets a data-load failure crash the page (EVENTS just stays []).
 async function loadEventsAndInit() {
+  // Not awaited: credits only matter when a detail view opens, so they must not delay first paint.
+  fetch('photo_credits.json').then(r => r.ok ? r.json() : null).then(j => { if (j) PHOTO_CREDITS = j; }).catch(() => {});
   try {
     const res = await fetch('events.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('bad response ' + res.status);
