@@ -271,6 +271,8 @@
   .gallery-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; }
   .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
   .gallery-fallback { display: none; font-size: 40px; }
+  .chips-clear { border: none; background: transparent; color: var(--primary); font: inherit; font-size: 12.5px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 4px 6px; }
+  .auth-close { margin-top: 8px; width: 100%; }
   .photo-credit { position: absolute; left: 8px; bottom: 8px; max-width: 92%; z-index: 2; font-size: 10px; line-height: 1.25; color: #fff; background: rgba(0,0,0,0.55); padding: 3px 7px; border-radius: 8px; }
   .photo-credit a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
   .gallery-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
@@ -547,6 +549,9 @@ function thumbHtml(ev) {
 // file page). Loaded from photo_credits.json, keyed by the Commons file name.
 // Photos from other sources get no credit line here.
 let PHOTO_CREDITS = {};
+const WORD_CLEAR_ALL = { pt: 'Limpar tudo', en: 'Clear all', es: 'Borrar todo', fr: 'Tout effacer', da: 'Ryd alle' };
+const WORD_CLOSE = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer', da: 'Luk' };
+function wordOf(map) { return map[state.lang] || map.en; }
 const CREDIT_WORD = { pt: 'Foto', en: 'Photo', es: 'Foto', fr: 'Photo', da: 'Foto' };
 function crEsc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function creditKey(u) {
@@ -1098,10 +1103,12 @@ function openAuthModal() {
   state.authError = null;
   renderAuthModal();
   backdrop.classList.add('open');
+  syncBackGuard();
 }
 function closeAuthModal() {
   state.authModalOpen = false;
   backdrop.classList.remove('open');
+  syncBackGuard();
 }
 function renderAuthModal() {
   const view = state.authModalView;
@@ -1117,9 +1124,11 @@ function renderAuthModal() {
       ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
       <button class="btn primary" id="authSendBtn">${t('authSendLink')}</button>
     `}
+    <button class="btn ghost auth-close" id="authCloseBtn">${wordOf(WORD_CLOSE)}</button>
     <p style="text-align:center;margin-top:10px">${privacyLinkHtml('privacy-link')}</p>
   `;
   document.getElementById('authModalHandleZone').onclick = () => closeAuthModal();
+  document.getElementById('authCloseBtn').onclick = () => closeAuthModal();
   const sendBtn = document.getElementById('authSendBtn');
   if (sendBtn) {
     sendBtn.onclick = async () => {
@@ -1399,10 +1408,13 @@ function renderActiveChips() {
   const items = activeFilterList();
   if (!items.length) { wrap.style.display = 'none'; wrap.innerHTML = ''; return; }
   wrap.style.display = 'flex';
-  wrap.innerHTML = items.map((it, i) => `<span class="active-chip ${i % 2 ? 'b' : 'a'}">${it.label}<button data-chip-remove="${i}">×</button></span>`).join('');
+  wrap.innerHTML = items.map((it, i) => `<span class="active-chip ${i % 2 ? 'b' : 'a'}">${it.label}<button data-chip-remove="${i}">×</button></span>`).join('')
+    + (items.length >= 2 ? `<button class="chips-clear" id="chipsClearAll">${wordOf(WORD_CLEAR_ALL)}</button>` : '');
   wrap.querySelectorAll('[data-chip-remove]').forEach(btn => {
     btn.onclick = () => { items[Number(btn.dataset.chipRemove)].remove(); render(); };
   });
+  const clearAll = document.getElementById('chipsClearAll');
+  if (clearAll) clearAll.onclick = () => { items.slice().reverse().forEach(it => it.remove()); render(); };
 }
 
 function renderFilterPanel() {
@@ -1688,6 +1700,8 @@ function wireExploreViewToggle() {
     btn.addEventListener('click', () => {
       if (state.exploreView === btn.dataset.view) return;
       state.exploreView = btn.dataset.view;
+      // Close the search keyboard so the new view gets the full screen height.
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
       render();
     });
   });
@@ -2065,6 +2079,7 @@ function renderSaved() {
     document.querySelectorAll('#savedViewToggle button').forEach(btn => {
       btn.addEventListener('click', () => {
         state.savedView = btn.dataset.view;
+        if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
         render();
       });
     });
@@ -2205,6 +2220,7 @@ function render() {
   document.querySelectorAll('.navitem').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === state.tab);
   });
+  syncBackGuard();
 }
 
 /* ===================== DETAIL MODAL ===================== */
@@ -2259,6 +2275,7 @@ function openDetail(id) {
     </div>
   `;
   backdrop.classList.add('open');
+  syncBackGuard();
   document.getElementById('modalHandleZone').onclick = () => closeDetail();
   document.getElementById('modalSave').onclick = () => {
     // Just flip the heart in place and keep the details open — closing the
@@ -2292,7 +2309,44 @@ function openDetail(id) {
     }
   }
 }
-function closeDetail() { backdrop.classList.remove('open'); openDetailId = null; }
+function closeDetail() { backdrop.classList.remove('open'); openDetailId = null; state.authModalOpen = false; syncBackGuard(); }
+
+/* ===================== BACK BUTTON =====================
+   Inside the installed Android app the system Back button walks the browser
+   history. Without this, Back left the app (or jumped to an earlier page such
+   as the privacy policy) instead of closing what's open. While any "layer" is
+   showing (event details, sign-in, filters, pickers, city menu, or a tab other
+   than Home), we keep exactly one extra history entry; Back pops it and we
+   close the top layer instead of leaving. `var` (not let) on purpose: render()
+   can run before this block is reached during start-up. */
+var backGuarded = false;
+var backSkip = 0;
+function backLayerActive() {
+  return backdrop.classList.contains('open') || state.filtersOpen || state.datePickerOpen ||
+    state.saveDatePickerOpen || !!state.ageStepper || state.cityMenuOpen || state.tab !== 'home';
+}
+function syncBackGuard() {
+  try {
+    const want = backLayerActive();
+    if (want && !backGuarded) { history.pushState({ mmLayer: true }, ''); backGuarded = true; }
+    else if (!want && backGuarded) { backGuarded = false; backSkip++; history.back(); }
+  } catch (e) { /* history API unavailable — Back just behaves as before */ }
+}
+function handleBack() {
+  if (state.saveDatePickerOpen) { state.saveDatePickerOpen = false; render(); return; }
+  if (state.datePickerOpen) { state.datePickerOpen = false; render(); return; }
+  if (state.ageStepper) { state.ageStepper = null; render(); return; }
+  if (state.cityMenuOpen) { state.cityMenuOpen = false; render(); return; }
+  if (backdrop.classList.contains('open')) { closeDetail(); return; }
+  if (state.filtersOpen) { state.filtersOpen = false; render(); return; }
+  if (state.tab !== 'home') { state.tab = 'home'; render(); contentEl.scrollTop = 0; return; }
+}
+window.addEventListener('popstate', () => {
+  if (backSkip > 0) { backSkip--; return; }
+  backGuarded = false;
+  handleBack();
+  syncBackGuard();
+});
 backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDetail(); });
 
 /* ===================== EVENTS ===================== */
@@ -2302,13 +2356,17 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 });
 document.querySelectorAll('.navitem').forEach(btn => {
   btn.addEventListener('click', () => {
+    const changed = state.tab !== btn.dataset.tab;
     state.tab = btn.dataset.tab;
     if (btn.dataset.tab === 'home' && state.search) {
       state.search = '';
       const si = document.getElementById('searchInput');
       if (si) si.value = '';
     }
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     render();
+    // Each tab starts at its top, not at the previous tab's scroll position.
+    if (changed) contentEl.scrollTop = 0;
   });
 });
 
