@@ -1,7 +1,7 @@
 {
   "name": "MINImapp",
   "short_name": "MINImapp",
-  "description": "Eventos para famílias, crianças (2-15 anos) e adultos — Porto, Lisboa, Madrid, Barcelona, Copenhaga, Paris e Londres.",
+  "description": "Eventos para famílias, crianças (2-15 anos) e adultos — Porto, Lisboa, Madrid, Barcelona, Copenhaga, Paris, Londres, Xangai e Shenzhen.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

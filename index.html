@@ -273,6 +273,9 @@
   .gallery-fallback { display: none; font-size: 40px; }
   .chips-clear { border: none; background: transparent; color: var(--primary); font: inherit; font-size: 12.5px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 4px 6px; }
   .auth-close { margin-top: 8px; width: 100%; }
+  .m-share { margin-top: 10px; width: 100%; }
+  .ig-link { display:flex; align-items:center; gap: 12px; text-decoration:none; color: var(--primary); font-weight: 700; font-size: 13.5px; }
+  .ig-link svg { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 10px; }
   .photo-credit { position: absolute; left: 8px; bottom: 8px; max-width: 92%; z-index: 2; font-size: 10px; line-height: 1.25; color: #fff; background: rgba(0,0,0,0.55); padding: 3px 7px; border-radius: 8px; }
   .photo-credit a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
   .gallery-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
@@ -551,6 +554,11 @@ function thumbHtml(ev) {
 let PHOTO_CREDITS = {};
 const WORD_CLEAR_ALL = { pt: 'Limpar tudo', en: 'Clear all', es: 'Borrar todo', fr: 'Tout effacer', da: 'Ryd alle' };
 const WORD_CLOSE = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer', da: 'Luk' };
+const WORD_SHARE_EVENT = { pt: '📤 Partilhar evento', en: '📤 Share event', es: '📤 Compartir evento', fr: "📤 Partager l'événement", da: '📤 Del begivenhed' };
+const WORD_FOLLOW_IG = { pt: 'Segue-nos no Instagram', en: 'Follow us on Instagram', es: 'Síguenos en Instagram', fr: 'Suis-nous sur Instagram', da: 'Følg os på Instagram' };
+const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en: 'News, events and tips for families.', es: 'Novedades, eventos y consejos para familias.', fr: 'Nouveautés, événements et idées pour les familles.', da: 'Nyheder, begivenheder og tips til familier.' };
+const INSTAGRAM_URL = 'https://www.instagram.com/minimapp_kids/';
+const APP_URL = 'https://app.minimappkids.com/index.html';
 function wordOf(map) { return map[state.lang] || map.en; }
 const CREDIT_WORD = { pt: 'Foto', en: 'Photo', es: 'Foto', fr: 'Photo', da: 'Foto' };
 function crEsc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -2139,6 +2147,9 @@ function renderProfile() {
       <p>${t('shareText')}</p>
       <button class="btn primary" id="shareAppBtn">${t('shareBtn')}</button>
     </div>
+    <div class="profile-card">
+      <a class="ig-link" href="${INSTAGRAM_URL}" target="_blank" rel="noopener"><svg viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a83a"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect width="36" height="36" rx="10" fill="url(#igg)"/><rect x="8.5" y="8.5" width="19" height="19" rx="5.5" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="18" cy="18" r="4.6" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="23.6" cy="12.4" r="1.5" fill="#fff"/></svg><span>${wordOf(WORD_FOLLOW_IG)}<br><small style="font-weight:400;color:var(--muted)">@minimapp_kids · ${wordOf(WORD_FOLLOW_TEXT)}</small></span></a>
+    </div>
     <div class="profile-card legal">
       <p>${t('legalText1')}</p>
       <p>${t('legalText2')}</p>
@@ -2164,6 +2175,25 @@ function renderProfile() {
 // installed PWA/Android app); falls back to copying the link to the
 // clipboard and briefly confirming on the button itself, since this app has
 // no separate toast/snackbar mechanism to reuse.
+// Shares one event: native share sheet when available, else copies the link.
+// The link opens the app (or the website) straight on this event via ?event=<id>.
+async function shareEvent(ev, btn) {
+  const url = APP_URL + '?event=' + encodeURIComponent(ev.id);
+  const text = [evTitle(ev), evWhen(ev), ev.venue].filter(Boolean).join(' · ');
+  const shareData = { title: evTitle(ev), text: text + ' — MINImapp', url };
+  if (navigator.share) {
+    try { await navigator.share(shareData); return; }
+    catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  try {
+    await navigator.clipboard.writeText(text + '\n' + url);
+    const original = btn.textContent;
+    btn.textContent = t('shareCopied');
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+  } catch (err) { /* clipboard unavailable */ }
+}
+
 async function shareApp(btn) {
   const shareData = { title: 'MINImapp', text: t('shareText'), url: 'https://app.minimappkids.com/' };
   if (navigator.share) {
@@ -2273,10 +2303,12 @@ function openDetail(id) {
       ${ev.source ? `<a class="btn primary" href="${ev.source}" target="_blank" rel="noopener">${t('viewSource')}</a>` : ''}
       <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
     </div>
+    <button class="btn ghost m-share" id="modalShare">${wordOf(WORD_SHARE_EVENT)}</button>
   `;
   backdrop.classList.add('open');
   syncBackGuard();
   document.getElementById('modalHandleZone').onclick = () => closeDetail();
+  document.getElementById('modalShare').onclick = (e) => shareEvent(ev, e.currentTarget);
   document.getElementById('modalSave').onclick = () => {
     // Just flip the heart in place and keep the details open — closing the
     // whole modal is only supposed to happen when tapping outside it. Saving
@@ -2437,7 +2469,26 @@ async function loadEventsAndInit() {
     localStorage.setItem('pf_lang', state.lang);
     document.documentElement.lang = state.lang;
   }
+  // Shared-event link (?event=<id>): switch to that event's city and open it.
+  let sharedEv = null;
+  try {
+    const sp = new URLSearchParams(location.search);
+    const sid = sp.get('event');
+    if (sid) {
+      sharedEv = EVENTS.find(e => String(e.id) === sid) || null;
+      sp.delete('event');
+      const q = sp.toString();
+      history.replaceState(history.state, '', location.pathname + (q ? '?' + q : '') + location.hash);
+    }
+  } catch (e) { sharedEv = null; }
+  if (sharedEv && sharedEv.city !== state.city && CITIES.some(c => c.key === sharedEv.city)) {
+    state.city = sharedEv.city;
+    persistCity();
+    const vl = CITY_LANGS[state.city] || ['en'];
+    if (!vl.includes(state.lang)) { state.lang = vl[0]; localStorage.setItem('pf_lang', state.lang); document.documentElement.lang = state.lang; }
+  }
   render();
+  if (sharedEv) setTimeout(() => openDetail(sharedEv.id), 0);
 }
 // Start the app straight away; sign-in is attached once Firebase has loaded (if it can).
 loadEventsAndInit();
