@@ -274,6 +274,13 @@
   .chips-clear { border: none; background: transparent; color: var(--primary); font: inherit; font-size: 12.5px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 4px 6px; }
   .auth-close { margin-top: 8px; width: 100%; }
   .m-share { margin-top: 10px; width: 100%; }
+  .m-again { margin-top: 10px; width: 100%; background: var(--yellow); color: #5c3d05; border: none; font-weight: 800; }
+  .list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-right: 18px; }
+  .surprise-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; border: none; border-radius: 999px; padding: 8px 14px; background: var(--orange); color: #fff; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .surprise-btn:active { transform: translateY(1px); box-shadow: none; }
+  .surprise-btn .dice { display: inline-block; }
+  .surprise-btn.rolling .dice { animation: diceRoll .45s ease-in-out; }
+  @keyframes diceRoll { 0% { transform: rotate(0) scale(1); } 50% { transform: rotate(200deg) scale(1.35); } 100% { transform: rotate(360deg) scale(1); } }
   .ig-link { display:flex; align-items:center; gap: 12px; text-decoration:none; color: var(--primary); font-weight: 700; font-size: 13.5px; }
   .ig-link svg { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 10px; }
   .photo-credit { position: absolute; left: 8px; bottom: 8px; max-width: 92%; z-index: 2; font-size: 10px; line-height: 1.25; color: #fff; background: rgba(0,0,0,0.55); padding: 3px 7px; border-radius: 8px; }
@@ -554,6 +561,8 @@ function thumbHtml(ev) {
 let PHOTO_CREDITS = {};
 const WORD_CLEAR_ALL = { pt: 'Limpar tudo', en: 'Clear all', es: 'Borrar todo', fr: 'Tout effacer', da: 'Ryd alle' };
 const WORD_CLOSE = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer', da: 'Luk' };
+const WORD_SURPRISE = { pt: 'Surpreende-me', en: 'Surprise me', es: 'Sorpréndeme', fr: 'Surprends-moi', da: 'Overrask mig' };
+const WORD_TRY_ANOTHER = { pt: '🎲 Outra sugestão', en: '🎲 Try another', es: '🎲 Otra sugerencia', fr: '🎲 Une autre idée', da: '🎲 Prøv en anden' };
 const WORD_SHARE_EVENT = { pt: '📤 Partilhar evento', en: '📤 Share event', es: '📤 Compartir evento', fr: "📤 Partager l'événement", da: '📤 Del begivenhed' };
 const WORD_FOLLOW_IG = { pt: 'Segue-nos no Instagram', en: 'Follow us on Instagram', es: 'Síguenos en Instagram', fr: 'Suis-nous sur Instagram', da: 'Følg os på Instagram' };
 const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en: 'News, events and tips for families.', es: 'Novedades, eventos y consejos para familias.', fr: 'Nouveautés, événements et idées pour les familles.', da: 'Nyheder, begivenheder og tips til familier.' };
@@ -1696,8 +1705,13 @@ function renderHome() {
     wireExploreViewToggle();
     return;
   }
-  contentEl.innerHTML = `${toggleHtml}<div class="section-label">${dateFilterLabel()}</div><div class="list">${list.map(cardHtml).join('')}</div>`;
+  contentEl.innerHTML = `${toggleHtml}<div class="list-head"><div class="section-label">${dateFilterLabel()}</div><button class="surprise-btn" id="surpriseBtn" type="button"><span class="dice">🎲</span>${wordOf(WORD_SURPRISE)}</button></div><div class="list">${list.map(cardHtml).join('')}</div>`;
   wireExploreViewToggle();
+  const sBtn = document.getElementById('surpriseBtn');
+  if (sBtn) sBtn.onclick = () => {
+    sBtn.classList.remove('rolling'); void sBtn.offsetWidth; sBtn.classList.add('rolling');
+    setTimeout(() => surpriseMe(), 380);
+  };
   attachCardHandlers(contentEl);
 }
 
@@ -2284,7 +2298,28 @@ function mapsQuery(ev) {
   return `${ev.lat},${ev.lng}`;
 }
 
-function openDetail(id) {
+/* ---------- 🎲 Surprise me: a random event from what the user is currently
+   seeing (same city, ages, filters and dates as the list). Upcoming events with
+   a photo are preferred; no repeats until every option has been shown once. */
+const surpriseSeen = new Set();
+function surprisePool() {
+  const list = EVENTS.filter(matches);
+  const withPhoto = list.filter(ev => evImages(ev).length);
+  return withPhoto.length >= 3 ? withPhoto : list;
+}
+function surpriseMe() {
+  const pool = surprisePool();
+  if (!pool.length) return;
+  let fresh = pool.filter(ev => !surpriseSeen.has(ev.id) && ev.id !== openDetailId);
+  if (!fresh.length) { pool.forEach(ev => surpriseSeen.delete(ev.id)); fresh = pool.filter(ev => ev.id !== openDetailId); }
+  if (!fresh.length) fresh = pool;
+  const pick = fresh[Math.floor(Math.random() * fresh.length)];
+  surpriseSeen.add(pick.id);
+  openDetail(pick.id, { surprise: true });
+}
+
+function openDetail(id, opts) {
+  opts = opts || {};
   const ev = EVENTS.find(e => e.id === id);
   if (!ev) return;
   openDetailId = id;
@@ -2304,11 +2339,15 @@ function openDetail(id) {
       <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
     </div>
     <button class="btn ghost m-share" id="modalShare">${wordOf(WORD_SHARE_EVENT)}</button>
+    ${opts.surprise && surprisePool().length > 1 ? `<button class="btn m-again" id="modalAgain" type="button">${wordOf(WORD_TRY_ANOTHER)}</button>` : ''}
   `;
+  if (opts.surprise) modalEl.scrollTop = 0;
   backdrop.classList.add('open');
   syncBackGuard();
   document.getElementById('modalHandleZone').onclick = () => closeDetail();
   document.getElementById('modalShare').onclick = (e) => shareEvent(ev, e.currentTarget);
+  const againBtn = document.getElementById('modalAgain');
+  if (againBtn) againBtn.onclick = () => surpriseMe();
   document.getElementById('modalSave').onclick = () => {
     // Just flip the heart in place and keep the details open — closing the
     // whole modal is only supposed to happen when tapping outside it. Saving
