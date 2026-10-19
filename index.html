@@ -2,6 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
+<script>try{var pfl=localStorage.getItem("pf_lang");if(pfl)document.documentElement.lang=pfl;}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2f62a8">
 <meta name="description" content="Eventos para famílias e crianças no Porto, feito à mão.">
@@ -86,6 +87,9 @@
   .search-pill input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; color: #fff; font-size: 13.5px; font-family: inherit; }
   .search-pill input::placeholder { color: rgba(255,255,255,0.8); }
   .search-pill .sic { color: #fff; font-size: 15px; flex: none; }
+  .search-clear { display: none; flex: none; width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(255,255,255,0.22); color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; padding: 0; }
+  .search-clear.show { display: inline-flex; align-items: center; justify-content: center; }
+  .empty .empty-clear { margin-top: 12px; }
   .filtros-btn { flex: none; width: 44px; height: 44px; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--primary); display:flex; align-items:center; justify-content:center; cursor: pointer; position: relative; }
   .filtros-btn .count { position:absolute; top:-5px; right:-5px; background: var(--orange); color:#fff; font-size: 9px; font-weight: 800; border-radius: 999px; min-width:15px; height:15px; display:flex; align-items:center; justify-content:center; padding: 0 3px; }
 
@@ -122,7 +126,7 @@
   /* ---------- filter overlay panel ---------- */
   .filter-overlay-backdrop { position:absolute; inset:0; background: rgba(23,50,79,0.32); z-index: 25; display:none; }
   .filter-overlay-backdrop.open { display:block; }
-  .filter-panel { position:absolute; top: 128px; left: 18px; right: 18px; max-height: 72%; overflow-y:auto; background: rgba(47,98,168,0.95); border-radius: 20px; padding: 18px 16px; color:#fff; box-shadow: 0 16px 40px rgba(23,50,79,0.35); }
+  .filter-panel { position:absolute; top: 128px; left: 18px; right: 18px; max-height: 72%; overflow-y:auto; background: #2f62a8; border-radius: 20px; padding: 18px 16px; color:#fff; box-shadow: 0 16px 40px rgba(23,50,79,0.35); }
   .filter-panel-title { display:flex; align-items:center; gap: 8px; font-size: 15.5px; font-weight: 800; margin-bottom: 14px; }
   .fp-close { position:absolute; top: 14px; right: 14px; background:none; border:none; color:#fff; font-size: 15px; cursor:pointer; opacity: 0.85; }
   .fp-section { margin-bottom: 14px; }
@@ -131,10 +135,10 @@
   .fp-row { display:flex; gap: 8px; flex-wrap: wrap; align-items:center; }
   .fp-pill { padding: 9px 14px; border-radius: 12px; font-size: 12.5px; font-weight: 800; border: none; font-family: inherit; cursor: pointer; background: rgba(255,255,255,0.18); color: #fff; }
   .fp-pill.on { background: #fff; color: var(--primary); }
-  .fp-pill.orange { background: var(--orange); color: #fff; }
-  .fp-pill.orange.on { background: #fff; color: var(--orange); }
-  .fp-pill.yellow { background: var(--yellow); color: #5c3d05; }
-  .fp-pill.yellow.on { background: #fff; color: #8a6006; }
+  .fp-pill.orange, .fp-pill.yellow { background: rgba(255,255,255,0.14); color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.45); }
+  .fp-pill.orange.on { background: var(--orange); color: #fff; box-shadow: 0 0 0 2px #fff; }
+  .fp-pill.yellow.on { background: var(--yellow); color: #5c3d05; box-shadow: 0 0 0 2px #fff; }
+  .fp-pill.orange.on::before, .fp-pill.yellow.on::before { content: '✓ '; }
   .fp-add-circle { width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255,255,255,0.22); color: #fff; font-size: 19px; font-weight: 800; cursor: pointer; }
 
   /* ---------- date-range picker modal ---------- */
@@ -149,6 +153,7 @@
   .cal-day.range-start { border-radius: 999px 0 0 999px; }
   .cal-day.range-end { border-radius: 0 999px 999px 0; }
   .cal-day.range-start.range-end { border-radius: 999px; }
+  .cal-day.past { opacity: 0.28; cursor: default; pointer-events: none; }
   .cal-day.in-range { background: #fdf0c2; border-radius: 0; color: var(--ink); }
 
   /* ---------- age stepper modal ---------- */
@@ -327,7 +332,8 @@
   .account-card .account-del { margin-top: 8px; color: var(--danger); border-color: var(--danger); }
   .privacy-link { color: var(--primary); text-decoration: underline; font-size: 13px; }
   .notif-toggle { display:flex; gap: 10px; margin-top: 6px; }
-  .notif-toggle button { width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 17px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-family: inherit; }
+  .notif-toggle button { height: 42px; padding: 0 16px; border-radius: 21px; border: none; font-size: 14px; font-weight: 800; gap: 6px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-family: inherit; }
+  .notif-toggle button.chosen { box-shadow: 0 0 0 3px var(--yellow); }
   .notif-toggle button.yes { background: var(--primary); color: #fff; }
   .notif-toggle button.no { background: #f3b7a8; color: #8a2e1c; }
   .notif-toggle button.dim { opacity: 0.45; }
@@ -345,6 +351,20 @@
   .reminder-banner { margin: 10px 18px 0; background: var(--kids-bg); color: var(--kids); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; line-height: 1.4; display: none; align-items: center; gap: 8px; font-weight: 600; }
   .reminder-banner.show { display: flex; }
   .badge-soon { font-size: 9.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--danger); color: #fff; }
+  /* ---------- landscape phones: header scrolls away, bottom bar stays ---------- */
+  @media (orientation: landscape) and (max-height: 540px) {
+    #app { display: block; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .content { overflow: visible; }
+    .seg { position: static; }
+    .navbar { position: sticky; bottom: 0; z-index: 15; padding-top: 6px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
+    .modal-backdrop, .filter-overlay-backdrop, .date-picker-backdrop, .stepper-backdrop, .welcome-gate, .splash-screen {
+      position: fixed; left: max(0px, calc(50% - 240px)); right: max(0px, calc(50% - 240px));
+    }
+    .filter-panel { top: 12px; max-height: calc(100% - 24px); }
+    .modal { max-height: 94%; }
+    #exploreMap { height: 72vh; min-height: 200px; }
+  }
+
 </style>
 </head>
 <body>
@@ -392,6 +412,7 @@
     <div class="icon-row">
       <div class="search-pill">
         <input id="searchInput" placeholder="Procurar eventos, locais…" />
+        <button class="search-clear" id="searchClear" type="button" aria-label="Clear search">✕</button>
         <span class="sic">⌕</span>
       </div>
       <button class="filtros-btn" id="filtrosBtn" aria-label="Filtros" title="Filtros">☰</button>
@@ -521,6 +542,15 @@ const CITY_LANGS = {
   shanghai:  ['en'],
   shenzhen:  ['en'],
 };
+// First launch only (nothing stored yet): use the phone's language when the
+// city offers it, otherwise English when available, otherwise the city's own.
+function initialLang(city) {
+  const valid = CITY_LANGS[city] || ['en'];
+  let prefs = [];
+  try { prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map(l => String(l).slice(0, 2).toLowerCase()); } catch (e) {}
+  for (const l of prefs) if (valid.includes(l)) return l;
+  return valid.includes('en') ? 'en' : valid[0];
+}
 const LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', da: 'Dansk' };
 function cityName(c) { return c.names[state.lang] || c.names.en; }
 function currentCity() { return CITIES.find(c => c.key === state.city) || CITIES[CITIES.length - 1]; }
@@ -561,6 +591,11 @@ function thumbHtml(ev) {
 let PHOTO_CREDITS = {};
 const WORD_CLEAR_ALL = { pt: 'Limpar tudo', en: 'Clear all', es: 'Borrar todo', fr: 'Tout effacer', da: 'Ryd alle' };
 const WORD_CLOSE = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer', da: 'Luk' };
+const WORD_ON = { pt: 'Ligado', en: 'On', es: 'Activado', fr: 'Activé', da: 'Til' };
+const WORD_OFF = { pt: 'Desligado', en: 'Off', es: 'Desactivado', fr: 'Désactivé', da: 'Fra' };
+const WORD_NO_MATCH = { pt: 'Nenhum evento corresponde a «{q}».', en: 'No events match "{q}".', es: 'Ningún evento coincide con «{q}».', fr: 'Aucun événement ne correspond à « {q} ».', da: 'Ingen events matcher "{q}".' };
+const WORD_NO_MATCH_HINT = { pt: 'Verifica a ortografia ou limpa a pesquisa.', en: 'Check the spelling or clear the search.', es: 'Revisa la ortografía o borra la búsqueda.', fr: "Vérifie l'orthographe ou efface la recherche.", da: 'Tjek stavningen eller ryd søgningen.' };
+const WORD_CLEAR_SEARCH = { pt: 'Limpar pesquisa', en: 'Clear search', es: 'Borrar búsqueda', fr: 'Effacer la recherche', da: 'Ryd søgning' };
 const WORD_SURPRISE = { pt: 'Surpreende-me', en: 'Surprise me', es: 'Sorpréndeme', fr: 'Surprends-moi', da: 'Overrask mig' };
 const WORD_TRY_ANOTHER = { pt: '🎲 Outra sugestão', en: '🎲 Try another', es: '🎲 Otra sugerencia', fr: '🎲 Une autre idée', da: '🎲 Prøv en anden' };
 const WORD_SHARE_EVENT = { pt: '📤 Partilhar evento', en: '📤 Share event', es: '📤 Compartir evento', fr: "📤 Partager l'événement", da: '📤 Del begivenhed' };
@@ -568,6 +603,12 @@ const WORD_FOLLOW_IG = { pt: 'Segue-nos no Instagram', en: 'Follow us on Instagr
 const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en: 'News, events and tips for families.', es: 'Novedades, eventos y consejos para familias.', fr: 'Nouveautés, événements et idées pour les familles.', da: 'Nyheder, begivenheder og tips til familier.' };
 const INSTAGRAM_URL = 'https://www.instagram.com/minimapp_kids/';
 const APP_URL = 'https://app.minimappkids.com/index.html';
+function scopeNote() {
+  const s = t('profileScopeNote');
+  if (state.city === 'porto') return s;
+  const i = s.indexOf(':');
+  return i > 0 ? s.slice(0, i).trim() + '.' : s;
+}
 function wordOf(map) { return map[state.lang] || map.en; }
 const CREDIT_WORD = { pt: 'Foto', en: 'Photo', es: 'Foto', fr: 'Photo', da: 'Foto' };
 function crEsc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -680,13 +721,13 @@ const T = {
     profileNotifTitle: 'Notificações', profileNotifText: 'Esta opção permite que a aplicação envie um lembrete 1 dia e 2 horas antes do evento guardado.',
     legalText1: 'Esta aplicação apenas reúne e organiza informações sobre atividades e eventos para crianças. <b>Não organiza, produz nem é responsável por nenhum dos eventos ou atividades mencionados.</b>',
     legalText2: 'Embora procuremos manter a informação o mais atualizada possível, recomendamos que <b>confirme sempre os detalhes diretamente com o organizador</b> (horários, preços, inscrições, cancelamentos, etc.). A responsabilidade final pela realização e condições de cada evento é inteiramente do seu organizador.',
-    authTitle: 'Entrar', authSubtitle: 'Cria uma conta para guardar eventos e aceder à tua subscrição em qualquer aparelho.',
+    authTitle: 'Entrar', authSubtitle: 'Entra só com o teu email, sem palavra-passe. Em breve, os teus eventos guardados vão acompanhar-te em todos os aparelhos — guardar já funciona sem conta.',
     authEmailPlaceholder: 'O teu email', authSendLink: 'Enviar link de acesso', authSending: 'A enviar…',
     authCheckEmailTitle: 'Verifica o teu email', authCheckEmailText: 'Enviámos um link de acesso para {email}. Toca nele neste aparelho para entrares. Não vês o email? Verifica a pasta de spam/lixo.',
     authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão', privacyLink: 'Política de privacidade', deleteAccount: 'Eliminar a minha conta', deleteConfirm: 'Eliminar definitivamente a tua conta e o teu email? Esta ação não pode ser anulada.', deleteDone: 'A tua conta foi eliminada.', deleteReauth: 'Por segurança, enviámos um link para o teu email. Toca nele neste aparelho e depois confirma a eliminação.', deleteFailed: 'Não foi possível eliminar a conta. Tenta novamente ou escreve para admin@minimappkids.com.',
     authInvalidEmail: 'Introduz um email válido.', authGenericError: 'Algo correu mal. Tenta novamente.',
     authOpenOnThisDevice: 'Abre este link no mesmo aparelho onde o pediste.',
-    welcomeTitle: 'Bem-vindo ao MINImapp', welcomeSubtitle: 'Entra para guardar os teus eventos favoritos e aceder à tua conta em qualquer aparelho.', welcomeGuest: 'Continuar sem conta',
+    welcomeTitle: 'Bem-vindo ao MINImapp', welcomeSubtitle: 'Entra com o teu email (sem palavra-passe) ou continua sem conta — podes guardar eventos das duas formas.', welcomeGuest: 'Continuar sem conta',
   },
   en: {
     searchPlaceholder: 'Search events, places…',
@@ -726,13 +767,13 @@ const T = {
     profileNotifTitle: 'Notifications', profileNotifText: 'This option lets the app send a reminder 1 day and 2 hours before a saved event.',
     legalText1: 'This app only gathers and organises information about activities and events for children. <b>It does not organise, produce, or take responsibility for any of the events or activities listed.</b>',
     legalText2: 'While we try to keep information as up to date as possible, we recommend you <b>always confirm details directly with the organiser</b> (times, prices, bookings, cancellations, etc.). Final responsibility for how each event runs and its conditions rests entirely with its organiser.',
-    authTitle: 'Sign in', authSubtitle: 'Create an account to save events and access your subscription on any device.',
+    authTitle: 'Sign in', authSubtitle: 'Sign in with just your email, no password. Soon your saved events will follow you to every device — saving already works without an account.',
     authEmailPlaceholder: 'Your email', authSendLink: 'Send sign-in link', authSending: 'Sending…',
     authCheckEmailTitle: 'Check your email', authCheckEmailText: "We sent a sign-in link to {email}. Tap it on this device to finish signing in. Don't see it? Check your spam folder.",
     authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out', privacyLink: 'Privacy policy', deleteAccount: 'Delete my account', deleteConfirm: 'Permanently delete your account and email address? This cannot be undone.', deleteDone: 'Your account has been deleted.', deleteReauth: 'For security, we sent a link to your email. Tap it on this device, then confirm the deletion.', deleteFailed: 'Could not delete the account. Try again or email admin@minimappkids.com.',
     authInvalidEmail: 'Enter a valid email.', authGenericError: 'Something went wrong. Try again.',
     authOpenOnThisDevice: 'Open this link on the same device you requested it from.',
-    welcomeTitle: 'Welcome to MINImapp', welcomeSubtitle: 'Sign in to save your favourite events and access your account on any device.', welcomeGuest: 'Continue without an account',
+    welcomeTitle: 'Welcome to MINImapp', welcomeSubtitle: 'Sign in with your email (no password) or continue without an account — you can save events either way.', welcomeGuest: 'Continue without an account',
   },
   es: {
     searchPlaceholder: 'Buscar eventos, lugares…',
@@ -772,13 +813,13 @@ const T = {
     profileNotifTitle: 'Notificaciones', profileNotifText: 'Esta opción permite que la aplicación envíe un recordatorio 1 día y 2 horas antes del evento guardado.',
     legalText1: 'Esta aplicación solo recopila y organiza información sobre actividades y eventos para niños. <b>No organiza, produce ni se responsabiliza de ninguno de los eventos o actividades mencionados.</b>',
     legalText2: 'Aunque intentamos mantener la información lo más actualizada posible, te recomendamos <b>confirmar siempre los detalles directamente con el organizador</b> (horarios, precios, inscripciones, cancelaciones, etc.). La responsabilidad final por la realización y las condiciones de cada evento es enteramente de su organizador.',
-    authTitle: 'Iniciar sesión', authSubtitle: 'Crea una cuenta para guardar eventos y acceder a tu suscripción en cualquier dispositivo.',
+    authTitle: 'Iniciar sesión', authSubtitle: 'Inicia sesión solo con tu email, sin contraseña. Pronto tus eventos guardados te seguirán en todos tus dispositivos; guardar ya funciona sin cuenta.',
     authEmailPlaceholder: 'Tu email', authSendLink: 'Enviar enlace de acceso', authSending: 'Enviando…',
     authCheckEmailTitle: 'Revisa tu email', authCheckEmailText: 'Te enviamos un enlace de acceso a {email}. Tócalo en este dispositivo para completar el inicio de sesión. ¿No lo ves? Revisa la carpeta de spam.',
     authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión', privacyLink: 'Política de privacidad', deleteAccount: 'Eliminar mi cuenta', deleteConfirm: '¿Eliminar definitivamente tu cuenta y tu correo electrónico? Esta acción no se puede deshacer.', deleteDone: 'Tu cuenta ha sido eliminada.', deleteReauth: 'Por seguridad, hemos enviado un enlace a tu correo. Tócalo en este dispositivo y luego confirma la eliminación.', deleteFailed: 'No se pudo eliminar la cuenta. Inténtalo de nuevo o escribe a admin@minimappkids.com.',
     authInvalidEmail: 'Introduce un email válido.', authGenericError: 'Algo salió mal. Inténtalo de nuevo.',
     authOpenOnThisDevice: 'Abre este enlace en el mismo dispositivo desde el que lo solicitaste.',
-    welcomeTitle: 'Bienvenido a MINImapp', welcomeSubtitle: 'Inicia sesión para guardar tus eventos favoritos y acceder a tu cuenta en cualquier dispositivo.', welcomeGuest: 'Continuar sin cuenta',
+    welcomeTitle: 'Bienvenido a MINImapp', welcomeSubtitle: 'Inicia sesión con tu email (sin contraseña) o continúa sin cuenta: puedes guardar eventos de las dos formas.', welcomeGuest: 'Continuar sin cuenta',
   },
   fr: {
     searchPlaceholder: 'Rechercher des événements, des lieux…',
@@ -818,13 +859,13 @@ const T = {
     profileNotifTitle: 'Notifications', profileNotifText: "Cette option permet à l'application d'envoyer un rappel 1 jour et 2 heures avant l'événement sauvegardé.",
     legalText1: "Cette application se contente de rassembler et d'organiser des informations sur des activités et événements pour enfants. <b>Elle n'organise, ne produit ni n'est responsable d'aucun des événements ou activités mentionnés.</b>",
     legalText2: "Bien que nous essayions de maintenir les informations aussi à jour que possible, nous te recommandons de <b>toujours confirmer les détails directement avec l'organisateur</b> (horaires, prix, inscriptions, annulations, etc.). La responsabilité finale de la tenue et des conditions de chaque événement incombe entièrement à son organisateur.",
-    authTitle: 'Se connecter', authSubtitle: "Crée un compte pour sauvegarder des événements et accéder à ton abonnement sur n'importe quel appareil.",
+    authTitle: 'Se connecter', authSubtitle: "Connecte-toi avec ton email, sans mot de passe. Bientôt, tes événements enregistrés te suivront sur tous tes appareils ; l'enregistrement fonctionne déjà sans compte.",
     authEmailPlaceholder: 'Ton email', authSendLink: 'Envoyer le lien de connexion', authSending: 'Envoi…',
     authCheckEmailTitle: 'Vérifie tes emails', authCheckEmailText: "Nous avons envoyé un lien de connexion à {email}. Touche-le sur cet appareil pour terminer la connexion. Tu ne le vois pas ? Vérifie ton dossier spam.",
     authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter', privacyLink: 'Politique de confidentialité', deleteAccount: 'Supprimer mon compte', deleteConfirm: 'Supprimer définitivement votre compte et votre adresse e-mail ? Cette action est irréversible.', deleteDone: 'Votre compte a été supprimé.', deleteReauth: 'Par sécurité, nous avons envoyé un lien à votre adresse e-mail. Ouvrez-le sur cet appareil, puis confirmez la suppression.', deleteFailed: 'Impossible de supprimer le compte. Réessayez ou écrivez à admin@minimappkids.com.',
     authInvalidEmail: 'Saisis un email valide.', authGenericError: "Une erreur s'est produite. Réessaie.",
     authOpenOnThisDevice: "Ouvre ce lien sur le même appareil que celui utilisé pour la demande.",
-    welcomeTitle: 'Bienvenue sur MINImapp', welcomeSubtitle: 'Connecte-toi pour sauvegarder tes événements favoris et accéder à ton compte sur n\'importe quel appareil.', welcomeGuest: 'Continuer sans compte',
+    welcomeTitle: 'Bienvenue sur MINImapp', welcomeSubtitle: 'Connecte-toi avec ton email (sans mot de passe) ou continue sans compte : tu peux enregistrer des événements dans les deux cas.', welcomeGuest: 'Continuer sans compte',
   },
   da: {
     searchPlaceholder: 'Søg efter events, steder…',
@@ -864,13 +905,13 @@ const T = {
     profileNotifTitle: 'Notifikationer', profileNotifText: 'Denne indstilling giver appen mulighed for at sende en påmindelse 1 dag og 2 timer før det gemte event.',
     legalText1: 'Denne app indsamler og organiserer udelukkende information om aktiviteter og events for børn. <b>Den arrangerer, producerer eller påtager sig ikke ansvaret for nogen af de nævnte events eller aktiviteter.</b>',
     legalText2: 'Selvom vi bestræber os på at holde informationen så opdateret som muligt, anbefaler vi, at du <b>altid bekræfter detaljerne direkte med arrangøren</b> (tidspunkter, priser, tilmelding, aflysninger osv.). Det endelige ansvar for afholdelsen og betingelserne for hvert event ligger udelukkende hos arrangøren.',
-    authTitle: 'Log ind', authSubtitle: 'Opret en konto for at gemme events og få adgang til dit abonnement på enhver enhed.',
+    authTitle: 'Log ind', authSubtitle: 'Log ind med din email – ingen adgangskode. Snart følger dine gemte events med på alle dine enheder; du kan allerede gemme uden konto.',
     authEmailPlaceholder: 'Din email', authSendLink: 'Send login-link', authSending: 'Sender…',
     authCheckEmailTitle: 'Tjek din email', authCheckEmailText: 'Vi har sendt et login-link til {email}. Tryk på det på denne enhed for at fuldføre login. Kan du ikke se det? Tjek din spammappe.',
     authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud', privacyLink: 'Privatlivspolitik', deleteAccount: 'Slet min konto', deleteConfirm: 'Vil du slette din konto og e-mailadresse permanent? Det kan ikke fortrydes.', deleteDone: 'Din konto er slettet.', deleteReauth: 'Af sikkerhedshensyn har vi sendt et link til din e-mail. Tryk på det på denne enhed, og bekræft derefter sletningen.', deleteFailed: 'Kontoen kunne ikke slettes. Prøv igen, eller skriv til admin@minimappkids.com.',
     authInvalidEmail: 'Indtast en gyldig email.', authGenericError: 'Noget gik galt. Prøv igen.',
     authOpenOnThisDevice: 'Åbn dette link på den samme enhed, du anmodede det fra.',
-    welcomeTitle: 'Velkommen til MINImapp', welcomeSubtitle: 'Log ind for at gemme dine favoritevents og få adgang til din konto på enhver enhed.', welcomeGuest: 'Fortsæt uden konto',
+    welcomeTitle: 'Velkommen til MINImapp', welcomeSubtitle: 'Log ind med din email (ingen adgangskode) eller fortsæt uden konto – du kan gemme events begge veje.', welcomeGuest: 'Fortsæt uden konto',
   },
 };
 function t(key) { return T[state.lang][key]; }
@@ -906,7 +947,7 @@ const state = {
   freeOnly: false,
   locationFilter: 'all', // all | indoor | outdoor
   childAges: JSON.parse(localStorage.getItem('pf_child_ages') || '[]'), // array of numbers (years)
-  lang: localStorage.getItem('pf_lang') || 'pt', // pt | en
+  lang: localStorage.getItem('pf_lang') || initialLang(localStorage.getItem('pf_city') || 'porto'), // first launch: phone language if the city offers it
   // Map of event id -> { start: 'YYYY-MM-DD', end: 'YYYY-MM-DD' }, the date
   // (or date range) the user chose when saving that event.
   saved: (() => {
@@ -1009,6 +1050,7 @@ function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); 
 
 async function sendSignInLink(email) {
   const auth = currentAuth();
+  state.authDraftEmail = email; // keep what was typed so a typo can be fixed, not retyped
   if (!auth) { state.authModalView = 'error'; state.authError = t('authGenericError'); render(); return; }
   if (!isValidEmail(email)) { state.authModalView = 'error'; state.authError = t('authInvalidEmail'); render(); return; }
   // Hardcoded to the one canonical production origin, NOT derived from
@@ -1137,7 +1179,7 @@ function renderAuthModal() {
       <p class="m-desc"><b>${t('authCheckEmailTitle')}</b><br>${t('authCheckEmailText').replace('{email}', state.authPendingEmail)}</p>
       <button class="btn ghost" id="authResendBtn">${t('authResend')}</button>
     ` : `
-      <input type="email" id="authEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" />
+      <input type="email" id="authEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" value="${crEsc(state.authDraftEmail || '')}" />
       ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
       <button class="btn primary" id="authSendBtn">${t('authSendLink')}</button>
     `}
@@ -1193,7 +1235,7 @@ function updateGate() {
         <p class="sub" style="max-width:none"><b>${t('authCheckEmailTitle')}</b><br>${t('authCheckEmailText').replace('{email}', state.authPendingEmail)}</p>
         <button class="btn ghost" id="wgResendBtn">${t('authResend')}</button>
       ` : `
-        <input type="email" id="wgEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" />
+        <input type="email" id="wgEmailInput" class="auth-input" placeholder="${t('authEmailPlaceholder')}" autocomplete="email" value="${crEsc(state.authDraftEmail || '')}" />
         ${view === 'error' ? `<p class="auth-error">${state.authError}</p>` : ''}
         <button class="btn primary" id="wgSendBtn">${t('authSendLink')}</button>
       `}
@@ -1338,7 +1380,33 @@ function todayIso() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+/* ---------- search: clear button + its own "no results" message ---------- */
+function resetScroll() {
+  contentEl.scrollTop = 0;
+  const a = document.getElementById('app');
+  if (a) a.scrollTop = 0;
+}
+function syncSearchClear() {
+  const b = document.getElementById('searchClear');
+  if (b) b.classList.toggle('show', !!state.search);
+}
+function clearSearch() {
+  state.search = '';
+  const si = document.getElementById('searchInput');
+  if (si) si.value = '';
+  syncSearchClear();
+  render();
+}
+function emptyListHtml() {
+  const q = state.search.trim();
+  if (q) {
+    return `<div class="empty">${crEsc(wordOf(WORD_NO_MATCH).replace('{q}', q))}<br>${wordOf(WORD_NO_MATCH_HINT)}<br><button type="button" class="btn ghost empty-clear">${wordOf(WORD_CLEAR_SEARCH)}</button></div>`;
+  }
+  return `<div class="empty">${t('emptyFilters')}<br>${t('emptyFiltersHint')}</div>`;
+}
+
 /* ===================== RENDER ===================== */
+document.documentElement.lang = state.lang; // so the phone never offers to 'translate' a page that's already in the chosen language
 const contentEl = document.getElementById('content');
 const filterBarEl = document.getElementById('filterControls');
 let exploreLeafletMap = null;
@@ -1701,7 +1769,7 @@ function renderHome() {
   }
 
   if (!list.length) {
-    contentEl.innerHTML = `${toggleHtml}<div class="section-label">${dateFilterLabel()}</div><div class="empty">${t('emptyFilters')}<br>${t('emptyFiltersHint')}</div>`;
+    contentEl.innerHTML = `${toggleHtml}<div class="section-label">${dateFilterLabel()}</div>${emptyListHtml()}`;
     wireExploreViewToggle();
     return;
   }
@@ -1784,7 +1852,7 @@ function calendarHtml(pool, coverFn) {
   const selectedLabel = formatDate(state.calendarSelectedDate);
   const dayListHtml = dayEvents.length
     ? dayEvents.map(cardHtml).join('')
-    : `<div class="empty">${t('emptyFilters')}<br>${t('emptyFiltersHint')}</div>`;
+    : emptyListHtml();
 
   return `
     <div class="cal-wrap">
@@ -1857,7 +1925,9 @@ function renderDatePicker() {
   const backdrop = document.getElementById('datePickerBackdrop');
   backdrop.classList.toggle('open', state.datePickerOpen);
   if (!state.datePickerOpen) { backdrop.innerHTML = ''; return; }
+  const dpToday = todayIso();
   const dayClass = (iso) => {
+    if (iso < dpToday) return 'past';
     if (!state.rangeStart) return '';
     const end = state.rangeEnd || state.rangeStart;
     if (state.rangeStart === end) return iso === state.rangeStart ? 'range-start range-end' : '';
@@ -1894,7 +1964,7 @@ function renderDatePicker() {
   document.getElementById('dpNext').onclick = () => {
     const d = new Date(state.datePickerMonth); d.setMonth(d.getMonth() + 1); state.datePickerMonth = d; render();
   };
-  backdrop.querySelectorAll('.cal-day[data-date]').forEach(btn => {
+  backdrop.querySelectorAll('.cal-day[data-date]:not(.past)').forEach(btn => {
     btn.addEventListener('click', () => pickDatePickerDay(btn.dataset.date));
   });
   document.getElementById('dpClear').onclick = () => {
@@ -1912,13 +1982,15 @@ function renderDatePicker() {
 function openSaveDatePicker(eventId) {
   const ev = EVENTS.find(e => e.id === eventId);
   const existing = state.saved.get(eventId);
-  const seed = (existing && existing.start) || (ev && ev.date) || todayIso();
+  let seed = (existing && existing.start) || (ev && ev.date) || todayIso();
+  if (seed < todayIso()) seed = todayIso(); // never start the picker on a day that's already over
   state.saveDatePickerEventId = eventId;
   state.saveDatePickerMonth = new Date(seed + 'T00:00:00');
   state.saveDatePickerMonth.setDate(1);
   state.saveDatePickerMonth.setHours(0, 0, 0, 0);
   state.saveDateStart = seed;
   state.saveDateEnd = (existing && existing.end) || (ev && ev.dateEnd) || seed;
+  if (state.saveDateEnd < seed) state.saveDateEnd = seed;
   state.saveDateUserPicked = false;
   state.saveDatePickerOpen = true;
   render();
@@ -1971,7 +2043,9 @@ function renderSaveDatePicker() {
   if (!backdrop) return;
   backdrop.classList.toggle('open', state.saveDatePickerOpen);
   if (!state.saveDatePickerOpen) { backdrop.innerHTML = ''; return; }
+  const sdpToday = todayIso();
   const dayClass = (iso) => {
+    if (iso < sdpToday) return 'past';
     if (!state.saveDateStart) return '';
     const end = state.saveDateEnd || state.saveDateStart;
     if (state.saveDateStart === end) return iso === state.saveDateStart ? 'range-start range-end' : '';
@@ -2009,7 +2083,7 @@ function renderSaveDatePicker() {
   document.getElementById('sdpNext').onclick = () => {
     const d = new Date(state.saveDatePickerMonth); d.setMonth(d.getMonth() + 1); state.saveDatePickerMonth = d; render();
   };
-  backdrop.querySelectorAll('.cal-day[data-date]').forEach(btn => {
+  backdrop.querySelectorAll('.cal-day[data-date]:not(.past)').forEach(btn => {
     btn.addEventListener('click', () => pickSaveDateDay(btn.dataset.date));
   });
   document.getElementById('sdpConfirm').onclick = () => confirmSaveDate();
@@ -2134,8 +2208,8 @@ function renderProfile() {
       <h3>${t('profileNotifTitle')}</h3>
       <p>${t('profileNotifText')}</p>
       <div class="notif-toggle">
-        <button class="yes ${state.notifOptIn === true ? '' : 'dim'}" id="notifYes" aria-label="yes">✓</button>
-        <button class="no ${state.notifOptIn === false ? '' : 'dim'}" id="notifNo" aria-label="no">✕</button>
+        <button class="yes ${state.notifOptIn === true ? 'chosen' : (state.notifOptIn === false ? 'dim' : '')}" id="notifYes" aria-pressed="${state.notifOptIn === true}">✓ ${wordOf(WORD_ON)}</button>
+        <button class="no ${state.notifOptIn === false ? 'chosen' : (state.notifOptIn === true ? 'dim' : '')}" id="notifNo" aria-pressed="${state.notifOptIn === false}">✕ ${wordOf(WORD_OFF)}</button>
       </div>
     </div>
     ${(CITY_LANGS[state.city] || ['en']).length > 1 ? `
@@ -2149,7 +2223,7 @@ function renderProfile() {
     <div class="profile-card solid">
       <h3>${t('profileAboutTitle')}</h3>
       <p>${tCity('profileAboutText')}</p>
-      <p>${t('profileScopeNote')}</p>
+      <p>${scopeNote()}</p>
     </div>
     <div class="profile-card">
       <h3>${t('profileSuggestTitle')}</h3>
@@ -2410,7 +2484,7 @@ function handleBack() {
   if (state.cityMenuOpen) { state.cityMenuOpen = false; render(); return; }
   if (backdrop.classList.contains('open')) { closeDetail(); return; }
   if (state.filtersOpen) { state.filtersOpen = false; render(); return; }
-  if (state.tab !== 'home') { state.tab = 'home'; render(); contentEl.scrollTop = 0; return; }
+  if (state.tab !== 'home') { state.tab = 'home'; render(); resetScroll(); return; }
 }
 window.addEventListener('popstate', () => {
   if (backSkip > 0) { backSkip--; return; }
@@ -2423,8 +2497,11 @@ backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDeta
 /* ===================== EVENTS ===================== */
 document.getElementById('searchInput').addEventListener('input', (e) => {
   state.search = e.target.value;
+  syncSearchClear();
   render();
 });
+document.getElementById('searchClear').addEventListener('click', () => clearSearch());
+contentEl.addEventListener('click', (e) => { if (e.target && e.target.closest && e.target.closest('.empty-clear')) clearSearch(); });
 document.querySelectorAll('.navitem').forEach(btn => {
   btn.addEventListener('click', () => {
     const changed = state.tab !== btn.dataset.tab;
@@ -2433,11 +2510,12 @@ document.querySelectorAll('.navitem').forEach(btn => {
       state.search = '';
       const si = document.getElementById('searchInput');
       if (si) si.value = '';
+      syncSearchClear();
     }
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     render();
     // Each tab starts at its top, not at the previous tab's scroll position.
-    if (changed) contentEl.scrollTop = 0;
+    if (changed) resetScroll();
   });
 });
 
