@@ -286,6 +286,32 @@
   .surprise-btn .dice { display: inline-block; }
   .surprise-btn.rolling .dice { animation: diceRoll .45s ease-in-out; }
   @keyframes diceRoll { 0% { transform: rotate(0) scale(1); } 50% { transform: rotate(200deg) scale(1.35); } 100% { transform: rotate(360deg) scale(1); } }
+  .pf-hero { display:flex; flex-direction:column; align-items:center; padding: 14px 18px 2px; }
+  .pf-avatar { width: 116px; height: 116px; }
+  .pf-name { margin-top: 10px; font-size: 21px; font-weight: 800; color: var(--primary); text-align:center; }
+  .pf-email { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .pf-signin { margin-top: 10px; padding: 9px 22px; }
+  .pf-menu { display:flex; flex-direction:column; gap: 11px; padding: 18px 24px 4px; }
+  .pf-row { display:flex; align-items:center; gap: 18px; width: 100%; background: #fff; border: 2px dashed var(--orange); border-radius: 16px; padding: 10px 18px; font-family: inherit; font-size: 16px; font-weight: 800; color: var(--primary); cursor: pointer; text-align: left; }
+  .pf-row:active { background: #fff7e0; }
+  .pf-row svg { width: 30px; height: 30px; flex: none; }
+  .pf-round { display:flex; justify-content:center; gap: 38px; padding: 20px 0 6px; }
+  .pf-round a, .pf-round button { width: 58px; height: 58px; border-radius: 50%; border: none; display:flex; align-items:center; justify-content:center; box-shadow: 3px 4px 0 var(--yellow); cursor: pointer; padding: 0; }
+  .pf-round svg { width: 28px; height: 28px; }
+  .pf-round .o { background: var(--orange); }
+  .pf-round .b { background: #4a6fd8; }
+  .pf-round-labels { display:flex; justify-content:center; gap: 10px; padding: 0 12px 18px; font-size: 11px; font-weight: 700; color: var(--muted); }
+  .pf-round-labels span { width: 86px; text-align:center; }
+  .pf-subhead { padding: 8px 18px 2px; }
+  .pf-subhead h2 { margin: 6px 0 6px; font-size: 20px; color: var(--primary); }
+  .pf-back { background: none; border: none; padding: 6px 0; font-family: inherit; font-size: 14px; font-weight: 800; color: var(--orange); cursor: pointer; }
+  .pf-ages { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .pf-age { padding: 9px 14px; border-radius: 12px; border: none; background: var(--primary); color: #fff; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+  .pf-age.add { background: #fff; color: var(--primary); box-shadow: inset 0 0 0 2px var(--primary); }
+  .pf-faq { padding: 4px 18px 18px; display:flex; flex-direction:column; gap: 10px; }
+  .pf-faq details { background: #fff; border: 2px dashed var(--orange); border-radius: 14px; padding: 12px 14px; }
+  .pf-faq summary { font-weight: 800; color: var(--primary); cursor: pointer; font-size: 14.5px; }
+  .pf-faq p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--ink); }
   .ig-link { display:flex; align-items:center; gap: 12px; text-decoration:none; color: var(--primary); font-weight: 700; font-size: 13.5px; }
   .ig-link svg { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 10px; }
   .photo-credit { position: absolute; left: 8px; bottom: 8px; max-width: 92%; z-index: 2; font-size: 10px; line-height: 1.25; color: #fff; background: rgba(0,0,0,0.55); padding: 3px 7px; border-radius: 8px; }
@@ -2188,67 +2214,185 @@ function renderSaved() {
   }
 }
 
-function renderProfile() {
-  filterBarEl.style.display = 'none';
-  contentEl.innerHTML = `
-    <div class="profile-card solid account-card">
-      ${state.user ? `
+/* ---------- Profile (v27 layout: avatar + menu rows + round buttons) ---------- */
+const PF = {
+  guest:    { pt: 'Visitante', en: 'Guest', es: 'Invitado', fr: 'Invité', da: 'Gæst' },
+  account:  { pt: 'Dados da conta', en: 'User info', es: 'Datos de la cuenta', fr: 'Infos du compte', da: 'Kontooplysninger' },
+  parent:   { pt: 'Definições da família', en: 'Parenting settings', es: 'Ajustes familiares', fr: 'Réglages famille', da: 'Familieindstillinger' },
+  notif:    { pt: 'Notificações', en: 'Notifications', es: 'Notificaciones', fr: 'Notifications', da: 'Notifikationer' },
+  plan:     { pt: 'Plano', en: 'Plan', es: 'Plan', fr: 'Formule', da: 'Plan' },
+  help:     { pt: 'Ajuda', en: 'Help', es: 'Ayuda', fr: 'Aide', da: 'Hjælp' },
+  faq:      { pt: 'Perguntas frequentes', en: 'FAQs', es: 'Preguntas frecuentes', fr: 'FAQ', da: 'FAQ' },
+  agesHint: { pt: 'A lista mostra só eventos adequados a estas idades. Toca numa idade para a alterar.', en: 'The list only shows events suitable for these ages. Tap an age to change it.', es: 'La lista solo muestra eventos adecuados para estas edades. Toca una edad para cambiarla.', fr: 'La liste ne montre que les événements adaptés à ces âges. Touche un âge pour le modifier.', da: 'Listen viser kun events, der passer til disse aldre. Tryk på en alder for at ændre den.' },
+  addChild: { pt: '+ Adicionar criança', en: '+ Add a child', es: '+ Añadir un niño', fr: '+ Ajouter un enfant', da: '+ Tilføj et barn' },
+  noAges:   { pt: 'Ainda sem idades — vês eventos para todas as idades.', en: 'No ages yet — you see events for all ages.', es: 'Aún sin edades: ves eventos para todas las edades.', fr: 'Pas encore d\'âges : tu vois les événements pour tous les âges.', da: 'Ingen aldre endnu – du ser events for alle aldre.' },
+  planTitle:{ pt: 'Grátis durante a fase beta', en: 'Free during the beta', es: 'Gratis durante la beta', fr: 'Gratuit pendant la bêta', da: 'Gratis i betaperioden' },
+  planText: { pt: 'A MINImapp é gratuita durante a fase beta: todas as cidades e funcionalidades estão abertas. Avisaremos com bastante antecedência antes de qualquer mudança.', en: 'MINImapp is free while we are in beta: all cities and all features are open. We will tell you well in advance before anything changes.', es: 'MINImapp es gratis durante la beta: todas las ciudades y funciones están abiertas. Te avisaremos con antelación antes de cualquier cambio.', fr: 'MINImapp est gratuite pendant la bêta : toutes les villes et fonctions sont ouvertes. Nous te préviendrons bien à l\'avance avant tout changement.', da: 'MINImapp er gratis i betaperioden: alle byer og funktioner er åbne. Vi giver besked i god tid, før noget ændrer sig.' },
+  helpTitle:{ pt: 'Precisas de ajuda?', en: 'Need help?', es: '¿Necesitas ayuda?', fr: 'Besoin d\'aide ?', da: 'Brug for hjælp?' },
+  helpText: { pt: 'Encontraste um erro, um evento que já não existe ou algo que não funciona? Escreve-nos — respondemos o mais depressa possível.', en: 'Found a mistake, an event that no longer exists, or something that doesn\'t work? Write to us — we reply as fast as we can.', es: '¿Has encontrado un error, un evento que ya no existe o algo que no funciona? Escríbenos y te responderemos lo antes posible.', fr: 'Tu as trouvé une erreur, un événement qui n\'existe plus ou quelque chose qui ne marche pas ? Écris-nous, nous répondons au plus vite.', da: 'Har du fundet en fejl, et event der ikke findes mere, eller noget der ikke virker? Skriv til os – vi svarer så hurtigt vi kan.' },
+  helpBtn:  { pt: 'Enviar email', en: 'Email us', es: 'Enviar email', fr: 'Nous écrire', da: 'Send en email' },
+  suggest:  { pt: 'Sugerir um evento', en: 'Suggest an event', es: 'Sugerir un evento', fr: 'Proposer un événement', da: 'Foreslå et event' },
+  shareApp: { pt: 'Partilhar a app', en: 'Share the app', es: 'Compartir la app', fr: 'Partager l\'app', da: 'Del appen' },
+};
+const PF_FAQ = {
+  pt: [
+    ['O que é a MINImapp?', 'Um guia de atividades para famílias e crianças (2–15 anos) em 9 cidades, atualizado todos os dias a partir de agendas oficiais, museus, teatros e pequenos organizadores locais.'],
+    ['É grátis?', 'Sim. Durante a fase beta a app é gratuita, com todas as cidades e funcionalidades abertas.'],
+    ['Preciso de uma conta?', 'Não. Podes ver e guardar eventos sem conta. Para entrar só precisas do teu email — sem palavra-passe.'],
+    ['Como vejo só eventos para a idade dos meus filhos?', 'Adiciona as idades em Definições da família (ou em Filtros). A lista passa a mostrar só eventos adequados.'],
+    ['As datas e os preços estão sempre certos?', 'Verificamos cada evento na fonte, mas os organizadores às vezes mudam planos. Toca em "Ver fonte" para confirmar antes de ir.'],
+    ['Como sugiro um evento ou aviso de um erro?', 'Toca no botão do lápis no Perfil ou escreve para admin@minimappkids.com.'],
+    ['Como apago a minha conta?', 'Perfil → Dados da conta → Apagar a minha conta. Os teus dados são apagados de imediato.'],
+  ],
+  en: [
+    ['What is MINImapp?', 'A guide to activities for families and kids (ages 2–15) in 9 cities, updated every day from official agendas, museums, theatres and small local organisers.'],
+    ['Is it free?', 'Yes. During the beta the app is free, with all cities and features open.'],
+    ['Do I need an account?', 'No. You can browse and save events without an account. Signing in only needs your email — no password.'],
+    ['How do I see only events for my kids\' ages?', 'Add their ages in Parenting settings (or in Filters). The list then only shows suitable events.'],
+    ['Are dates and prices always right?', 'We check every event against its source, but organisers sometimes change plans. Tap "View source" to confirm before you go.'],
+    ['How do I suggest an event or report a mistake?', 'Tap the pencil button on Profile or write to admin@minimappkids.com.'],
+    ['How do I delete my account?', 'Profile → User info → Delete my account. Your data is deleted straight away.'],
+  ],
+};
+function pfw(k) { return wordOf(PF[k]); }
+const PF_ICON = {
+  pin: '<svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 34s12-11.5 12-20.5A12 12 0 0 0 4 13.5C4 22.5 16 34 16 34z" fill="#fff" stroke="#2f62a8" stroke-width="2.4"/><circle cx="16" cy="11" r="3.6" fill="#e8611f"/><path d="M9.5 21c1.2-3.6 3.6-5.2 6.5-5.2s5.3 1.6 6.5 5.2z" fill="#e8611f"/></svg>',
+  sliders: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#2f62a8" stroke-width="2" stroke-linecap="round"><path d="M4 9h24M4 16h24M4 23h24"/><path d="M11 5v8M21 12v8M13 19v8" stroke="#e8611f"/></svg>',
+  bell: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#e8611f" stroke-width="2" stroke-linejoin="round"><path d="M16 4v2M9 22V14a7 7 0 0 1 14 0v8l3 3H6z"/><path d="M13 27a3 3 0 0 0 6 0" stroke="#2f62a8"/></svg>',
+  help: '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#fff" stroke="#2f62a8" stroke-width="2.4"/><path d="M12.4 12.6a3.8 3.8 0 1 1 5.4 3.4c-1.2.6-1.8 1.4-1.8 2.8" fill="none" stroke="#e8611f" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="23" r="1.7" fill="#e8611f"/></svg>',
+  faq: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#e8611f" stroke-width="1.8" stroke-linejoin="round"><path d="M9 7h19v14H17l-5 4v-4H9z" fill="#fff"/><path d="M4 11h4M4 11v12h3v4l4-4h6" stroke="#2f62a8"/><path d="M13 12h11M13 15.5h11" stroke="#2f62a8"/></svg>',
+  ig: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.6"><rect x="5" y="5" width="22" height="22" rx="7"/><circle cx="16" cy="16" r="5.2"/><circle cx="22.6" cy="9.4" r="1.4" fill="#fff" stroke="none"/></svg>',
+  share: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.6"><circle cx="23" cy="8" r="3.6"/><circle cx="9" cy="16" r="3.6"/><circle cx="23" cy="24" r="3.6"/><path d="M12.2 14.3l7.6-4.6M12.2 17.7l7.6 4.6"/></svg>',
+  pencil: '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M19.5 5.5l5 5L12 23H7v-5z"/><path d="M6 27h20"/></svg>',
+};
+const PF_AVATAR = '<svg class="pf-avatar" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#e8611f"/><ellipse cx="71" cy="64" rx="16" ry="19" fill="#fff"/><ellipse cx="102" cy="64" rx="15" ry="19" fill="#fff"/><circle cx="67" cy="70" r="8" fill="#666"/><circle cx="98" cy="70" r="8" fill="#666"/></svg>';
+const SUGGEST_MAILTO = 'mailto:admin@minimappkids.com?subject=Sugest%C3%A3o%20de%20evento';
+
+function profileDisplayName() {
+  if (!state.user) return pfw('guest');
+  if (state.user.displayName) return crEsc(state.user.displayName);
+  const local = String(state.user.email || '').split('@')[0].replace(/[._-]+/g, ' ').trim();
+  return crEsc(local ? local.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : pfw('guest'));
+}
+
+function profileSubpageHtml(page) {
+  const head = (title) => `<div class="pf-subhead"><button class="pf-back" id="pfBack" type="button">‹ ${t('navProfile')}</button><h2>${title}</h2></div>`;
+  if (page === 'account') {
+    return head(pfw('account')) + (state.user ? `
+      <div class="profile-card solid account-card">
         <h3>${t('authSignedInAs')}</h3>
-        <p>${state.user.email}</p>
+        <p>${crEsc(state.user.email || '')}</p>
         <button class="btn ghost account-btn" id="signOutBtn">${t('authSignOut')}</button>
         <button class="btn ghost account-btn account-del" id="deleteAccountBtn">${t('deleteAccount')}</button>
-      ` : `
+      </div>` : `
+      <div class="profile-card solid account-card">
         <h3>${t('authTitle')}</h3>
         <p>${t('authSubtitle')}</p>
         <button class="btn ghost account-btn" id="signInBtn">${t('authTitle')}</button>
-      `}
-    </div>
-    <div class="profile-section-label">${t('profileSettingsHeader')}</div>
-    <div class="profile-card">
-      <h3>${t('profileNotifTitle')}</h3>
-      <p>${t('profileNotifText')}</p>
-      <div class="notif-toggle">
-        <button class="yes ${state.notifOptIn === true ? 'chosen' : (state.notifOptIn === false ? 'dim' : '')}" id="notifYes" aria-pressed="${state.notifOptIn === true}">✓ ${wordOf(WORD_ON)}</button>
-        <button class="no ${state.notifOptIn === false ? 'chosen' : (state.notifOptIn === true ? 'dim' : '')}" id="notifNo" aria-pressed="${state.notifOptIn === false}">✕ ${wordOf(WORD_OFF)}</button>
+      </div>`);
+  }
+  if (page === 'parent') {
+    const sorted = state.childAges.slice().sort((a, b) => a - b);
+    const langs = CITY_LANGS[state.city] || ['en'];
+    return head(pfw('parent')) + `
+      <div class="profile-card">
+        <h3>${t('ageFilterLabel')}</h3>
+        <p>${sorted.length ? pfw('agesHint') : pfw('noAges')}</p>
+        <div class="pf-ages">
+          ${sorted.map(age => `<button class="pf-age" data-edit-age="${state.childAges.indexOf(age)}">${age} ${ageUnit(age)}</button>`).join('')}
+          <button class="pf-age add" id="pfAddAge">${pfw('addChild')}</button>
+        </div>
       </div>
-    </div>
-    ${(CITY_LANGS[state.city] || ['en']).length > 1 ? `
-    <div class="profile-card">
-      <h3>${t('profileLangTitle')}</h3>
-      <div class="lang-toggle">
-        ${(CITY_LANGS[state.city] || ['en']).map(l => `<button data-lang="${l}" class="${state.lang === l ? 'on' : ''}">${LANG_NAMES[l] || l}</button>`).join('')}
+      ${langs.length > 1 ? `
+      <div class="profile-card">
+        <h3>${t('profileLangTitle')}</h3>
+        <div class="lang-toggle">
+          ${langs.map(l => `<button data-lang="${l}" class="${state.lang === l ? 'on' : ''}">${LANG_NAMES[l] || l}</button>`).join('')}
+        </div>
+      </div>` : ''}`;
+  }
+  if (page === 'notif') {
+    return head(pfw('notif')) + `
+      <div class="profile-card">
+        <h3>${t('profileNotifTitle')}</h3>
+        <p>${t('profileNotifText')}</p>
+        <div class="notif-toggle">
+          <button class="yes ${state.notifOptIn === true ? 'chosen' : (state.notifOptIn === false ? 'dim' : '')}" id="notifYes" aria-pressed="${state.notifOptIn === true}">✓ ${wordOf(WORD_ON)}</button>
+          <button class="no ${state.notifOptIn === false ? 'chosen' : (state.notifOptIn === true ? 'dim' : '')}" id="notifNo" aria-pressed="${state.notifOptIn === false}">✕ ${wordOf(WORD_OFF)}</button>
+        </div>
+      </div>`;
+  }
+  if (page === 'plan') {
+    return head(pfw('plan')) + `
+      <div class="profile-card solid">
+        <h3>${pfw('planTitle')}</h3>
+        <p>${pfw('planText')}</p>
+      </div>`;
+  }
+  if (page === 'help') {
+    return head(pfw('help')) + `
+      <div class="profile-card">
+        <h3>${pfw('helpTitle')}</h3>
+        <p>${pfw('helpText')}</p>
+        <a class="btn primary" href="mailto:admin@minimappkids.com?subject=MINImapp">${pfw('helpBtn')}</a>
       </div>
-    </div>` : ''}
-    <div class="profile-section-label">${t('profileAppHeader')}</div>
-    <div class="profile-card solid">
-      <h3>${t('profileAboutTitle')}</h3>
-      <p>${tCity('profileAboutText')}</p>
-      <p>${scopeNote()}</p>
-    </div>
-    <div class="profile-card">
-      <h3>${t('profileSuggestTitle')}</h3>
-      <p>${t('profileSuggestText')}</p>
-      <a class="btn primary" href="mailto:admin@minimappkids.com?subject=Sugest%C3%A3o%20de%20evento">${t('profileSuggestBtn')}</a>
-    </div>
-    <div class="profile-card">
-      <h3>${t('shareTitle')}</h3>
-      <p>${t('shareText')}</p>
-      <button class="btn primary" id="shareAppBtn">${t('shareBtn')}</button>
-    </div>
-    <div class="profile-card">
-      <a class="ig-link" href="${INSTAGRAM_URL}" target="_blank" rel="noopener"><svg viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a83a"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect width="36" height="36" rx="10" fill="url(#igg)"/><rect x="8.5" y="8.5" width="19" height="19" rx="5.5" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="18" cy="18" r="4.6" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="23.6" cy="12.4" r="1.5" fill="#fff"/></svg><span>${wordOf(WORD_FOLLOW_IG)}<br><small style="font-weight:400;color:var(--muted)">@minimapp_kids · ${wordOf(WORD_FOLLOW_TEXT)}</small></span></a>
-    </div>
-    <div class="profile-card legal">
-      <p>${t('legalText1')}</p>
-      <p>${t('legalText2')}</p>
-      <p>${privacyLinkHtml('privacy-link')}</p>
-    </div>
-  `;
+      <div class="profile-card solid">
+        <h3>${t('profileAboutTitle')}</h3>
+        <p>${tCity('profileAboutText')}</p>
+        <p>${scopeNote()}</p>
+      </div>
+      <div class="profile-card legal">
+        <p>${t('legalText1')}</p>
+        <p>${t('legalText2')}</p>
+        <p>${privacyLinkHtml('privacy-link')}</p>
+      </div>`;
+  }
+  if (page === 'faq') {
+    const list = PF_FAQ[state.lang] || PF_FAQ.en;
+    return head(pfw('faq')) + `<div class="pf-faq">${list.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`;
+  }
+  return '';
+}
+
+function renderProfile() {
+  filterBarEl.style.display = 'none';
+  const page = state.profilePage;
+  if (page) {
+    contentEl.innerHTML = profileSubpageHtml(page);
+  } else {
+    const rows = [['account', 'pin'], ['parent', 'sliders'], ['notif', 'bell'], ['plan', 'pin'], ['help', 'help'], ['faq', 'faq']];
+    contentEl.innerHTML = `
+      <div class="pf-hero">
+        ${PF_AVATAR}
+        <div class="pf-name">${profileDisplayName()}</div>
+        ${state.user ? `<div class="pf-email">${crEsc(state.user.email || '')}</div>` : `<button class="btn primary pf-signin" id="signInBtn">${t('authTitle')}</button>`}
+      </div>
+      <div class="pf-menu">
+        ${rows.map(([k, ic]) => `<button class="pf-row" data-pf="${k}" type="button">${PF_ICON[ic]}<span>${pfw(k)}</span></button>`).join('')}
+      </div>
+      <div class="pf-round">
+        <a class="o" href="${INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Instagram @minimapp_kids">${PF_ICON.ig}</a>
+        <button class="b" id="shareAppBtn" type="button" aria-label="${pfw('shareApp')}">${PF_ICON.share}</button>
+        <a class="o" href="${SUGGEST_MAILTO}" aria-label="${pfw('suggest')}">${PF_ICON.pencil}</a>
+      </div>
+      <div class="pf-round-labels"><span>Instagram</span><span>${pfw('shareApp')}</span><span>${pfw('suggest')}</span></div>
+    `;
+  }
+  contentEl.querySelectorAll('[data-pf]').forEach(btn => {
+    btn.onclick = () => { state.profilePage = btn.dataset.pf; render(); resetScroll(); syncBackGuard(); };
+  });
+  const back = document.getElementById('pfBack');
+  if (back) back.onclick = () => { state.profilePage = null; render(); resetScroll(); };
   contentEl.querySelectorAll('.lang-toggle [data-lang]').forEach(btn => {
     btn.onclick = () => setLang(btn.dataset.lang);
   });
-  document.getElementById('notifYes').onclick = () => { state.notifOptIn = true; persistNotifOptIn(); render(); };
-  document.getElementById('notifNo').onclick = () => { state.notifOptIn = false; persistNotifOptIn(); render(); };
+  contentEl.querySelectorAll('[data-edit-age]').forEach(btn => { btn.onclick = () => openAgeStepper(Number(btn.dataset.editAge)); });
+  const addAge = document.getElementById('pfAddAge');
+  if (addAge) addAge.onclick = () => openAgeStepper(null);
+  const ny = document.getElementById('notifYes');
+  if (ny) ny.onclick = () => { state.notifOptIn = true; persistNotifOptIn(); render(); };
+  const nn = document.getElementById('notifNo');
+  if (nn) nn.onclick = () => { state.notifOptIn = false; persistNotifOptIn(); render(); };
   const signInBtn = document.getElementById('signInBtn');
   if (signInBtn) signInBtn.onclick = () => openAuthModal();
   const signOutBtn = document.getElementById('signOutBtn');
@@ -2283,6 +2427,7 @@ async function shareEvent(ev, btn) {
 }
 
 async function shareApp(btn) {
+  const roundBtn = btn && btn.closest && btn.closest('.pf-round');
   const shareData = { title: 'MINImapp', text: t('shareText'), url: 'https://app.minimappkids.com/' };
   if (navigator.share) {
     try { await navigator.share(shareData); return; }
@@ -2290,6 +2435,7 @@ async function shareApp(btn) {
   }
   try {
     await navigator.clipboard.writeText(shareData.url);
+    if (roundBtn) { const lbl = document.querySelector('.pf-round-labels span:nth-child(2)'); if (lbl) { const o = lbl.textContent; lbl.textContent = t('shareCopied'); setTimeout(() => { lbl.textContent = o; }, 2000); } return; }
     const original = btn.textContent;
     btn.textContent = t('shareCopied');
     btn.disabled = true;
@@ -2484,6 +2630,7 @@ function handleBack() {
   if (state.cityMenuOpen) { state.cityMenuOpen = false; render(); return; }
   if (backdrop.classList.contains('open')) { closeDetail(); return; }
   if (state.filtersOpen) { state.filtersOpen = false; render(); return; }
+  if (state.tab === 'profile' && state.profilePage) { state.profilePage = null; render(); resetScroll(); return; }
   if (state.tab !== 'home') { state.tab = 'home'; render(); resetScroll(); return; }
 }
 window.addEventListener('popstate', () => {
@@ -2506,6 +2653,7 @@ document.querySelectorAll('.navitem').forEach(btn => {
   btn.addEventListener('click', () => {
     const changed = state.tab !== btn.dataset.tab;
     state.tab = btn.dataset.tab;
+    if (btn.dataset.tab === 'profile') state.profilePage = null;
     if (btn.dataset.tab === 'home' && state.search) {
       state.search = '';
       const si = document.getElementById('searchInput');
