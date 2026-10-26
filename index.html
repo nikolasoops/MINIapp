@@ -611,6 +611,7 @@ const WORD_OFF = { pt: 'Desligado', en: 'Off', es: 'Desactivado', fr: 'Désactiv
 const WORD_NO_MATCH = { pt: 'Nenhum evento corresponde a «{q}».', en: 'No events match "{q}".', es: 'Ningún evento coincide con «{q}».', fr: 'Aucun événement ne correspond à « {q} ».', da: 'Ingen events matcher "{q}".' };
 const WORD_NO_MATCH_HINT = { pt: 'Verifica a ortografia ou limpa a pesquisa.', en: 'Check the spelling or clear the search.', es: 'Revisa la ortografía o borra la búsqueda.', fr: "Vérifie l'orthographe ou efface la recherche.", da: 'Tjek stavningen eller ryd søgningen.' };
 const WORD_ALWAYS_LABEL = { pt: 'Sempre disponíveis', en: 'Always available', es: 'Siempre disponibles', fr: 'Toujours disponibles', da: 'Altid tilgængelige' };
+const WORD_SHARE_WEB = { pt: 'Noutros telemóveis: ', en: 'Other phones: ', es: 'Otros móviles: ', fr: 'Autres téléphones : ', da: 'Andre telefoner: ' };
 const WORD_CLEAR_SEARCH = { pt: 'Limpar pesquisa', en: 'Clear search', es: 'Borrar búsqueda', fr: 'Effacer la recherche', da: 'Ryd søgning' };
 const WORD_SURPRISE = { pt: 'Minimissão!', en: 'Minimission!', es: '¡Minimisión!', fr: 'Mini-mission !', da: 'Minimission!' };
 const WORD_TRY_ANOTHER = { pt: 'Mais uma mini-missão, por favor!', en: 'Another mini-mission please!', es: '¡Otra minimisión, por favor!', fr: "Encore une mini-mission, s'il te plaît !", da: 'En mini-mission mere, tak!' };
@@ -621,6 +622,7 @@ const WORD_FOLLOW_IG = { pt: 'Segue-nos no Instagram', en: 'Follow us on Instagr
 const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en: 'News, events and tips for families.', es: 'Novedades, eventos y consejos para familias.', fr: 'Nouveautés, événements et idées pour les familles.', da: 'Nyheder, begivenheder og tips til familier.' };
 const INSTAGRAM_URL = 'https://www.instagram.com/minimapp_kids/';
 const APP_URL = 'https://app.minimappkids.com/index.html';
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.gotitasarrumadas.miniapp';
 function scopeNote() {
   const s = t('profileScopeNote');
   if (state.city === 'porto') return s;
@@ -965,6 +967,7 @@ const state = {
   freeOnly: false,
   locationFilter: 'all', // all | indoor | outdoor
   childAges: JSON.parse(localStorage.getItem('pf_child_ages') || '[]'), // array of numbers (years)
+  homeCity: localStorage.getItem('pf_home_city') || '', // '' = not answered, a city key, or 'other' (device only, never sent anywhere)
   lang: localStorage.getItem('pf_lang') || initialLang(localStorage.getItem('pf_city') || 'porto'), // first launch: phone language if the city offers it
   // Map of event id -> { start: 'YYYY-MM-DD', end: 'YYYY-MM-DD' }, the date
   // (or date range) the user chose when saving that event.
@@ -999,6 +1002,9 @@ function persistSaved() {
 }
 function persistChildAges() {
   localStorage.setItem('pf_child_ages', JSON.stringify(state.childAges));
+}
+function persistHomeCity() {
+  try { if (state.homeCity) localStorage.setItem('pf_home_city', state.homeCity); else localStorage.removeItem('pf_home_city'); } catch (e) {}
 }
 function persistCity() {
   localStorage.setItem('pf_city', state.city);
@@ -2245,6 +2251,9 @@ const PF = {
   helpText: { pt: 'Encontraste um erro, um evento que já não existe ou algo que não funciona? Escreve-nos — respondemos o mais depressa possível.', en: 'Found a mistake, an event that no longer exists, or something that doesn\'t work? Write to us — we reply as fast as we can.', es: '¿Has encontrado un error, un evento que ya no existe o algo que no funciona? Escríbenos y te responderemos lo antes posible.', fr: 'Tu as trouvé une erreur, un événement qui n\'existe plus ou quelque chose qui ne marche pas ? Écris-nous, nous répondons au plus vite.', da: 'Har du fundet en fejl, et event der ikke findes mere, eller noget der ikke virker? Skriv til os – vi svarer så hurtigt vi kan.' },
   helpBtn:  { pt: 'Enviar email', en: 'Email us', es: 'Enviar email', fr: 'Nous écrire', da: 'Send en email' },
   suggest:  { pt: 'Sugerir um evento', en: 'Suggest an event', es: 'Sugerir un evento', fr: 'Proposer un événement', da: 'Foreslå et event' },
+  homeTitle:{ pt: 'Onde vives?', en: 'Where do you live?', es: '¿Dónde vives?', fr: 'Où habites-tu ?', da: 'Hvor bor du?' },
+  homeHint: { pt: 'Fica só no teu telemóvel. Toca outra vez para limpar.', en: 'Stays on your phone only. Tap again to clear.', es: 'Se queda solo en tu móvil. Toca otra vez para borrarlo.', fr: 'Reste uniquement sur ton téléphone. Touche à nouveau pour effacer.', da: 'Bliver kun på din telefon. Tryk igen for at fjerne.' },
+  homeOther:{ pt: 'Outro sítio', en: 'Somewhere else', es: 'Otro sitio', fr: 'Ailleurs', da: 'Et andet sted' },
   shareApp: { pt: 'Partilhar a app', en: 'Share the app', es: 'Compartir la app', fr: 'Partager l\'app', da: 'Del appen' },
 };
 const PF_FAQ = {
@@ -2314,6 +2323,14 @@ function profileSubpageHtml(page) {
         <div class="pf-ages">
           ${sorted.map(age => `<button class="pf-age" data-edit-age="${state.childAges.indexOf(age)}">${age} ${ageUnit(age)}</button>`).join('')}
           <button class="pf-age add" id="pfAddAge">${pfw('addChild')}</button>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h3>${pfw('homeTitle')}</h3>
+        <p>${pfw('homeHint')}</p>
+        <div class="pf-ages">
+          ${CITIES.map(c => `<button class="pf-age ${state.homeCity === c.key ? '' : 'add'}" data-home="${c.key}" aria-pressed="${state.homeCity === c.key}">${cityName(c)}</button>`).join('')}
+          <button class="pf-age ${state.homeCity === 'other' ? '' : 'add'}" data-home="other" aria-pressed="${state.homeCity === 'other'}">${pfw('homeOther')}</button>
         </div>
       </div>
       ${langs.length > 1 ? `
@@ -2400,6 +2417,9 @@ function renderProfile() {
     btn.onclick = () => setLang(btn.dataset.lang);
   });
   contentEl.querySelectorAll('[data-edit-age]').forEach(btn => { btn.onclick = () => openAgeStepper(Number(btn.dataset.editAge)); });
+  contentEl.querySelectorAll('[data-home]').forEach(btn => {
+    btn.onclick = () => { state.homeCity = state.homeCity === btn.dataset.home ? '' : btn.dataset.home; persistHomeCity(); render(); };
+  });
   const addAge = document.getElementById('pfAddAge');
   if (addAge) addAge.onclick = () => openAgeStepper(null);
   const ny = document.getElementById('notifYes');
@@ -2441,13 +2461,19 @@ async function shareEvent(ev, btn) {
 
 async function shareApp(btn) {
   const roundBtn = btn && btn.closest && btn.closest('.pf-round');
-  const shareData = { title: 'MINImapp', text: t('shareText'), url: 'https://app.minimappkids.com/' };
+  // Android phones share the Google Play page (one tap to install); the web
+  // link is added to the text so iPhone and desktop recipients can still open it.
+  const WEB_URL = 'https://app.minimappkids.com/';
+  const onAndroid = /Android/i.test(navigator.userAgent || '');
+  const shareData = onAndroid
+    ? { title: 'MINImapp', text: t('shareText') + '\n' + wordOf(WORD_SHARE_WEB) + WEB_URL, url: PLAY_URL }
+    : { title: 'MINImapp', text: t('shareText'), url: WEB_URL };
   if (navigator.share) {
     try { await navigator.share(shareData); return; }
     catch (err) { if (err && err.name === 'AbortError') return; /* user cancelled the native sheet; fall through to clipboard otherwise */ }
   }
   try {
-    await navigator.clipboard.writeText(shareData.url);
+    await navigator.clipboard.writeText(onAndroid ? shareData.url + '\n' + wordOf(WORD_SHARE_WEB) + WEB_URL : shareData.url);
     if (roundBtn) { const lbl = document.querySelector('.pf-round-labels span:nth-child(2)'); if (lbl) { const o = lbl.textContent; lbl.textContent = t('shareCopied'); setTimeout(() => { lbl.textContent = o; }, 2000); } return; }
     const original = btn.textContent;
     btn.textContent = t('shareCopied');
