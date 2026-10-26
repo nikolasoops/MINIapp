@@ -90,6 +90,8 @@
   .search-clear { display: none; flex: none; width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(255,255,255,0.22); color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; padding: 0; }
   .search-clear.show { display: inline-flex; align-items: center; justify-content: center; }
   .empty .empty-clear { margin-top: 12px; }
+  .always-toggle { display: block; width: calc(100% - 36px); margin: 14px 18px 6px; text-align: center; }
+  .always-label { margin-top: 18px; }
   .filtros-btn { flex: none; width: 44px; height: 44px; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--primary); display:flex; align-items:center; justify-content:center; cursor: pointer; position: relative; }
   .filtros-btn .count { position:absolute; top:-5px; right:-5px; background: var(--orange); color:#fff; font-size: 9px; font-weight: 800; border-radius: 999px; min-width:15px; height:15px; display:flex; align-items:center; justify-content:center; padding: 0 3px; }
 
@@ -609,6 +611,9 @@ const WORD_ON = { pt: 'Ligado', en: 'On', es: 'Activado', fr: 'Activé', da: 'Ti
 const WORD_OFF = { pt: 'Desligado', en: 'Off', es: 'Desactivado', fr: 'Désactivé', da: 'Fra' };
 const WORD_NO_MATCH = { pt: 'Nenhum evento corresponde a «{q}».', en: 'No events match "{q}".', es: 'Ningún evento coincide con «{q}».', fr: 'Aucun événement ne correspond à « {q} ».', da: 'Ingen events matcher "{q}".' };
 const WORD_NO_MATCH_HINT = { pt: 'Verifica a ortografia ou limpa a pesquisa.', en: 'Check the spelling or clear the search.', es: 'Revisa la ortografía o borra la búsqueda.', fr: "Vérifie l'orthographe ou efface la recherche.", da: 'Tjek stavningen eller ryd søgningen.' };
+const WORD_ALWAYS_SHOW = { pt: 'Mostrar também locais sempre disponíveis ({n})', en: 'Also show always-available places ({n})', es: 'Mostrar también lugares siempre disponibles ({n})', fr: 'Afficher aussi les lieux toujours disponibles ({n})', da: 'Vis også steder der altid er tilgængelige ({n})' };
+const WORD_ALWAYS_HIDE = { pt: 'Esconder locais sempre disponíveis', en: 'Hide always-available places', es: 'Ocultar lugares siempre disponibles', fr: 'Masquer les lieux toujours disponibles', da: 'Skjul steder der altid er tilgængelige' };
+const WORD_ALWAYS_LABEL = { pt: 'Sempre disponíveis', en: 'Always available', es: 'Siempre disponibles', fr: 'Toujours disponibles', da: 'Altid tilgængelige' };
 const WORD_CLEAR_SEARCH = { pt: 'Limpar pesquisa', en: 'Clear search', es: 'Borrar búsqueda', fr: 'Effacer la recherche', da: 'Ryd søgning' };
 const WORD_SURPRISE = { pt: 'Minimissão!', en: 'Minimission!', es: '¡Minimisión!', fr: 'Mini-mission !', da: 'Minimission!' };
 const WORD_TRY_ANOTHER = { pt: 'Mais uma mini-missão, por favor!', en: 'Another mini-mission please!', es: '¡Otra minimisión, por favor!', fr: "Encore une mini-mission, s'il te plaît !", da: 'En mini-mission mere, tak!' };
@@ -948,6 +953,7 @@ const state = {
   cats: new Set(),
   subFilters: new Set(),
   dateMode: 'all', // all | today | weekend | range
+  showAlways: false, // with a date filter on: also list always-available places
   rangeStart: null, // 'YYYY-MM-DD'
   rangeEnd: null, // 'YYYY-MM-DD'
   datePickerOpen: false,
@@ -1339,6 +1345,22 @@ function isPastEvent(ev) {
   if (!endStr) return false;
   return new Date(endStr + 'T00:00:00').getTime() < todayMidnight().getTime();
 }
+// Places that are there on any day: marked ongoing, undated, or running more
+// than a month (long exhibitions/seasons). With a date filter on, the list
+// shows only what is specific to the chosen day(s) and these stay behind a
+// toggle, so the smaller one-off events are not buried under SEA LIFE etc.
+function isEverydayPlace(ev) {
+  if (ev.ongoing) return true;
+  if (ev.date) return false;
+  if (ev.dateStart && ev.dateEnd) {
+    const n = (new Date(ev.dateEnd + 'T00:00:00') - new Date(ev.dateStart + 'T00:00:00')) / 86400000 + 1;
+    return n > 31;
+  }
+  return true;
+}
+function dateFilterActive() {
+  return state.dateMode !== 'all' && !(state.dateMode === 'range' && !state.rangeStart);
+}
 function matchesDate(ev) {
   const today = todayMidnight();
   switch (state.dateMode) {
@@ -1380,6 +1402,7 @@ function matches(ev, opts) {
   if (state.locationFilter === 'indoor' && ev.indoor !== true) return false;
   if (state.locationFilter === 'outdoor' && ev.indoor !== false) return false;
   if (!opts.ignoreDate && !matchesDate(ev)) return false;
+  if (!opts.ignoreDate && dateFilterActive() && !state.showAlways && isEverydayPlace(ev)) return false;
   if (state.search.trim()) {
     const q = state.search.trim().toLowerCase();
     const hay = `${ev.title} ${ev.title_en || ''} ${ev.venue}`.toLowerCase();
@@ -1760,7 +1783,19 @@ function renderHome() {
     contentEl.innerHTML = comingSoonHtml();
     return;
   }
-  const list = EVENTS.filter(matches);
+  let list = EVENTS.filter(matches);
+  let alwaysHtml = '';
+  if (dateFilterActive()) {
+    if (state.showAlways) {
+      list = list.filter(ev => !isEverydayPlace(ev)).concat(list.filter(isEverydayPlace));
+      alwaysHtml = `<button type="button" class="btn ghost always-toggle">${wordOf(WORD_ALWAYS_HIDE)}</button>`;
+    } else {
+      state.showAlways = true;
+      const hiddenN = EVENTS.filter(ev => matches(ev) && isEverydayPlace(ev)).length;
+      state.showAlways = false;
+      if (hiddenN) alwaysHtml = `<button type="button" class="btn ghost always-toggle">${wordOf(WORD_ALWAYS_SHOW).replace('{n}', hiddenN)}</button>`;
+    }
+  }
   const toggleHtml = `
     <div class="seg" id="exploreViewToggle">
       <button data-view="list" class="${state.exploreView === 'list' ? 'on' : ''}">☰ ${t('viewList')}</button>
@@ -1785,11 +1820,15 @@ function renderHome() {
   }
 
   if (!list.length) {
-    contentEl.innerHTML = `${toggleHtml}<div class="section-label">${dateFilterLabel()}</div>${emptyListHtml()}`;
+    contentEl.innerHTML = `${toggleHtml}<div class="section-label">${dateFilterLabel()}</div>${emptyListHtml()}${alwaysHtml}`;
     wireExploreViewToggle();
     return;
   }
-  contentEl.innerHTML = `${toggleHtml}<div class="list-head"><div class="section-label">${dateFilterLabel()}</div><button class="surprise-btn" id="surpriseBtn" type="button"><span class="dice">${ICON_MISSION}</span>${wordOf(WORD_SURPRISE)}</button></div><div class="list">${list.map(cardHtml).join('')}</div>`;
+  const firstEveryday = state.showAlways && dateFilterActive() ? list.findIndex(isEverydayPlace) : -1;
+  const listBodyHtml = firstEveryday >= 0
+    ? list.slice(0, firstEveryday).map(cardHtml).join('') + `</div><div class="section-label always-label">${wordOf(WORD_ALWAYS_LABEL)}</div><div class="list">` + list.slice(firstEveryday).map(cardHtml).join('')
+    : list.map(cardHtml).join('');
+  contentEl.innerHTML = `${toggleHtml}<div class="list-head"><div class="section-label">${dateFilterLabel()}</div><button class="surprise-btn" id="surpriseBtn" type="button"><span class="dice">${ICON_MISSION}</span>${wordOf(WORD_SURPRISE)}</button></div><div class="list">${listBodyHtml}</div>${alwaysHtml}`;
   wireExploreViewToggle();
   const sBtn = document.getElementById('surpriseBtn');
   if (sBtn) sBtn.onclick = () => {
@@ -2639,6 +2678,7 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 });
 document.getElementById('searchClear').addEventListener('click', () => clearSearch());
 contentEl.addEventListener('click', (e) => { if (e.target && e.target.closest && e.target.closest('.empty-clear')) clearSearch(); });
+contentEl.addEventListener('click', (e) => { if (e.target && e.target.closest && e.target.closest('.always-toggle')) { state.showAlways = !state.showAlways; render(); } });
 document.querySelectorAll('.navitem').forEach(btn => {
   btn.addEventListener('click', () => {
     const changed = state.tab !== btn.dataset.tab;
