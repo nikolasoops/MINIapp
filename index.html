@@ -280,6 +280,8 @@
   .chips-clear { border: none; background: transparent; color: var(--primary); font: inherit; font-size: 12.5px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 4px 6px; }
   .auth-close { margin-top: 8px; width: 100%; }
   .m-share { margin-top: 10px; width: 100%; }
+  .m-dist { margin: 8px 2px 0; font-size: 13px; font-weight: 700; color: var(--primary); text-align: center; min-height: 0; }
+  .m-dist:empty { display: none; }
   .btn.m-again { margin-top: 10px; width: 100%; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 12px; background: var(--yellow); color: #fff; border: none; border-radius: 16px; padding: 14px 16px; font-size: 15.5px; font-weight: 800; text-shadow: 0 1px 2px rgba(140,80,0,.55); }
   .m-again svg { width: 30px; height: 30px; flex: none; }
   .list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-right: 18px; }
@@ -617,6 +619,16 @@ const WORD_SURPRISE = { pt: 'Minimissão!', en: 'Minimission!', es: '¡Minimisi�
 const WORD_TRY_ANOTHER = { pt: 'Mais uma mini-missão, por favor!', en: 'Another mini-mission please!', es: '¡Otra minimisión, por favor!', fr: "Encore une mini-mission, s'il te plaît !", da: 'En mini-mission mere, tak!' };
 const ICON_MISSION = '<svg viewBox="0 0 30 34" aria-hidden="true"><path d="M15 32s12-10.7 12-19.2A12 12 0 0 0 3 12.8C3 21.3 15 32 15 32z" fill="#fff" stroke="#2f62a8" stroke-width="2.2"/><path d="M15 5.6l2 5.4 5.4 2-5.4 2-2 5.4-2-5.4-5.4-2 5.4-2z" fill="#e8611f"/><path d="M6 2.2l.9 2.1 2.1.9-2.1.9L6 8.2l-.9-2.1-2.1-.9 2.1-.9z" fill="#fff"/></svg>';
 const ICON_BULB = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c0-3-4-4.6-4-9.5a8 8 0 0 1 16 0c0 4.9-4 6.5-4 9.5z"/><path d="M12.5 25.5h7M13.5 28.5h5"/><path d="M14 22v-5l2-2 2 2v5"/><path d="M16 1.5v2.5M5 6l1.8 1.8M27 6l-1.8 1.8M1.5 12.5H4M30.5 12.5H28"/></svg>';
+const WORD_CAL = { pt: '📅 Adicionar ao calendário', en: '📅 Add to calendar', es: '📅 Añadir al calendario', fr: '📅 Ajouter au calendrier', da: '📅 Tilføj til kalender' };
+const WORD_CAL_SAVE_FIRST = { pt: 'Guarda primeiro o evento com o coração e escolhe o dia.', en: 'Save the event with the heart first and pick the day.', es: 'Guarda primero el evento con el corazón y elige el día.', fr: 'Enregistre d’abord l’événement avec le cœur et choisis le jour.', da: 'Gem først begivenheden med hjertet og vælg dagen.' };
+const WORD_CAL_PAST = { pt: 'Este evento já passou.', en: 'This event has already passed.', es: 'Este evento ya ha pasado.', fr: 'Cet événement est déjà passé.', da: 'Denne begivenhed er allerede forbi.' };
+const WORD_CAL_DESC_REM = { pt: 'Lembrete: ao fim da tarde do dia anterior e de manhã nesse dia.', en: 'Reminders: the evening before and the morning of the day.', es: 'Recordatorios: la tarde anterior y la mañana del día.', fr: 'Rappels : la veille au soir et le matin même.', da: 'Påmindelser: aftenen før og om morgenen samme dag.' };
+const WORD_DIST = { pt: '📏 Quão longe estou?', en: '📏 How far am I?', es: '📏 ¿A qué distancia estoy?', fr: '📏 À quelle distance suis-je ?', da: '📏 Hvor langt er jeg fra?' };
+const WORD_DIST_FINDING = { pt: 'A localizar…', en: 'Finding you…', es: 'Localizándote…', fr: 'Localisation…', da: 'Finder dig…' };
+const WORD_DIST_DENIED = { pt: 'Sem acesso à localização. Podes ativá-la nas definições do telemóvel ou do navegador.', en: 'No access to your location. You can turn it on in your phone or browser settings.', es: 'Sin acceso a tu ubicación. Puedes activarla en los ajustes del móvil o del navegador.', fr: 'Pas d’accès à ta position. Tu peux l’activer dans les réglages du téléphone ou du navigateur.', da: 'Ingen adgang til din placering. Du kan slå den til i telefonens eller browserens indstillinger.' };
+const WORD_DIST_UNAVAIL = { pt: 'Não foi possível obter a tua localização agora.', en: 'Could not get your location right now.', es: 'No se pudo obtener tu ubicación ahora.', fr: 'Impossible d’obtenir ta position pour le moment.', da: 'Kunne ikke finde din placering lige nu.' };
+const WORD_DIST_FROM = { pt: 'de ti, em linha reta', en: 'from you, in a straight line', es: 'de ti, en línea recta', fr: 'de toi, à vol d’oiseau', da: 'fra dig i fugtlinje' };
+const WORD_DIST_NOLOC = { pt: 'Este evento não tem localização.', en: 'This event has no location.', es: 'Este evento no tiene ubicación.', fr: 'Cet événement n’a pas de lieu.', da: 'Denne begivenhed har ingen placering.' };
 const WORD_SHARE_EVENT = { pt: '📤 Partilhar evento', en: '📤 Share event', es: '📤 Compartir evento', fr: "📤 Partager l'événement", da: '📤 Del begivenhed' };
 const WORD_FOLLOW_IG = { pt: 'Segue-nos no Instagram', en: 'Follow us on Instagram', es: 'Síguenos en Instagram', fr: 'Suis-nous sur Instagram', da: 'Følg os på Instagram' };
 const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en: 'News, events and tips for families.', es: 'Novedades, eventos y consejos para familias.', fr: 'Nouveautés, événements et idées pour les familles.', da: 'Nyheder, begivenheder og tips til familier.' };
@@ -738,7 +750,7 @@ const T = {
     savePickTitle: 'Para que data?', savePickHint: 'Toca num dia para guardar para essa data, ou toca em dois dias para guardar para um intervalo.',
     savePickConfirm: 'Guardar', savePickCancel: 'Cancelar', savedForLabel: 'Guardado para',
     cityComingSoon: 'Ainda estamos a preparar o conteúdo para {city}. Volta em breve!',
-    profileNotifTitle: 'Notificações', profileNotifText: 'Esta opção permite que a aplicação envie um lembrete 1 dia e 2 horas antes do evento guardado.',
+    profileNotifTitle: 'Notificações', profileNotifText: "Quando abres a app, mostra um lembrete dos eventos que guardaste para hoje ou amanhã. Para teres um alerta no telemóvel, usa “Adicionar ao calendário” no evento.",
     legalText1: 'Esta aplicação apenas reúne e organiza informações sobre atividades e eventos para crianças. <b>Não organiza, produz nem é responsável por nenhum dos eventos ou atividades mencionados.</b>',
     legalText2: 'Embora procuremos manter a informação o mais atualizada possível, recomendamos que <b>confirme sempre os detalhes diretamente com o organizador</b> (horários, preços, inscrições, cancelamentos, etc.). A responsabilidade final pela realização e condições de cada evento é inteiramente do seu organizador.',
     authTitle: 'Entrar', authSubtitle: 'Entra só com o teu email, sem palavra-passe. Em breve, os teus eventos guardados vão acompanhar-te em todos os aparelhos — guardar já funciona sem conta.',
@@ -784,7 +796,7 @@ const T = {
     savePickTitle: 'Which date?', savePickHint: 'Tap a day to save it for that date, or tap two days to save it for a range.',
     savePickConfirm: 'Save', savePickCancel: 'Cancel', savedForLabel: 'Saved for',
     cityComingSoon: "We're still preparing content for {city}. Check back soon!",
-    profileNotifTitle: 'Notifications', profileNotifText: 'This option lets the app send a reminder 1 day and 2 hours before a saved event.',
+    profileNotifTitle: 'Notifications', profileNotifText: "When you open the app, it shows a reminder for events you saved for today or tomorrow. For an alert on your phone, use “Add to calendar” on the event.",
     legalText1: 'This app only gathers and organises information about activities and events for children. <b>It does not organise, produce, or take responsibility for any of the events or activities listed.</b>',
     legalText2: 'While we try to keep information as up to date as possible, we recommend you <b>always confirm details directly with the organiser</b> (times, prices, bookings, cancellations, etc.). Final responsibility for how each event runs and its conditions rests entirely with its organiser.',
     authTitle: 'Sign in', authSubtitle: 'Sign in with just your email, no password. Soon your saved events will follow you to every device — saving already works without an account.',
@@ -830,7 +842,7 @@ const T = {
     savePickTitle: '¿Para qué fecha?', savePickHint: 'Toca un día para guardarlo para esa fecha, o toca dos días para guardarlo para un intervalo.',
     savePickConfirm: 'Guardar', savePickCancel: 'Cancelar', savedForLabel: 'Guardado para',
     cityComingSoon: 'Todavía estamos preparando el contenido para {city}. ¡Vuelve pronto!',
-    profileNotifTitle: 'Notificaciones', profileNotifText: 'Esta opción permite que la aplicación envíe un recordatorio 1 día y 2 horas antes del evento guardado.',
+    profileNotifTitle: 'Notificaciones', profileNotifText: "Al abrir la app, muestra un recordatorio de los eventos que guardaste para hoy o mañana. Para recibir una alerta en el móvil, usa “Añadir al calendario” en el evento.",
     legalText1: 'Esta aplicación solo recopila y organiza información sobre actividades y eventos para niños. <b>No organiza, produce ni se responsabiliza de ninguno de los eventos o actividades mencionados.</b>',
     legalText2: 'Aunque intentamos mantener la información lo más actualizada posible, te recomendamos <b>confirmar siempre los detalles directamente con el organizador</b> (horarios, precios, inscripciones, cancelaciones, etc.). La responsabilidad final por la realización y las condiciones de cada evento es enteramente de su organizador.',
     authTitle: 'Iniciar sesión', authSubtitle: 'Inicia sesión solo con tu email, sin contraseña. Pronto tus eventos guardados te seguirán en todos tus dispositivos; guardar ya funciona sin cuenta.',
@@ -876,7 +888,7 @@ const T = {
     savePickTitle: 'Pour quelle date ?', savePickHint: 'Touche un jour pour le sauvegarder pour cette date, ou touche deux jours pour une période.',
     savePickConfirm: 'Sauvegarder', savePickCancel: 'Annuler', savedForLabel: 'Sauvegardé pour',
     cityComingSoon: 'Nous préparons encore le contenu pour {city}. Reviens bientôt !',
-    profileNotifTitle: 'Notifications', profileNotifText: "Cette option permet à l'application d'envoyer un rappel 1 jour et 2 heures avant l'événement sauvegardé.",
+    profileNotifTitle: 'Notifications', profileNotifText: "À l’ouverture de l’app, un rappel s’affiche pour les événements enregistrés pour aujourd’hui ou demain. Pour une alerte sur ton téléphone, utilise « Ajouter au calendrier » sur l’événement.",
     legalText1: "Cette application se contente de rassembler et d'organiser des informations sur des activités et événements pour enfants. <b>Elle n'organise, ne produit ni n'est responsable d'aucun des événements ou activités mentionnés.</b>",
     legalText2: "Bien que nous essayions de maintenir les informations aussi à jour que possible, nous te recommandons de <b>toujours confirmer les détails directement avec l'organisateur</b> (horaires, prix, inscriptions, annulations, etc.). La responsabilité finale de la tenue et des conditions de chaque événement incombe entièrement à son organisateur.",
     authTitle: 'Se connecter', authSubtitle: "Connecte-toi avec ton email, sans mot de passe. Bientôt, tes événements enregistrés te suivront sur tous tes appareils ; l'enregistrement fonctionne déjà sans compte.",
@@ -922,7 +934,7 @@ const T = {
     savePickTitle: 'Hvilken dato?', savePickHint: 'Tryk på en dag for at gemme det til den dato, eller tryk på to dage for at gemme det til et interval.',
     savePickConfirm: 'Gem', savePickCancel: 'Annullér', savedForLabel: 'Gemt til',
     cityComingSoon: 'Vi er stadig ved at forberede indhold til {city}. Kom snart tilbage!',
-    profileNotifTitle: 'Notifikationer', profileNotifText: 'Denne indstilling giver appen mulighed for at sende en påmindelse 1 dag og 2 timer før det gemte event.',
+    profileNotifTitle: 'Notifikationer', profileNotifText: "Når du åbner appen, vises en påmindelse om begivenheder, du har gemt til i dag eller i morgen. For en alarm på telefonen, brug “Tilføj til kalender” på begivenheden.",
     legalText1: 'Denne app indsamler og organiserer udelukkende information om aktiviteter og events for børn. <b>Den arrangerer, producerer eller påtager sig ikke ansvaret for nogen af de nævnte events eller aktiviteter.</b>',
     legalText2: 'Selvom vi bestræber os på at holde informationen så opdateret som muligt, anbefaler vi, at du <b>altid bekræfter detaljerne direkte med arrangøren</b> (tidspunkter, priser, tilmelding, aflysninger osv.). Det endelige ansvar for afholdelsen og betingelserne for hvert event ligger udelukkende hos arrangøren.',
     authTitle: 'Log ind', authSubtitle: 'Log ind med din email – ingen adgangskode. Snart følger dine gemte events med på alle dine enheder; du kan allerede gemme uden konto.',
@@ -2442,6 +2454,92 @@ function renderProfile() {
 // no separate toast/snackbar mechanism to reuse.
 // Shares one event: native share sheet when available, else copies the link.
 // The link opens the app (or the website) straight on this event via ?event=<id>.
+// ---- Add to calendar (.ics) -------------------------------------------------
+// Events have no exact start time, only free text, so the entry is an all-day
+// event on the day the family picked (the day it is saved for, or the event's
+// own date). Two alerts: 18:00 the evening before and 08:00 that morning.
+function icsEscape(v) { return String(v || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+function icsDate(iso) { return iso.replace(/-/g, ''); }
+function isoPlusDays(iso, n) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d + n));
+  return dt.getUTCFullYear() + '-' + String(dt.getUTCMonth() + 1).padStart(2, '0') + '-' + String(dt.getUTCDate()).padStart(2, '0');
+}
+function calendarDays(ev) {
+  // returns { start, end } (inclusive ISO days), or { error: 'save' | 'past' }
+  const today = todayIso();
+  const saved = state.saved.get(ev.id);
+  if (saved && saved.start) return { start: saved.start, end: saved.end || saved.start };
+  if (ev.date) return ev.date >= today ? { start: ev.date, end: ev.date } : { error: 'past' };
+  return { error: 'save' };
+}
+function buildIcs(ev, days) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const desc = [evWhen(ev), wordOf(WORD_CAL_DESC_REM), APP_URL + '?event=' + encodeURIComponent(ev.id)].filter(Boolean).join('\n');
+  const lines = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//MINImapp//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:minimapp-' + ev.id + '-' + icsDate(days.start) + '@minimappkids.com',
+    'DTSTAMP:' + stamp,
+    'DTSTART;VALUE=DATE:' + icsDate(days.start),
+    'DTEND;VALUE=DATE:' + icsDate(isoPlusDays(days.end, 1)),
+    'SUMMARY:' + icsEscape(evTitle(ev)),
+    'LOCATION:' + icsEscape(ev.venue),
+    'DESCRIPTION:' + icsEscape(desc),
+    'URL:' + (ev.source || (APP_URL + '?event=' + encodeURIComponent(ev.id))),
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(evTitle(ev)), 'TRIGGER:-PT6H', 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEscape(evTitle(ev)), 'TRIGGER:PT8H', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'
+  ];
+  return lines.join('\r\n') + '\r\n';
+}
+function flashMsg(btn, text, ms) {
+  const original = btn.dataset.label || btn.textContent;
+  btn.dataset.label = original;
+  btn.textContent = text;
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => { btn.textContent = original; }, ms || 3200);
+}
+function addToCalendar(ev, btn) {
+  const days = calendarDays(ev);
+  if (days.error === 'save') { flashMsg(btn, wordOf(WORD_CAL_SAVE_FIRST)); return; }
+  if (days.error === 'past') { flashMsg(btn, wordOf(WORD_CAL_PAST)); return; }
+  const blob = new Blob([buildIcs(ev, days)], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'minimapp-event-' + ev.id + '.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+// ---- How far am I? ----------------------------------------------------------
+// Asks for the location only when the button is tapped; the position is used
+// for this one calculation on the phone and is never stored or sent anywhere.
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371, r = Math.PI / 180;
+  const dLat = (lat2 - lat1) * r, dLng = (lng2 - lng1) * r;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+function formatKm(km) {
+  if (km < 1) return '≈ ' + (Math.max(50, Math.round(km * 20) * 50)) + ' m';
+  if (km < 10) return '≈ ' + km.toFixed(1).replace('.', state.lang === 'en' ? '.' : ',') + ' km';
+  return '≈ ' + Math.round(km).toLocaleString(state.lang === 'en' ? 'en' : state.lang) + ' km';
+}
+function howFarAmI(ev, btn, out) {
+  if (typeof ev.lat !== 'number' || typeof ev.lng !== 'number') { out.textContent = wordOf(WORD_DIST_NOLOC); return; }
+  if (!navigator.geolocation) { out.textContent = wordOf(WORD_DIST_UNAVAIL); return; }
+  out.textContent = wordOf(WORD_DIST_FINDING);
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const km = haversineKm(pos.coords.latitude, pos.coords.longitude, ev.lat, ev.lng);
+      out.textContent = formatKm(km) + ' ' + wordOf(WORD_DIST_FROM);
+    },
+    (err) => { out.textContent = err && err.code === 1 ? wordOf(WORD_DIST_DENIED) : wordOf(WORD_DIST_UNAVAIL); },
+    { enableHighAccuracy: false, timeout: 12000, maximumAge: 120000 }
+  );
+}
+
 async function shareEvent(ev, btn) {
   const url = APP_URL + '?event=' + encodeURIComponent(ev.id);
   const text = [evTitle(ev), evWhen(ev), ev.venue].filter(Boolean).join(' · ');
@@ -2597,6 +2695,9 @@ function openDetail(id, opts) {
       ${ev.source ? `<a class="btn primary" href="${ev.source}" target="_blank" rel="noopener">${t('viewSource')}</a>` : ''}
       <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
     </div>
+    <button class="btn ghost m-share" id="modalCal" type="button">${wordOf(WORD_CAL)}</button>
+    <button class="btn ghost m-share" id="modalDist" type="button">${wordOf(WORD_DIST)}</button>
+    <p class="m-dist" id="modalDistOut" aria-live="polite"></p>
     <button class="btn ghost m-share" id="modalShare">${wordOf(WORD_SHARE_EVENT)}</button>
     ${opts.surprise && surprisePool().length > 1 ? `<button class="btn m-again" id="modalAgain" type="button">${ICON_BULB}<span>${wordOf(WORD_TRY_ANOTHER)}</span></button>` : ''}
   `;
@@ -2605,6 +2706,8 @@ function openDetail(id, opts) {
   syncBackGuard();
   document.getElementById('modalHandleZone').onclick = () => closeDetail();
   document.getElementById('modalShare').onclick = (e) => shareEvent(ev, e.currentTarget);
+  document.getElementById('modalCal').onclick = (e) => addToCalendar(ev, e.currentTarget);
+  document.getElementById('modalDist').onclick = (e) => howFarAmI(ev, e.currentTarget, document.getElementById('modalDistOut'));
   const againBtn = document.getElementById('modalAgain');
   if (againBtn) againBtn.onclick = () => surpriseMe();
   document.getElementById('modalSave').onclick = () => {
