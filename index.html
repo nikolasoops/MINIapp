@@ -576,7 +576,7 @@ function cityHasContent(key) { return EVENTS.some(e => e.city === key); }
 let EVENTS = [];
 
 function evTitle(ev) { return state.lang === 'en' ? ev.title_en : ev.title; }
-function evWhen(ev)  { return state.lang === 'en' ? ev.when_en  : ev.when; }
+function evWhen(ev)  { const w = state.lang === 'en' ? (ev.when_en || ev.when) : (ev.when || ev.when_en); return w || ''; }
 function evAges(ev)  { return state.lang === 'en' ? ev.ages_en  : ev.ages; }
 function evDesc(ev)  { return state.lang === 'en' ? ev.desc_en  : ev.desc; }
 
@@ -1742,7 +1742,7 @@ function cardHtml(ev) {
       <div class="thumb">${thumbHtml(ev)}</div>
       <div class="card-body">
         <div class="card-title">${evTitle(ev)}</div>
-        <div class="card-meta">${ev.venue} · ${evWhen(ev)}</div>
+        <div class="card-meta">${ev.venue}${evWhen(ev) ? ' · ' + evWhen(ev) : ''}</div>
         ${isSaved ? savedDateHtml(ev) : ''}
         <div class="card-tags">${badgeHtml}${tagsHtml(ev)}</div>
       </div>
@@ -2179,7 +2179,7 @@ function renderExploreMap(list) {
     marker.bindPopup(`
       <div class="map-popup">
         <div class="mp-title">${ev.icon} ${evTitle(ev)}</div>
-        <div class="mp-meta">${ev.venue}<br>${evWhen(ev)}</div>
+        <div class="mp-meta">${ev.venue}${evWhen(ev) ? '<br>' + evWhen(ev) : ''}</div>
         <button data-open="${ev.id}">${t('viewDetails')}</button>
       </div>
     `);
@@ -2688,7 +2688,7 @@ function openDetail(id, opts) {
       <button class="heart ${isSaved ? 'on' : ''}" id="modalSave">${isSaved ? '♥' : '♡'}</button>
     </div>
     <h2>${evTitle(ev)}</h2>
-    <div class="m-meta"><span class="pin">📍</span> ${ev.venue}<br>${evWhen(ev)}</div>
+    <div class="m-meta"><span class="pin">📍</span> ${ev.venue}${evWhen(ev) ? '<br>' + evWhen(ev) : ''}</div>
     <div class="m-tags">${tagsHtml(ev)}</div>
     <div class="m-desc">${evDesc(ev)}</div>
     <div class="m-actions">
