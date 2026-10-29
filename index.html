@@ -590,6 +590,22 @@ function evImages(ev) {
   return [];
 }
 
+// Wikimedia asks sites to hotlink thumbnails, not full-size originals; busy
+// periods answer originals with "429 too many requests" and the photo goes
+// missing. So Commons originals are shown as 960 px thumbnails, and if a
+// thumbnail cannot be loaded we try the original once before giving up.
+function wmSrc(u) {
+  const m = /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/([0-9a-f])\/([0-9a-f]{2})\/([^\/?#]+)$/.exec(String(u));
+  if (!m) return u;
+  return 'https://thumb.wikimedia.org/wikipedia/commons/thumb/' + m[1] + '/' + m[2] + '/' + m[3] + '/960px-' + m[3] +
+    '?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail';
+}
+function wmRetry(img) {
+  const o = img.getAttribute('data-o');
+  if (o && !img.getAttribute('data-f') && o !== img.getAttribute('src')) { img.setAttribute('data-f', '1'); img.src = o; return true; }
+  return false;
+}
+
 // Small card thumbnail — always just the first photo, no swipe (too small
 // for it to be usable). Falls back to the emoji icon, including at runtime
 // via onerror, in case a hotlinked image goes down.
@@ -597,7 +613,7 @@ function thumbHtml(ev) {
   const imgs = evImages(ev);
   if (imgs.length) {
     const src = String(imgs[0]).replace(/"/g, '&quot;');
-    return `<img src="${src}" alt="" loading="lazy" onerror="this.outerHTML='${ev.icon}'">`;
+    return `<img src="${wmSrc(src)}" data-o="${src}" alt="" loading="lazy" onerror="if(!wmRetry(this))this.outerHTML='${ev.icon}'">`;
   }
   return ev.icon;
 }
@@ -673,7 +689,7 @@ function galleryHtml(ev) {
   if (!imgs.length) return ev.icon;
   const slides = imgs.map(u => {
     const src = String(u).replace(/"/g, '&quot;');
-    return `<div class="gallery-slide"><img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="gallery-fallback">${ev.icon}</span>${creditHtml(u)}</div>`;
+    return `<div class="gallery-slide"><img src="${wmSrc(src)}" data-o="${src}" alt="" loading="lazy" onerror="if(!wmRetry(this)){this.style.display='none';this.nextElementSibling.style.display='flex'}"><span class="gallery-fallback">${ev.icon}</span>${creditHtml(u)}</div>`;
   }).join('');
   const dots = imgs.length > 1
     ? `<div class="gallery-dots">${imgs.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>`
