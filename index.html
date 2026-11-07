@@ -1387,6 +1387,30 @@ function isEverydayPlace(ev) {
   }
   return true;
 }
+// First day covered by the active date filter (today, the coming weekend, or the picked day/range start).
+function dateFilterStart() {
+  const today = todayMidnight();
+  switch (state.dateMode) {
+    case 'today': return today;
+    case 'weekend': {
+      const day = today.getDay();
+      return addDays(today, day === 6 ? 0 : (day === 0 ? 0 : 6 - day));
+    }
+    case 'range': return state.rangeStart ? new Date(state.rangeStart + 'T00:00:00') : today;
+    default: return today;
+  }
+}
+// With a date filter on, an event that runs for more than a week and began before the chosen
+// day (a course, market or exhibition already under way) is listed with the always-available
+// places at the end, so the top of the list holds only what is specific to the chosen day.
+function isLongRunningBefore(ev) {
+  if (!ev.dateStart || !ev.dateEnd) return false;
+  const s = new Date(ev.dateStart + 'T00:00:00');
+  const e = new Date(ev.dateEnd + 'T00:00:00');
+  const span = (e - s) / 86400000 + 1;
+  return span > 7 && s < dateFilterStart();
+}
+function listsAtEnd(ev) { return isEverydayPlace(ev) || isLongRunningBefore(ev); }
 function dateFilterActive() {
   return state.dateMode !== 'all' && !(state.dateMode === 'range' && !state.rangeStart);
 }
@@ -1452,6 +1476,13 @@ function resetScroll() {
   contentEl.scrollTop = 0;
   const a = document.getElementById('app');
   if (a) a.scrollTop = 0;
+}
+function scrollViewToTop() {
+  const opts = { top: 0, behavior: 'smooth' };
+  const a = document.getElementById('app');
+  try { contentEl.scrollTo(opts); } catch (e) { contentEl.scrollTop = 0; }
+  if (a) { try { a.scrollTo(opts); } catch (e) { a.scrollTop = 0; } }
+  try { window.scrollTo(opts); } catch (e) { window.scrollTo(0, 0); }
 }
 function syncSearchClear() {
   const b = document.getElementById('searchClear');
@@ -1813,7 +1844,7 @@ function renderHome() {
   }
   let list = EVENTS.filter(matches);
   // With a date filter on, day-specific events come first and the always-available places follow at the end of the list.
-  if (dateFilterActive()) list = list.filter(ev => !isEverydayPlace(ev)).concat(list.filter(isEverydayPlace));
+  if (dateFilterActive()) list = list.filter(ev => !listsAtEnd(ev)).concat(list.filter(listsAtEnd));
   const toggleHtml = `
     <div class="seg" id="exploreViewToggle">
       <button data-view="list" class="${state.exploreView === 'list' ? 'on' : ''}">☰ ${t('viewList')}</button>
@@ -1842,7 +1873,7 @@ function renderHome() {
     wireExploreViewToggle();
     return;
   }
-  const firstEveryday = dateFilterActive() ? list.findIndex(isEverydayPlace) : -1;
+  const firstEveryday = dateFilterActive() ? list.findIndex(listsAtEnd) : -1;
   const listBodyHtml = firstEveryday >= 0
     ? list.slice(0, firstEveryday).map(cardHtml).join('') + `</div><div class="section-label always-label">${wordOf(WORD_ALWAYS_LABEL)}</div><div class="list">` + list.slice(firstEveryday).map(cardHtml).join('')
     : list.map(cardHtml).join('');
@@ -1861,7 +1892,11 @@ function wireExploreViewToggle() {
   if (!toggle) return;
   toggle.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (state.exploreView === btn.dataset.view) return;
+      if (state.exploreView === btn.dataset.view) {
+        // Tapping the view you are already on (e.g. List while scrolled down) jumps back to the top.
+        scrollViewToTop();
+        return;
+      }
       state.exploreView = btn.dataset.view;
       // Close the search keyboard so the new view gets the full screen height.
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
