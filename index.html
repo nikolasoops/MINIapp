@@ -396,6 +396,11 @@
   .citylock-card .btn { width: 100%; margin-bottom: 8px; }
   .city-menu .lockmark { margin-left:auto; font-size: 12px; opacity: .85; }
 
+  /* ---------- v47: new desktop-only controls (hidden on phones) ---------- */
+  .hdr-right { display: contents; }
+  .hdr-icon, .seg-act, .desk-back, .user-wrap { display: none; }
+  .seg-row { display: contents; }
+
   /* ---------- desktop / wide screens (v45): same app, laid out for a computer ---------- */
   @media (min-width: 900px) {
     #app { max-width: 1180px; }
@@ -437,6 +442,40 @@
     .city-menu { min-width: 200px; }
     .corner-ribbon { width: 72px; height: 72px; }
     .corner-ribbon span { top: 13px; right: -13px; }
+
+    /* v47: no bottom bar on a computer; search + account live in the header, filter + saved beside the view toggle */
+    .navbar { display: none; }
+    .brand { cursor: pointer; }
+    .hdr-right { display: flex; align-items: center; gap: 10px; margin-right: 80px; }
+    .city-pill-wrap { margin-right: 0; }
+    .hdr-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 14px; border: none; background: var(--primary); color: #fff; cursor: pointer; padding: 0; }
+    .hdr-icon:hover { filter: brightness(1.1); }
+    .hdr-icon.on { background: var(--orange); }
+    .user-wrap { display: block; position: relative; }
+    .user-menu { min-width: 210px; z-index: 40; }
+    .icon-row { display: none; }
+    body.search-open .icon-row { display: flex; }
+    .icon-row .filtros-btn { display: none; }
+    .active-chips:empty { display: none; }
+    .seg-row { display: flex; align-items: center; gap: 10px; padding: 2px 32px 12px; position: sticky; top: 0; z-index: 3; background: var(--bg); }
+    .seg-row .seg { margin: 0; position: static; flex: 0 1 460px; max-width: 460px; }
+    .seg::before { display: none; }
+    .seg-row .seg-act { display: flex; }
+    .filtros-btn.seg-act, .heart-btn.seg-act { width: 44px; height: 44px; }
+    .heart-btn.seg-act { flex: none; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--orange); font-size: 19px; align-items: center; justify-content: center; cursor: pointer; font-family: inherit; }
+    .seg-act:hover { box-shadow: 0 3px 10px rgba(23,50,79,0.14); }
+    .desk-back { display: inline-flex; align-items: center; gap: 6px; margin: 4px 32px 6px; padding: 8px 14px; border-radius: 12px; border: none; background: #ece4a8; color: var(--primary); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
+    .list-head.has-banner { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 0; align-items: center; padding-right: 32px; }
+    .list-head.has-banner .install-banner { grid-column: 1; grid-row: 1; margin: 0 0 0 32px; max-width: none; }
+    .list-head.has-banner .surprise-btn { grid-column: 2; grid-row: 1; }
+    .list-head.has-banner .section-label { grid-column: 1 / -1; grid-row: 2; }
+    /* calendar: week-day row no longer a full-height row, day list may shrink instead of spilling out of the page */
+    .cal-grid { grid-template-rows: 26px; grid-auto-rows: 46px; }
+    .cal-wrap { margin-top: 2px; }
+    .cal-wrap .list { grid-template-columns: minmax(0, 1fr); }
+    .cal-wrap > :not(.cal-card) { min-width: 0; }
+    .cal-wrap .list .card { min-width: 0; }
+    .cal-wrap .cal-selected-label { padding-top: 4px; }
   }
 
   /* ---------- landscape phones: header scrolls away, bottom bar stays ---------- */
@@ -466,7 +505,7 @@
   <div class="app-header">
     <button class="corner-ribbon" id="langRibbon"><span>PT</span></button>
     <div class="brand-row">
-      <div class="brand">
+      <div class="brand" id="brandHome">
         <svg class="brand-logo" viewBox="0 0 40 46" xmlns="http://www.w3.org/2000/svg">
           <path d="M20 5 C11 5 5 11 5 20 C5 29 20 42 20 42 C20 42 35 29 35 20 C35 11 29 5 20 5 Z" fill="#fff" stroke="#2f62a8" stroke-width="3.2"/>
           <circle cx="20" cy="20" r="7" fill="none" stroke="#2f62a8" stroke-width="3"/>
@@ -475,9 +514,16 @@
         </svg>
         <span class="brand-word"><b>MINI</b><span class="mapp">mapp</span></span>
       </div>
-      <div class="city-pill-wrap" id="cityPillWrap">
-        <button class="city-pill" id="cityPillBtn"><span id="cityPillLabel">Porto</span><span class="car">▾</span></button>
-        <div class="city-menu" id="cityMenu" style="display:none;"></div>
+      <div class="hdr-right">
+        <div class="city-pill-wrap" id="cityPillWrap">
+          <button class="city-pill" id="cityPillBtn"><span id="cityPillLabel">Porto</span><span class="car">▾</span></button>
+          <div class="city-menu" id="cityMenu" style="display:none;"></div>
+        </div>
+        <button class="hdr-icon" id="hdrSearchBtn" type="button" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
+        <div class="user-wrap" id="userWrap">
+          <button class="hdr-icon" id="hdrUserBtn" type="button" aria-label="Account" title="Account"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></button>
+          <div class="city-menu user-menu" id="userMenu" style="display:none;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1991,11 +2037,16 @@ function renderHome() {
   let list = EVENTS.filter(matches);
   // With a date filter on, day-specific events come first and the always-available places follow at the end of the list.
   if (dateFilterActive()) list = list.filter(ev => !listsAtEnd(ev)).concat(list.filter(listsAtEnd));
+  const segFilterBadge = activeFilterCount();
   const toggleHtml = `
+    <div class="seg-row">
     <div class="seg" id="exploreViewToggle">
       <button data-view="list" class="${state.exploreView === 'list' ? 'on' : ''}">☰ ${t('viewList')}</button>
       <button data-view="map" class="${state.exploreView === 'map' ? 'on' : ''}">📍 ${t('viewMap')}</button>
       <button data-view="calendar" class="${state.exploreView === 'calendar' ? 'on' : ''}">🗓️ ${t('viewCalendar')}</button>
+    </div>
+    <button class="filtros-btn seg-act" id="segFilter" type="button" aria-label="${t('filtrosTitle')}" title="${t('filtrosTitle')}">☰${segFilterBadge ? `<span class="count">${segFilterBadge}</span>` : ''}</button>
+    <button class="heart-btn seg-act" id="segSaved" type="button" aria-label="${t('navSaved')}" title="${t('navSaved')}">♥</button>
     </div>
   `;
 
@@ -2036,6 +2087,10 @@ function renderHome() {
 function wireExploreViewToggle() {
   const toggle = document.getElementById('exploreViewToggle');
   if (!toggle) return;
+  const segFilter = document.getElementById('segFilter');
+  if (segFilter) segFilter.onclick = () => { state.filtersOpen = !state.filtersOpen; render(); };
+  const segSaved = document.getElementById('segSaved');
+  if (segSaved) segSaved.onclick = () => document.querySelector('.navitem[data-tab="saved"]').click();
   toggle.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
       if (state.exploreView === btn.dataset.view) {
@@ -2778,6 +2833,7 @@ async function shareApp(btn) {
 }
 
 function render() {
+  parkInstallBanner();
   document.getElementById('searchInput').placeholder = t('searchPlaceholder');
   renderHeader();
   const filtrosBadge = activeFilterCount();
@@ -2818,8 +2874,65 @@ function render() {
   document.querySelectorAll('.navitem').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === state.tab);
   });
+  renderDesktopExtras();
   syncBackGuard();
 }
+
+/* ===================== DESKTOP EXTRAS (v47) ===================== */
+const deskMq = window.matchMedia('(min-width: 900px)');
+let deskSearchOpen = false;
+function goTab(tab) { const b = document.querySelector('.navitem[data-tab="' + tab + '"]'); if (b) b.click(); }
+function renderDesktopExtras() {
+  document.body.classList.toggle('search-open', deskSearchOpen || !!state.search);
+  const sb = document.getElementById('hdrSearchBtn');
+  if (sb) { sb.classList.toggle('on', deskSearchOpen || !!state.search); sb.setAttribute('aria-label', t('searchPlaceholder')); sb.title = t('searchPlaceholder'); }
+  const ub = document.getElementById('hdrUserBtn');
+  if (ub) { ub.classList.toggle('on', state.tab === 'profile'); ub.setAttribute('aria-label', t('navProfile')); ub.title = state.user ? t('navProfile') : t('authTitle'); }
+  // Back button on the Saved / Profile pages (the bottom bar is gone on a computer)
+  if (state.tab !== 'home' && !state.profilePage && !contentEl.querySelector('.desk-back')) {
+    contentEl.insertAdjacentHTML('afterbegin', '<button class="desk-back" id="deskBack" type="button">← ' + t('navHome') + '</button>');
+    document.getElementById('deskBack').onclick = () => goTab('home');
+  }
+  // Install banner sits on the same row as the Minimission button on a computer
+  const ib = document.getElementById('installBanner');
+  const lh = contentEl.querySelector('.list-head');
+  if (ib) {
+    if (deskMq.matches && lh) { if (ib.parentNode !== lh) { lh.insertBefore(ib, lh.firstChild); } lh.classList.add('has-banner'); }
+    else if (ib.parentNode !== document.getElementById('app')) { document.getElementById('app').insertBefore(ib, document.getElementById('reminderBanner')); }
+  }
+}
+// The install banner may be sitting inside the (rebuilt) list header on a computer: park it back in #app before the content is replaced.
+function parkInstallBanner() {
+  const ib = document.getElementById('installBanner'), app = document.getElementById('app');
+  if (ib && app && ib.parentNode !== app) app.insertBefore(ib, document.getElementById('reminderBanner'));
+}
+function closeUserMenu() { const m = document.getElementById('userMenu'); if (m) m.style.display = 'none'; }
+document.getElementById('brandHome').addEventListener('click', () => { if (deskMq.matches) { deskSearchOpen = false; goTab('home'); } });
+document.getElementById('hdrSearchBtn').addEventListener('click', () => {
+  closeUserMenu();
+  if (deskSearchOpen || state.search) {
+    deskSearchOpen = false;
+    if (state.search) clearSearch(); else render();
+    return;
+  }
+  deskSearchOpen = true;
+  if (state.tab !== 'home') goTab('home'); else render();
+  const si = document.getElementById('searchInput'); if (si) si.focus();
+});
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && deskMq.matches) { deskSearchOpen = false; if (state.search) clearSearch(); else render(); }
+});
+document.getElementById('hdrUserBtn').addEventListener('click', () => {
+  const menu = document.getElementById('userMenu');
+  if (state.user) { closeUserMenu(); goTab(state.tab === 'profile' ? 'home' : 'profile'); return; }
+  if (menu.style.display !== 'none') { closeUserMenu(); return; }
+  menu.innerHTML = '<button type="button" id="umLogin"><b>' + t('authTitle') + '</b></button><button type="button" id="umProfile">' + t('navProfile') + '</button>';
+  menu.style.display = 'block';
+  document.getElementById('umLogin').onclick = () => { closeUserMenu(); openAuthModal(); };
+  document.getElementById('umProfile').onclick = () => { closeUserMenu(); goTab('profile'); };
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('#userWrap')) closeUserMenu(); });
+if (deskMq.addEventListener) deskMq.addEventListener('change', () => render());
 
 /* ===================== DETAIL MODAL ===================== */
 const backdrop = document.getElementById('modalBackdrop');
