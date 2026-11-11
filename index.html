@@ -382,6 +382,60 @@
   .reminder-banner { margin: 10px 18px 0; background: var(--kids-bg); color: var(--kids); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; line-height: 1.4; display: none; align-items: center; gap: 8px; font-weight: 600; }
   .reminder-banner.show { display: flex; }
   .badge-soon { font-size: 9.5px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--danger); color: #fff; }
+
+
+  /* ---------- v45: city lock popup ---------- */
+  .citylock-backdrop { position:absolute; inset:0; background: rgba(23,50,79,0.45); z-index: 60; display:none; align-items:center; justify-content:center; padding: 0 22px; }
+  .citylock-backdrop.open { display:flex; }
+  .citylock-card { background:#fff; border: 2px solid var(--primary); border-radius: 22px; padding: 22px 20px 18px; width:100%; max-width: 380px; text-align:center; box-shadow: 0 16px 40px rgba(23,50,79,0.35); }
+  .citylock-card h2 { margin: 0 0 8px; font-size: 19px; color: var(--primary); }
+  .citylock-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: var(--ink); }
+  .citylock-card .btn { width: 100%; margin-bottom: 8px; }
+  .city-menu .lockmark { margin-left:auto; font-size: 12px; opacity: .85; }
+
+  /* ---------- desktop / wide screens (v45): same app, laid out for a computer ---------- */
+  @media (min-width: 900px) {
+    #app { max-width: 1180px; }
+    .app-header { padding-left: 32px; padding-right: 32px; }
+    .app-header::before { left: -2%; width: 104%; }
+    .brand-logo { width: 36px; height: 41px; }
+    .brand-word { font-size: 23px; }
+    .icon-row { padding: 0 32px 12px; }
+    .search-pill { max-width: 680px; }
+    .active-chips { padding: 0 32px 12px; }
+    .seg { margin: 2px 32px 12px; max-width: 460px; }
+    .seg::before { left: -32px; right: -32px; }
+    .section-label { padding: 16px 32px 10px; }
+    .empty { padding: 60px 24px; font-size: 15px; }
+    .list { padding: 0 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; align-items: stretch; }
+    .list .card { cursor: pointer; }
+    .list .card:hover { box-shadow: 0 6px 18px rgba(23,50,79,0.14); transform: translateY(-1px); transition: box-shadow .15s, transform .15s; }
+    .thumb { width: 72px; height: 72px; font-size: 28px; }
+    .card-title { font-size: 14.5px; }
+    .card-meta { font-size: 12px; }
+    .list-head { padding-right: 32px; }
+    .map-wrap { padding: 0 32px 8px; }
+    #exploreMap { height: calc(100vh - 330px); min-height: 420px; }
+    .cal-wrap { padding: 0 32px; display: grid; grid-template-columns: minmax(360px, 460px) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+    .cal-wrap > .cal-card { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: 0; }
+    .cal-wrap > :not(.cal-card) { grid-column: 2; }
+    .cal-wrap .list { grid-template-columns: 1fr; }
+    .profile-section-label, .profile-card, .pf-hero, .pf-menu, .pf-round, .pf-round-labels, .pf-subhead, .pf-faq, .install-banner, .reminder-banner { max-width: 620px; margin-left: auto; margin-right: auto; }
+    .pf-hero, .pf-subhead { padding-left: 0; padding-right: 0; }
+    .modal-backdrop { align-items: center; justify-content: center; padding: 24px; }
+    .modal { max-width: 640px; max-height: 90%; border-radius: 22px; border-bottom: 2px solid var(--primary); padding: 18px 26px 28px; }
+    .modal-handle-zone { display: none; }
+    .modal .m-thumb { height: 240px; margin-top: 8px; }
+    .modal h2 { font-size: 21px; }
+    .modal .m-meta, .modal .m-desc { font-size: 14.5px; }
+    .filter-panel { top: 150px; left: 50%; right: auto; width: min(720px, calc(100% - 64px)); transform: translateX(-50%); }
+    .navbar { justify-content: center; gap: 24px; }
+    .navitem { flex: 0 1 180px; }
+    .city-menu { min-width: 200px; }
+    .corner-ribbon { width: 72px; height: 72px; }
+    .corner-ribbon span { top: 13px; right: -13px; }
+  }
+
   /* ---------- landscape phones: header scrolls away, bottom bar stays ---------- */
   @media (orientation: landscape) and (max-height: 540px) {
     #app { display: block; overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -466,6 +520,7 @@
     <button class="navitem" data-tab="profile"><span class="ic">👤</span>Perfil</button>
   </div>
 
+  <div class="citylock-backdrop" id="cityLockBackdrop"><div class="citylock-card" id="cityLockCard"></div></div>
   <div class="filter-overlay-backdrop" id="filterOverlayBackdrop">
     <div class="filter-panel" id="filterPanel"></div>
   </div>
@@ -775,6 +830,7 @@ const T = {
     authResend: 'Reenviar link', authSignedInAs: 'Sessão iniciada como', authSignOut: 'Terminar sessão', privacyLink: 'Política de privacidade', deleteAccount: 'Eliminar a minha conta', deleteConfirm: 'Eliminar definitivamente a tua conta e o teu email? Esta ação não pode ser anulada.', deleteDone: 'A tua conta foi eliminada.', deleteReauth: 'Por segurança, enviámos um link para o teu email. Toca nele neste aparelho e depois confirma a eliminação.', deleteFailed: 'Não foi possível eliminar a conta. Tenta novamente ou escreve para admin@minimappkids.com.',
     authInvalidEmail: 'Introduz um email válido.', authGenericError: 'Algo correu mal. Tenta novamente.',
     authOpenOnThisDevice: 'Abre este link no mesmo aparelho onde o pediste.',
+    cityLockTitle: 'Entra para explorar mais', cityLockText: 'Sem conta, a MINImapp mostra só a cidade onde estás ({home}). Entra com o teu email (sem palavra-passe) para veres {city} e todas as outras cidades.', cityLockLogin: 'Entrar', cityLockLater: 'Agora não',
     welcomeTitle: 'Bem-vindo ao MINImapp', welcomeSubtitle: 'Entra com o teu email (sem palavra-passe) ou continua sem conta — podes guardar eventos das duas formas.', welcomeGuest: 'Continuar sem conta',
   },
   en: {
@@ -821,6 +877,7 @@ const T = {
     authResend: 'Resend link', authSignedInAs: 'Signed in as', authSignOut: 'Sign out', privacyLink: 'Privacy policy', deleteAccount: 'Delete my account', deleteConfirm: 'Permanently delete your account and email address? This cannot be undone.', deleteDone: 'Your account has been deleted.', deleteReauth: 'For security, we sent a link to your email. Tap it on this device, then confirm the deletion.', deleteFailed: 'Could not delete the account. Try again or email admin@minimappkids.com.',
     authInvalidEmail: 'Enter a valid email.', authGenericError: 'Something went wrong. Try again.',
     authOpenOnThisDevice: 'Open this link on the same device you requested it from.',
+    cityLockTitle: 'Log in to explore more', cityLockText: 'Without an account, MINImapp shows only the city you are in ({home}). Log in with your email (no password) to see {city} and all the other cities.', cityLockLogin: 'Log in', cityLockLater: 'Not now',
     welcomeTitle: 'Welcome to MINImapp', welcomeSubtitle: 'Sign in with your email (no password) or continue without an account — you can save events either way.', welcomeGuest: 'Continue without an account',
   },
   es: {
@@ -867,6 +924,7 @@ const T = {
     authResend: 'Reenviar enlace', authSignedInAs: 'Sesión iniciada como', authSignOut: 'Cerrar sesión', privacyLink: 'Política de privacidad', deleteAccount: 'Eliminar mi cuenta', deleteConfirm: '¿Eliminar definitivamente tu cuenta y tu correo electrónico? Esta acción no se puede deshacer.', deleteDone: 'Tu cuenta ha sido eliminada.', deleteReauth: 'Por seguridad, hemos enviado un enlace a tu correo. Tócalo en este dispositivo y luego confirma la eliminación.', deleteFailed: 'No se pudo eliminar la cuenta. Inténtalo de nuevo o escribe a admin@minimappkids.com.',
     authInvalidEmail: 'Introduce un email válido.', authGenericError: 'Algo salió mal. Inténtalo de nuevo.',
     authOpenOnThisDevice: 'Abre este enlace en el mismo dispositivo desde el que lo solicitaste.',
+    cityLockTitle: 'Inicia sesión para explorar más', cityLockText: 'Sin cuenta, MINImapp solo muestra la ciudad donde estás ({home}). Inicia sesión con tu email (sin contraseña) para ver {city} y todas las demás ciudades.', cityLockLogin: 'Iniciar sesión', cityLockLater: 'Ahora no',
     welcomeTitle: 'Bienvenido a MINImapp', welcomeSubtitle: 'Inicia sesión con tu email (sin contraseña) o continúa sin cuenta: puedes guardar eventos de las dos formas.', welcomeGuest: 'Continuar sin cuenta',
   },
   fr: {
@@ -913,6 +971,7 @@ const T = {
     authResend: 'Renvoyer le lien', authSignedInAs: 'Connecté en tant que', authSignOut: 'Se déconnecter', privacyLink: 'Politique de confidentialité', deleteAccount: 'Supprimer mon compte', deleteConfirm: 'Supprimer définitivement votre compte et votre adresse e-mail ? Cette action est irréversible.', deleteDone: 'Votre compte a été supprimé.', deleteReauth: 'Par sécurité, nous avons envoyé un lien à votre adresse e-mail. Ouvrez-le sur cet appareil, puis confirmez la suppression.', deleteFailed: 'Impossible de supprimer le compte. Réessayez ou écrivez à admin@minimappkids.com.',
     authInvalidEmail: 'Saisis un email valide.', authGenericError: "Une erreur s'est produite. Réessaie.",
     authOpenOnThisDevice: "Ouvre ce lien sur le même appareil que celui utilisé pour la demande.",
+    cityLockTitle: 'Connecte-toi pour explorer plus', cityLockText: 'Sans compte, MINImapp n\'affiche que la ville où tu te trouves ({home}). Connecte-toi avec ton email (sans mot de passe) pour voir {city} et toutes les autres villes.', cityLockLogin: 'Se connecter', cityLockLater: 'Pas maintenant',
     welcomeTitle: 'Bienvenue sur MINImapp', welcomeSubtitle: 'Connecte-toi avec ton email (sans mot de passe) ou continue sans compte : tu peux enregistrer des événements dans les deux cas.', welcomeGuest: 'Continuer sans compte',
   },
   da: {
@@ -959,6 +1018,7 @@ const T = {
     authResend: 'Send link igen', authSignedInAs: 'Logget ind som', authSignOut: 'Log ud', privacyLink: 'Privatlivspolitik', deleteAccount: 'Slet min konto', deleteConfirm: 'Vil du slette din konto og e-mailadresse permanent? Det kan ikke fortrydes.', deleteDone: 'Din konto er slettet.', deleteReauth: 'Af sikkerhedshensyn har vi sendt et link til din e-mail. Tryk på det på denne enhed, og bekræft derefter sletningen.', deleteFailed: 'Kontoen kunne ikke slettes. Prøv igen, eller skriv til admin@minimappkids.com.',
     authInvalidEmail: 'Indtast en gyldig email.', authGenericError: 'Noget gik galt. Prøv igen.',
     authOpenOnThisDevice: 'Åbn dette link på den samme enhed, du anmodede det fra.',
+    cityLockTitle: 'Log ind for at udforske mere', cityLockText: 'Uden konto viser MINImapp kun den by, du er i ({home}). Log ind med din email (ingen adgangskode) for at se {city} og alle de andre byer.', cityLockLogin: 'Log ind', cityLockLater: 'Ikke nu',
     welcomeTitle: 'Velkommen til MINImapp', welcomeSubtitle: 'Log ind med din email (ingen adgangskode) eller fortsæt uden konto – du kan gemme events begge veje.', welcomeGuest: 'Fortsæt uden konto',
   },
 };
@@ -1022,6 +1082,7 @@ const state = {
   authError: null,
   authPendingEmail: '',
   authResolved: false, // true once Firebase has reported the initial signed-in/out state
+  ipCity: null, // v45: city key matching the visitor's IP (null = unknown, nothing locked)
   guest: localStorage.getItem('pf_guest') === '1', // chose "Continue without an account"
 };
 
@@ -1509,6 +1570,87 @@ const contentEl = document.getElementById('content');
 const filterBarEl = document.getElementById('filterControls');
 let exploreLeafletMap = null;
 
+/* ---------- v45: guests only see the city that matches their IP ----------
+   A visitor who is not signed in gets the nearest app city to their IP address
+   (approximate lookup, result kept on the device for 24 h). Picking another city
+   then shows a "log in to explore more" popup. Signed-in users see every city.
+   If the lookup fails, nothing is locked. This is a product nudge, not security:
+   a VPN or reading events.json directly gets around it. */
+const CITY_COORDS = {
+  barcelona: [41.3874, 2.1686], copenhaga: [55.6761, 12.5683], lisboa: [38.7223, -9.1393],
+  londres: [51.5074, -0.1278], madrid: [40.4168, -3.7038], paris: [48.8566, 2.3522],
+  porto: [41.1579, -8.6291], shanghai: [31.2304, 121.4737], shenzhen: [22.5431, 114.0579],
+};
+const IP_CITY_KEY = 'pf_ip_city';
+const IP_CITY_TTL = 24 * 60 * 60 * 1000;
+function nearestCityKey(lat, lng) {
+  const rad = x => x * Math.PI / 180;
+  let best = null, bestD = Infinity;
+  for (const k of Object.keys(CITY_COORDS)) {
+    const [la, ln] = CITY_COORDS[k];
+    const a = Math.sin(rad(la - lat) / 2) ** 2 + Math.cos(rad(lat)) * Math.cos(rad(la)) * Math.sin(rad(ln - lng) / 2) ** 2;
+    const d = 2 * 6371 * Math.asin(Math.sqrt(a));
+    if (d < bestD) { bestD = d; best = k; }
+  }
+  return best;
+}
+async function fetchJsonTimeout(url, ms) {
+  const ctl = new AbortController();
+  const tm = setTimeout(() => ctl.abort(), ms);
+  try { const r = await fetch(url, { signal: ctl.signal, cache: 'no-store' }); if (!r.ok) throw new Error('http ' + r.status); return await r.json(); }
+  finally { clearTimeout(tm); }
+}
+async function lookupIpCity() {
+  try {
+    const raw = localStorage.getItem(IP_CITY_KEY);
+    if (raw) { const o = JSON.parse(raw); if (o && o.k && CITY_COORDS[o.k] && Date.now() - o.t < IP_CITY_TTL) return o.k; }
+  } catch (e) {}
+  const tries = [
+    async () => { const j = await fetchJsonTimeout('https://get.geojs.io/v1/ip/geo.json', 4000); return [parseFloat(j.latitude), parseFloat(j.longitude)]; },
+    async () => { const j = await fetchJsonTimeout('https://ipwho.is/', 4000); if (j.success === false) throw new Error('ipwho'); return [parseFloat(j.latitude), parseFloat(j.longitude)]; },
+  ];
+  for (const f of tries) {
+    try {
+      const [la, ln] = await f();
+      if (isFinite(la) && isFinite(ln)) {
+        const k = nearestCityKey(la, ln);
+        try { localStorage.setItem(IP_CITY_KEY, JSON.stringify({ k, t: Date.now() })); } catch (e) {}
+        return k;
+      }
+    } catch (e) { /* try the next service */ }
+  }
+  return null;
+}
+function cityLocked(key) {
+  return !!(authReady && state.authResolved && !state.user && state.ipCity && key && key !== state.ipCity);
+}
+function cityNameByKey(key) { const c = CITIES.find(x => x.key === key); return c ? cityName(c) : ''; }
+function closeCityLock() { document.getElementById('cityLockBackdrop').classList.remove('open'); }
+function showCityLock(wantedKey) {
+  const card = document.getElementById('cityLockCard');
+  card.innerHTML = `
+    <h2>${t('cityLockTitle')}</h2>
+    <p>${t('cityLockText').replace('{home}', cityNameByKey(state.ipCity)).replace('{city}', cityNameByKey(wantedKey))}</p>
+    <button class="btn primary" id="cityLockLogin">${t('cityLockLogin')}</button>
+    <button class="btn ghost" id="cityLockLater">${t('cityLockLater')}</button>`;
+  document.getElementById('cityLockBackdrop').classList.add('open');
+  document.getElementById('cityLockLater').onclick = closeCityLock;
+  document.getElementById('cityLockLogin').onclick = () => { closeCityLock(); openAuthModal(); };
+}
+function enforceCityLock() {
+  if (!cityLocked(state.city)) return;
+  const from = state.city;
+  state.city = state.ipCity;
+  persistCity();
+  const vl = CITY_LANGS[state.city] || ['en'];
+  if (!vl.includes(state.lang)) { state.lang = vl[0]; localStorage.setItem('pf_lang', state.lang); document.documentElement.lang = state.lang; }
+  render();
+  showCityLock(from);
+}
+function startIpCityCheck() {
+  lookupIpCity().then(k => { state.ipCity = k; enforceCityLock(); });
+}
+
 /* ---------- header: city switcher + language ribbon ---------- */
 function renderCityMenu() {
   const menu = document.getElementById('cityMenu');
@@ -1516,11 +1658,12 @@ function renderCityMenu() {
   if (!state.cityMenuOpen) return;
   menu.innerHTML = CITIES.map(c => `
     <button data-city="${c.key}">
-      <span class="city-radio ${state.city === c.key ? 'on' : ''}"></span>${cityName(c)}
+      <span class="city-radio ${state.city === c.key ? 'on' : ''}"></span>${cityName(c)}${cityLocked(c.key) ? '<span class="lockmark">🔒</span>' : ''}
     </button>
   `).join('');
   menu.querySelectorAll('[data-city]').forEach(btn => {
     btn.onclick = () => {
+      if (cityLocked(btn.dataset.city)) { state.cityMenuOpen = false; render(); showCityLock(btn.dataset.city); return; }
       state.city = btn.dataset.city;
       persistCity();
       const validLangs = CITY_LANGS[state.city] || ['en'];
@@ -2950,6 +3093,7 @@ async function loadEventsAndInit() {
 }
 // Start the app straight away; sign-in is attached once Firebase has loaded (if it can).
 loadEventsAndInit();
+startIpCityCheck();
 loadFirebaseInBackground().then((ok) => {
   if (!ok) return;
   completeSignInFromLinkIfPresent().finally(() => {
@@ -2958,6 +3102,7 @@ loadFirebaseInBackground().then((ok) => {
       state.authResolved = true;
       render();
       updateGate();
+      enforceCityLock();
       let pendingDelete = false;
       try { pendingDelete = !!user && localStorage.getItem('pf_pending_delete') === '1'; if (pendingDelete) localStorage.removeItem('pf_pending_delete'); } catch (e) {}
       if (pendingDelete) setTimeout(() => doDeleteAccount(), 400);
