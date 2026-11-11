@@ -398,7 +398,7 @@
 
   /* ---------- v47: new desktop-only controls (hidden on phones) ---------- */
   .hdr-right { display: contents; }
-  .hdr-icon, .seg-act, .desk-back, .user-wrap { display: none; }
+  .hdr-icon, .seg-act, .desk-back, .user-wrap, .seg-mission { display: none; }
   .seg-row { display: contents; }
 
   /* ---------- desktop / wide screens (v45): same app, laid out for a computer ---------- */
@@ -425,7 +425,7 @@
     .map-wrap { padding: 0 32px 8px; }
     #exploreMap { height: calc(100vh - 330px); min-height: 420px; }
     .cal-wrap { padding: 0 32px; display: grid; grid-template-columns: minmax(360px, 460px) minmax(0, 1fr); column-gap: 28px; align-items: start; }
-    .cal-wrap > .cal-card { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: 0; }
+    .cal-wrap > .cal-card { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: 68px; }
     .cal-wrap > :not(.cal-card) { grid-column: 2; }
     .cal-wrap .list { grid-template-columns: 1fr; }
     .profile-section-label, .profile-card, .pf-hero, .pf-menu, .pf-round, .pf-round-labels, .pf-subhead, .pf-faq, .install-banner, .reminder-banner { max-width: 620px; margin-left: auto; margin-right: auto; }
@@ -461,14 +461,14 @@
     .seg-row .seg { margin: 0; position: static; flex: 0 1 460px; max-width: 460px; }
     .seg::before { display: none; }
     .seg-row .seg-act { display: flex; }
+    .seg-row .seg-mission { display: inline-flex; margin-left: auto; padding: 9px 14px 9px 11px; font-size: 13.5px; }
+    .list-head .surprise-btn { display: none; }
     .filtros-btn.seg-act, .heart-btn.seg-act { width: 44px; height: 44px; }
     .heart-btn.seg-act { flex: none; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--orange); font-size: 19px; align-items: center; justify-content: center; cursor: pointer; font-family: inherit; }
     .seg-act:hover { box-shadow: 0 3px 10px rgba(23,50,79,0.14); }
     .desk-back { display: inline-flex; align-items: center; gap: 6px; margin: 4px 32px 6px; padding: 8px 14px; border-radius: 12px; border: none; background: #ece4a8; color: var(--primary); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
-    .list-head.has-banner { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 0; align-items: center; padding-right: 32px; }
-    .list-head.has-banner .install-banner { grid-column: 1; grid-row: 1; margin: 0 0 0 32px; max-width: none; }
-    .list-head.has-banner .surprise-btn { grid-column: 2; grid-row: 1; }
-    .list-head.has-banner .section-label { grid-column: 1 / -1; grid-row: 2; }
+    .list-head.has-banner { display: block; padding-right: 32px; }
+    .list-head.has-banner .install-banner { margin: 0 0 0 32px; max-width: 620px; }
     /* calendar: week-day row no longer a full-height row, day list may shrink instead of spilling out of the page */
     .cal-grid { grid-template-rows: 26px; grid-auto-rows: 46px; }
     .cal-wrap { margin-top: 2px; }
@@ -2047,6 +2047,7 @@ function renderHome() {
     </div>
     <button class="filtros-btn seg-act" id="segFilter" type="button" aria-label="${t('filtrosTitle')}" title="${t('filtrosTitle')}">☰${segFilterBadge ? `<span class="count">${segFilterBadge}</span>` : ''}</button>
     <button class="heart-btn seg-act" id="segSaved" type="button" aria-label="${t('navSaved')}" title="${t('navSaved')}">♥</button>
+    <button class="surprise-btn seg-mission" id="segMission" type="button"><span class="dice">${ICON_MISSION}</span>${wordOf(WORD_SURPRISE)}</button>
     </div>
   `;
 
@@ -2089,6 +2090,11 @@ function wireExploreViewToggle() {
   if (!toggle) return;
   const segFilter = document.getElementById('segFilter');
   if (segFilter) segFilter.onclick = () => { state.filtersOpen = !state.filtersOpen; render(); };
+  const segMission = document.getElementById('segMission');
+  if (segMission) segMission.onclick = () => {
+    segMission.classList.remove('rolling'); void segMission.offsetWidth; segMission.classList.add('rolling');
+    setTimeout(() => surpriseMe(), 380);
+  };
   const segSaved = document.getElementById('segSaved');
   if (segSaved) segSaved.onclick = () => document.querySelector('.navitem[data-tab="saved"]').click();
   toggle.querySelectorAll('button').forEach(btn => {
