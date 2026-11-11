@@ -467,8 +467,6 @@
     .heart-btn.seg-act { flex: none; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--orange); font-size: 19px; align-items: center; justify-content: center; cursor: pointer; font-family: inherit; }
     .seg-act:hover { box-shadow: 0 3px 10px rgba(23,50,79,0.14); }
     .desk-back { display: inline-flex; align-items: center; gap: 6px; margin: 4px 32px 6px; padding: 8px 14px; border-radius: 12px; border: none; background: #ece4a8; color: var(--primary); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
-    .list-head.has-banner { display: block; padding-right: 32px; }
-    .list-head.has-banner .install-banner { margin: 0 0 0 32px; max-width: 620px; }
     /* calendar: week-day row no longer a full-height row, day list may shrink instead of spilling out of the page */
     .cal-grid { grid-template-rows: 26px; grid-auto-rows: 46px; }
     .cal-wrap { margin-top: 2px; }
@@ -860,6 +858,7 @@ const T = {
     profileSuggestBtn: 'Sugerir um evento',
     shareTitle: 'Gostas da app?', shareText: 'Partilha a MINImapp com outra família.', shareBtn: '📤 Partilhar app', shareCopied: 'Link copiado!',
     installText: 'Instala esta app no teu telemóvel para acesso rápido.', installBtn: 'Instalar',
+    installHint: 'No menu do navegador (⋮) escolhe «Instalar MINImapp», ou usa o ícone de instalar na barra de endereço.',
     reminderToday: 'É hoje! Tens guardado:', reminderTomorrow: 'É amanhã! Tens guardado:',
     badgeToday: 'Hoje', badgeTomorrow: 'Amanhã',
     chipFree: 'Grátis', chipIndoor: 'Interior', chipOutdoor: 'Exterior',
@@ -907,6 +906,7 @@ const T = {
     profileSuggestBtn: 'Suggest an event',
     shareTitle: 'Like the app?', shareText: 'Share MINImapp with another family.', shareBtn: '📤 Share app', shareCopied: 'Link copied!',
     installText: 'Install this app on your phone for quick access.', installBtn: 'Install',
+    installHint: 'Open your browser menu (⋮) and choose “Install MINImapp”, or use the install icon in the address bar.',
     reminderToday: "It's today! You have saved:", reminderTomorrow: "It's tomorrow! You have saved:",
     badgeToday: 'Today', badgeTomorrow: 'Tomorrow',
     chipFree: 'Free', chipIndoor: 'Indoor', chipOutdoor: 'Outdoor',
@@ -954,6 +954,7 @@ const T = {
     profileSuggestBtn: 'Sugerir un evento',
     shareTitle: '¿Te gusta la app?', shareText: 'Comparte MINImapp con otra familia.', shareBtn: '📤 Compartir app', shareCopied: '¡Enlace copiado!',
     installText: 'Instala esta app en tu móvil para un acceso rápido.', installBtn: 'Instalar',
+    installHint: 'En el menú del navegador (⋮) elige «Instalar MINImapp», o usa el icono de instalar de la barra de direcciones.',
     reminderToday: '¡Es hoy! Tienes guardado:', reminderTomorrow: '¡Es mañana! Tienes guardado:',
     badgeToday: 'Hoy', badgeTomorrow: 'Mañana',
     chipFree: 'Gratis', chipIndoor: 'Interior', chipOutdoor: 'Exterior',
@@ -1001,6 +1002,7 @@ const T = {
     profileSuggestBtn: 'Suggérer un événement',
     shareTitle: "Tu aimes l'app ?", shareText: "Partage MINImapp avec une autre famille.", shareBtn: "📤 Partager l'app", shareCopied: 'Lien copié !',
     installText: 'Installe cette app sur ton téléphone pour un accès rapide.', installBtn: 'Installer',
+    installHint: 'Dans le menu du navigateur (⋮), choisis « Installer MINImapp », ou utilise l’icône d’installation dans la barre d’adresse.',
     reminderToday: "C'est aujourd'hui ! Tu as sauvegardé :", reminderTomorrow: "C'est demain ! Tu as sauvegardé :",
     badgeToday: "Aujourd'hui", badgeTomorrow: 'Demain',
     chipFree: 'Gratuit', chipIndoor: 'Intérieur', chipOutdoor: 'Extérieur',
@@ -1048,6 +1050,7 @@ const T = {
     profileSuggestBtn: 'Foreslå et event',
     shareTitle: 'Kan du lide appen?', shareText: 'Del MINImapp med en anden familie.', shareBtn: '📤 Del appen', shareCopied: 'Link kopieret!',
     installText: 'Installer denne app på din telefon for hurtig adgang.', installBtn: 'Installer',
+    installHint: 'Åbn browserens menu (⋮) og vælg “Installer MINImapp”, eller brug installér-ikonet i adresselinjen.',
     reminderToday: 'Det er i dag! Du har gemt:', reminderTomorrow: 'Det er i morgen! Du har gemt:',
     badgeToday: 'I dag', badgeTomorrow: 'I morgen',
     chipFree: 'Gratis', chipIndoor: 'Indendørs', chipOutdoor: 'Udendørs',
@@ -2887,8 +2890,20 @@ function render() {
 /* ===================== DESKTOP EXTRAS (v47) ===================== */
 const deskMq = window.matchMedia('(min-width: 900px)');
 let deskSearchOpen = false;
+let installHintOpen = false, deskBannerForced = false;
+function installPromptReady() { try { return !!deferredPrompt; } catch (e) { return false; } }
 function goTab(tab) { const b = document.querySelector('.navitem[data-tab="' + tab + '"]'); if (b) b.click(); }
 function renderDesktopExtras() {
+  // Install banner on a computer: shown in every browser (also those that never fire the install prompt, e.g. Brave),
+  // unless the app is already running installed. Without a prompt the button explains where the browser's install option is.
+  const ibn = document.getElementById('installBanner');
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (ibn) {
+    if (deskMq.matches && !standalone) { if (!ibn.classList.contains('show')) deskBannerForced = true; ibn.classList.add('show'); }
+    else if (!deskMq.matches && deskBannerForced && !installPromptReady()) { ibn.classList.remove('show'); deskBannerForced = false; }
+    const sp = ibn.querySelector('span');
+    if (sp && deskMq.matches && !installPromptReady()) sp.textContent = installHintOpen ? t('installHint') : t('installText');
+  }
   document.body.classList.toggle('search-open', deskSearchOpen || !!state.search);
   const sb = document.getElementById('hdrSearchBtn');
   if (sb) { sb.classList.toggle('on', deskSearchOpen || !!state.search); sb.setAttribute('aria-label', t('searchPlaceholder')); sb.title = t('searchPlaceholder'); }
@@ -2898,13 +2913,6 @@ function renderDesktopExtras() {
   if (state.tab !== 'home' && !state.profilePage && !contentEl.querySelector('.desk-back')) {
     contentEl.insertAdjacentHTML('afterbegin', '<button class="desk-back" id="deskBack" type="button">← ' + t('navHome') + '</button>');
     document.getElementById('deskBack').onclick = () => goTab('home');
-  }
-  // Install banner sits on the same row as the Minimission button on a computer
-  const ib = document.getElementById('installBanner');
-  const lh = contentEl.querySelector('.list-head');
-  if (ib) {
-    if (deskMq.matches && lh) { if (ib.parentNode !== lh) { lh.insertBefore(ib, lh.firstChild); } lh.classList.add('has-banner'); }
-    else if (ib.parentNode !== document.getElementById('app')) { document.getElementById('app').insertBefore(ib, document.getElementById('reminderBanner')); }
   }
 }
 // The install banner may be sitting inside the (rebuilt) list header on a computer: park it back in #app before the content is replaced.
@@ -3133,7 +3141,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   document.getElementById('installBanner').classList.add('show');
 });
 document.getElementById('installBtn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
+  if (!deferredPrompt) { installHintOpen = !installHintOpen; renderDesktopExtras(); return; }
   deferredPrompt.prompt();
   await deferredPrompt.userChoice;
   deferredPrompt = null;
