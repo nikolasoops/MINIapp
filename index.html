@@ -1652,6 +1652,10 @@ async function fetchJsonTimeout(url, ms) {
   try { const r = await fetch(url, { signal: ctl.signal, cache: 'no-store' }); if (!r.ok) throw new Error('http ' + r.status); return await r.json(); }
   finally { clearTimeout(tm); }
 }
+// v51: the guest city lock is switched OFF until the paid subscription exists. While false the app never asks an IP service
+// anything and every city is open to everyone. To bring the lock back: set true AND put the IP-lookup rows back in privacy.html
+// (see privacy_with_iplock.html) and update Play Console Data safety + App access first.
+const CITY_LOCK_ENABLED = false;
 async function lookupIpCity() {
   try {
     const raw = localStorage.getItem(IP_CITY_KEY);
@@ -1674,6 +1678,7 @@ async function lookupIpCity() {
   return null;
 }
 function cityLocked(key) {
+  if (!CITY_LOCK_ENABLED) return false;
   return !!(authReady && state.authResolved && !state.user && state.ipCity && key && key !== state.ipCity);
 }
 function cityNameByKey(key) { const c = CITIES.find(x => x.key === key); return c ? cityName(c) : ''; }
@@ -1700,6 +1705,7 @@ function enforceCityLock() {
   showCityLock(from);
 }
 function startIpCityCheck() {
+  if (!CITY_LOCK_ENABLED) { try { localStorage.removeItem(IP_CITY_KEY); } catch (e) {} return; }
   lookupIpCity().then(k => { state.ipCity = k; enforceCityLock(); });
 }
 
