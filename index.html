@@ -765,6 +765,25 @@ const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.gotitasarrum
 // v54: true when running inside the iPhone/iPad app (Capacitor shell). The shell also appends "MINImappIOS" to the user agent.
 const IS_IOS_APP = (function () { try { return (window.Capacitor && typeof window.Capacitor.getPlatform === 'function' && window.Capacitor.getPlatform() === 'ios') || /MINImappIOS/.test(navigator.userAgent || ''); } catch (e) { return false; } })();
 if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
+// v55: iPhone app opened by a link (e.g. the emailed sign-in link via Apple universal links): load that link inside the app.
+// A link opened while the app runs arrives as 'appUrlOpen'; a link that started the app comes from getLaunchUrl().
+// sessionStorage remembers handled links so the same launch link is never loaded twice (no reload loop).
+(function () {
+  if (!IS_IOS_APP) return;
+  const AppPlugin = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+  if (!AppPlugin) return;
+  function openInApp(url) {
+    try {
+      if (!url || url.indexOf('https://app.minimappkids.com/') !== 0) return;
+      const done = JSON.parse(sessionStorage.getItem('pf_opened_links') || '[]');
+      if (done.indexOf(url) !== -1 || url === window.location.href) return;
+      done.push(url); sessionStorage.setItem('pf_opened_links', JSON.stringify(done.slice(-10)));
+      window.location.href = url;
+    } catch (e) { console.error('[MINImapp iOS] open link failed', e); }
+  }
+  try { AppPlugin.addListener('appUrlOpen', (ev) => openInApp(ev && ev.url)); } catch (e) {}
+  try { AppPlugin.getLaunchUrl().then((r) => openInApp(r && r.url)).catch(() => {}); } catch (e) {}
+})();
 function scopeNote() {
   const s = t('profileScopeNote');
   if (state.city === 'porto') return s;
