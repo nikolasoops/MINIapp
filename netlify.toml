@@ -10,3 +10,9 @@
   to = "https://app.minimappkids.com/:splat"
   status = 301
   force = true
+
+# Apple universal links file (iPhone app, v55): must be served as JSON, no redirect.
+[[headers]]
+  for = "/.well-known/apple-app-site-association"
+  [headers.values]
+    Content-Type = "application/json"
