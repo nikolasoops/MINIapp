@@ -1,4 +1,4 @@
-const CACHE_NAME = 'porto-familia-v53';
+const CACHE_NAME = 'porto-familia-v54';
 const ASSETS = [
   './index.html',
   './manifest.json',
