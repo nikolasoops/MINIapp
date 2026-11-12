@@ -380,6 +380,7 @@
     padding: 10px 12px; font-size: 12px; display: none; align-items: center; justify-content: space-between; gap: 8px;
   }
   .install-banner.show { display: flex; }
+  .ios-app .install-banner, .ios-app .install-banner.show { display: none !important; }
   .install-hint { display: none; }
   .install-banner button { background: rgba(255,255,255,0.25); border: none; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
 
@@ -761,6 +762,9 @@ const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en:
 const INSTAGRAM_URL = 'https://www.instagram.com/minimapp_kids/';
 const APP_URL = 'https://app.minimappkids.com/index.html';
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.gotitasarrumadas.miniapp';
+// v54: true when running inside the iPhone/iPad app (Capacitor shell). The shell also appends "MINImappIOS" to the user agent.
+const IS_IOS_APP = (function () { try { return (window.Capacitor && typeof window.Capacitor.getPlatform === 'function' && window.Capacitor.getPlatform() === 'ios') || /MINImappIOS/.test(navigator.userAgent || ''); } catch (e) { return false; } })();
+if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
 function scopeNote() {
   const s = t('profileScopeNote');
   if (state.city === 'porto') return s;
@@ -2917,7 +2921,7 @@ function renderDesktopExtras() {
   // already runs installed. It sits in the view row next to Minimission!. Without a prompt, Install opens a short hint under the box.
   const ibn = document.getElementById('installBanner');
   const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  if (ibn) {
+  if (ibn && !IS_IOS_APP) {
     if (deskMq.matches && !standalone) { if (!ibn.classList.contains('show')) deskBannerForced = true; ibn.classList.add('show'); }
     else if (!deskMq.matches && deskBannerForced && !installPromptReady()) { ibn.classList.remove('show'); deskBannerForced = false; }
     const sp = ibn.querySelector('span');
@@ -3040,7 +3044,7 @@ function openDetail(id, opts) {
     <div class="m-desc">${evDesc(ev)}</div>
     <div class="m-actions">
       ${ev.source ? `<a class="btn primary" href="${ev.source}" target="_blank" rel="noopener">${t('viewSource')}</a>` : ''}
-      <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
+      <a class="btn ${ev.source ? 'ghost' : 'primary'}" href="${IS_IOS_APP ? 'https://maps.apple.com/?q=' + mapsQuery(ev) : 'https://www.google.com/maps/search/?api=1&query=' + mapsQuery(ev)}" target="_blank" rel="noopener">${t('viewOnMap')}</a>
     </div>
     <button class="btn ghost m-share" id="modalCal" type="button">${wordOf(WORD_CAL)}</button>
     <button class="btn ghost m-share" id="modalDist" type="button">${wordOf(WORD_DIST)}</button>
@@ -3164,6 +3168,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   document.getElementById('installBanner').classList.add('show');
 });
 document.getElementById('installBtn').addEventListener('click', async () => {
+  if (IS_IOS_APP) return;
   // On a computer the Install button takes you to the app on Google Play (v53)
   if (deskMq.matches) { window.open(PLAY_URL + '&referrer=utm_source%3Dapp.minimappkids.com%26utm_medium%3Dinstall-box', '_blank', 'noopener'); return; }
   if (!deferredPrompt) { installHintOpen = !installHintOpen; renderDesktopExtras(); return; }
