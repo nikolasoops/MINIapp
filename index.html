@@ -380,6 +380,7 @@
     padding: 10px 12px; font-size: 12px; display: none; align-items: center; justify-content: space-between; gap: 8px;
   }
   .install-banner.show { display: flex; }
+  .install-hint { display: none; }
   .install-banner button { background: rgba(255,255,255,0.25); border: none; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
 
   .reminder-banner { margin: 10px 18px 0; background: var(--kids-bg); color: var(--kids); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; line-height: 1.4; display: none; align-items: center; gap: 8px; font-weight: 600; }
@@ -467,6 +468,12 @@
     .heart-btn.seg-act { flex: none; border-radius: 13px; background: #fff; border: 1px solid var(--line); color: var(--orange); font-size: 19px; align-items: center; justify-content: center; cursor: pointer; font-family: inherit; }
     .seg-act:hover { box-shadow: 0 3px 10px rgba(23,50,79,0.14); }
     .desk-back { display: inline-flex; align-items: center; gap: 6px; margin: 4px 32px 6px; padding: 8px 14px; border-radius: 12px; border: none; background: #ece4a8; color: var(--primary); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
+    /* v52: install box sits in the view row, left of Minimission, same height */
+    .seg-row .install-banner { position: relative; margin: 0 0 0 auto; max-width: none; height: 44px; padding: 0 8px 0 20px; border-radius: 13px; gap: 16px; font-size: 16px; flex: none; }
+    .seg-row .install-banner + .seg-mission { margin-left: 0; }
+    .seg-row .install-banner button { font-size: 14px; padding: 7px 14px; border-radius: 10px; }
+    .install-hint { display: none; position: absolute; top: calc(100% + 8px); right: 0; width: 340px; background: var(--accent); color: #fff; border-radius: 14px; padding: 12px 16px; font-size: 13.5px; line-height: 1.4; box-shadow: 0 10px 24px rgba(23,50,79,0.25); z-index: 8; }
+    .install-hint.open { display: block; }
     /* calendar: week-day row no longer a full-height row, day list may shrink instead of spilling out of the page */
     .cal-grid { grid-template-rows: 26px; grid-auto-rows: 46px; }
     .cal-wrap { margin-top: 2px; }
@@ -539,6 +546,7 @@
   </div>
 
   <div class="install-banner" id="installBanner">
+    <div class="install-hint" id="installHintBox"></div>
     <span>Instala esta app no teu telemóvel para acesso rápido.</span>
     <button id="installBtn">Instalar</button>
   </div>
@@ -858,6 +866,7 @@ const T = {
     profileSuggestBtn: 'Sugerir um evento',
     shareTitle: 'Gostas da app?', shareText: 'Partilha a MINImapp com outra família.', shareBtn: '📤 Partilhar app', shareCopied: 'Link copiado!',
     installText: 'Instala esta app no teu telemóvel para acesso rápido.', installBtn: 'Instalar',
+    installShort: 'Obter a app!',
     installHint: 'No menu do navegador (⋮) escolhe «Instalar MINImapp», ou usa o ícone de instalar na barra de endereço.',
     reminderToday: 'É hoje! Tens guardado:', reminderTomorrow: 'É amanhã! Tens guardado:',
     badgeToday: 'Hoje', badgeTomorrow: 'Amanhã',
@@ -906,6 +915,7 @@ const T = {
     profileSuggestBtn: 'Suggest an event',
     shareTitle: 'Like the app?', shareText: 'Share MINImapp with another family.', shareBtn: '📤 Share app', shareCopied: 'Link copied!',
     installText: 'Install this app on your phone for quick access.', installBtn: 'Install',
+    installShort: 'Get the App!',
     installHint: 'Open your browser menu (⋮) and choose “Install MINImapp”, or use the install icon in the address bar.',
     reminderToday: "It's today! You have saved:", reminderTomorrow: "It's tomorrow! You have saved:",
     badgeToday: 'Today', badgeTomorrow: 'Tomorrow',
@@ -954,6 +964,7 @@ const T = {
     profileSuggestBtn: 'Sugerir un evento',
     shareTitle: '¿Te gusta la app?', shareText: 'Comparte MINImapp con otra familia.', shareBtn: '📤 Compartir app', shareCopied: '¡Enlace copiado!',
     installText: 'Instala esta app en tu móvil para un acceso rápido.', installBtn: 'Instalar',
+    installShort: '¡Consigue la app!',
     installHint: 'En el menú del navegador (⋮) elige «Instalar MINImapp», o usa el icono de instalar de la barra de direcciones.',
     reminderToday: '¡Es hoy! Tienes guardado:', reminderTomorrow: '¡Es mañana! Tienes guardado:',
     badgeToday: 'Hoy', badgeTomorrow: 'Mañana',
@@ -1002,6 +1013,7 @@ const T = {
     profileSuggestBtn: 'Suggérer un événement',
     shareTitle: "Tu aimes l'app ?", shareText: "Partage MINImapp avec une autre famille.", shareBtn: "📤 Partager l'app", shareCopied: 'Lien copié !',
     installText: 'Installe cette app sur ton téléphone pour un accès rapide.', installBtn: 'Installer',
+    installShort: 'Obtenir l’app !',
     installHint: 'Dans le menu du navigateur (⋮), choisis « Installer MINImapp », ou utilise l’icône d’installation dans la barre d’adresse.',
     reminderToday: "C'est aujourd'hui ! Tu as sauvegardé :", reminderTomorrow: "C'est demain ! Tu as sauvegardé :",
     badgeToday: "Aujourd'hui", badgeTomorrow: 'Demain',
@@ -1050,6 +1062,7 @@ const T = {
     profileSuggestBtn: 'Foreslå et event',
     shareTitle: 'Kan du lide appen?', shareText: 'Del MINImapp med en anden familie.', shareBtn: '📤 Del appen', shareCopied: 'Link kopieret!',
     installText: 'Installer denne app på din telefon for hurtig adgang.', installBtn: 'Installer',
+    installShort: 'Hent appen!',
     installHint: 'Åbn browserens menu (⋮) og vælg “Installer MINImapp”, eller brug installér-ikonet i adresselinjen.',
     reminderToday: 'Det er i dag! Du har gemt:', reminderTomorrow: 'Det er i morgen! Du har gemt:',
     badgeToday: 'I dag', badgeTomorrow: 'I morgen',
@@ -2900,17 +2913,21 @@ let installHintOpen = false, deskBannerForced = false;
 function installPromptReady() { try { return !!deferredPrompt; } catch (e) { return false; } }
 function goTab(tab) { const b = document.querySelector('.navitem[data-tab="' + tab + '"]'); if (b) b.click(); }
 function renderDesktopExtras() {
-  // Install banner on a computer: shown in every browser (also those that never fire the install prompt, e.g. Brave),
-  // unless the app is already running installed. Without a prompt the button explains where the browser's install option is.
+  // Install box on a computer: shown in every browser (also those that never fire the install prompt, e.g. Brave), unless the app
+  // already runs installed. It sits in the view row next to Minimission!. Without a prompt, Install opens a short hint under the box.
   const ibn = document.getElementById('installBanner');
   const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   if (ibn) {
     if (deskMq.matches && !standalone) { if (!ibn.classList.contains('show')) deskBannerForced = true; ibn.classList.add('show'); }
     else if (!deskMq.matches && deskBannerForced && !installPromptReady()) { ibn.classList.remove('show'); deskBannerForced = false; }
     const sp = ibn.querySelector('span');
-    if (sp && deskMq.matches && !installPromptReady()) sp.textContent = installHintOpen ? t('installHint') : t('installText');
+    if (sp) sp.textContent = deskMq.matches ? t('installShort') : t('installText');
+    const hb = document.getElementById('installHintBox');
+    if (hb) { hb.textContent = t('installHint'); hb.classList.toggle('open', deskMq.matches && !installPromptReady() && installHintOpen); }
+    const mission = document.getElementById('segMission');
+    if (deskMq.matches && mission && mission.parentNode) { if (ibn.parentNode !== mission.parentNode || ibn.nextSibling !== mission) mission.parentNode.insertBefore(ibn, mission); }
+    else if (ibn.parentNode !== document.getElementById('app')) { document.getElementById('app').insertBefore(ibn, document.getElementById('reminderBanner')); }
   }
-  document.body.classList.toggle('search-open', deskSearchOpen || !!state.search);
   const sb = document.getElementById('hdrSearchBtn');
   if (sb) { sb.classList.toggle('on', deskSearchOpen || !!state.search); sb.setAttribute('aria-label', t('searchPlaceholder')); sb.title = t('searchPlaceholder'); }
   const ub = document.getElementById('hdrUserBtn');
