@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["UB78X8DFFZ.com.gotitasarrumadas.miniapp"],
+        "components": [
+          { "/": "/index.html", "?": { "mode": "signIn" }, "comment": "Firebase email sign-in links open in the iPhone app" }
+        ]
+      }
+    ]
+  }
+}
