@@ -790,6 +790,77 @@ const DATA_BASE = IS_BUNDLED ? 'https://app.minimappkids.com/' : '';
   try { AppPlugin.addListener('appUrlOpen', (ev) => openInApp(ev && ev.url)); } catch (e) {}
   try { AppPlugin.getLaunchUrl().then((r) => openInApp(r && r.url)).catch(() => {}); } catch (e) {}
 })();
+/* ===================== v57: iPhone app native features ===================== */
+// Runs only inside the iPhone app, where the Capacitor plugins exist; the website and Android never use it.
+// Reminders: a phone notification at 18:00 the day before and 08:00 on the day of each saved event.
+// Permission is asked the first time something is saved, never at launch. Tapping a reminder opens the event.
+function capPlugin(name) {
+  try { return (IS_IOS_APP && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins[name]) || null; } catch (e) { return null; }
+}
+function notifIdFor(evId, kind) {
+  let h = 7; const str = String(evId) + '|' + kind;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+  return (Math.abs(h) % 2000000000) + 1;
+}
+let iosRemBusy = false, iosRemAgain = false, iosRemAsk = false;
+async function iosSyncReminders(mayAsk) {
+  const LN = capPlugin('LocalNotifications');
+  if (!LN) return;
+  if (mayAsk) iosRemAsk = true;
+  if (iosRemBusy) { iosRemAgain = true; return; }
+  iosRemBusy = true;
+  try {
+    const ask = iosRemAsk; iosRemAsk = false;
+    let perm = await LN.checkPermissions();
+    if (perm.display !== 'granted') {
+      if (!ask || state.saved.size === 0) return;
+      perm = await LN.requestPermissions();
+      if (perm.display !== 'granted') return;
+    }
+    const pending = await LN.getPending();
+    if (pending && pending.notifications && pending.notifications.length) {
+      await LN.cancel({ notifications: pending.notifications.map(n => ({ id: n.id })) });
+    }
+    const now = Date.now();
+    const list = [];
+    for (const [id, info] of state.saved.entries()) {
+      const ev = EVENTS.find(e => String(e.id) === String(id));
+      if (!ev || ev.ongoing || isPastEvent(ev)) continue;
+      const startIso = (info && info.start) || ev.date;
+      if (!startIso) continue;
+      const day = new Date(startIso + 'T00:00:00');
+      const eve = new Date(day); eve.setDate(eve.getDate() - 1); eve.setHours(18, 0, 0, 0);
+      const morning = new Date(day); morning.setHours(8, 0, 0, 0);
+      const body = [evTitle(ev), ev.venue].filter(Boolean).join(' · ');
+      if (eve.getTime() > now) list.push({ id: notifIdFor(ev.id, 'eve'), title: t('reminderTomorrow'), body, schedule: { at: eve }, extra: { eventId: String(ev.id) } });
+      if (morning.getTime() > now) list.push({ id: notifIdFor(ev.id, 'day'), title: t('reminderToday'), body, schedule: { at: morning }, extra: { eventId: String(ev.id) } });
+    }
+    list.sort((a, b) => a.schedule.at - b.schedule.at);
+    // iOS keeps at most 64 pending notifications per app: schedule the 60 nearest.
+    if (list.length) await LN.schedule({ notifications: list.slice(0, 60) });
+  } catch (e) { console.error('[MINImapp iOS] reminders', e); }
+  finally {
+    iosRemBusy = false;
+    if (iosRemAgain) { iosRemAgain = false; iosSyncReminders(false); }
+  }
+}
+(function () {
+  const LN = capPlugin('LocalNotifications');
+  if (!LN) return;
+  try {
+    LN.addListener('localNotificationActionPerformed', (a) => {
+      const id = a && a.notification && a.notification.extra && a.notification.extra.eventId;
+      if (id) window.location.href = 'index.html?event=' + encodeURIComponent(id);
+    });
+  } catch (e) {}
+})();
+// Native share sheet in the iPhone app (the web share API is not available there).
+async function iosNativeShare(data) {
+  const SH = capPlugin('Share');
+  if (!SH) return false;
+  try { await SH.share({ title: data.title, text: data.text, url: data.url, dialogTitle: data.title }); } catch (e) { /* cancelled */ }
+  return true;
+}
 function scopeNote() {
   const s = t('profileScopeNote');
   if (state.city === 'porto') return s;
@@ -1182,6 +1253,7 @@ const state = {
 
 function persistSaved() {
   localStorage.setItem('pf_saved', JSON.stringify([...state.saved.entries()]));
+  if (IS_IOS_APP) iosSyncReminders(true); // v57: phone reminders in the iPhone app
 }
 function persistChildAges() {
   localStorage.setItem('pf_child_ages', JSON.stringify(state.childAges));
@@ -2813,6 +2885,20 @@ function addToCalendar(ev, btn) {
   const days = calendarDays(ev);
   if (days.error === 'save') { flashMsg(btn, wordOf(WORD_CAL_SAVE_FIRST)); return; }
   if (days.error === 'past') { flashMsg(btn, wordOf(WORD_CAL_PAST)); return; }
+  // v57: in the iPhone app, open the native "add event" screen of Apple Calendar instead of downloading a file.
+  const CAL = capPlugin('CapacitorCalendar');
+  if (CAL) {
+    const link = APP_URL + '?event=' + encodeURIComponent(ev.id);
+    CAL.createEventWithPrompt({
+      title: evTitle(ev), location: ev.venue || '', isAllDay: true,
+      startDate: new Date(days.start + 'T00:00:00').getTime(),
+      endDate: new Date(days.end + 'T23:59:00').getTime(),
+      alerts: [-360, 480],
+      url: ev.source || link,
+      description: [evWhen(ev), wordOf(WORD_CAL_DESC_REM), link].filter(Boolean).join('\n'),
+    }).catch((err) => console.error('[MINImapp iOS] calendar', err));
+    return;
+  }
   const blob = new Blob([buildIcs(ev, days)], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2853,6 +2939,7 @@ async function shareEvent(ev, btn) {
   const url = APP_URL + '?event=' + encodeURIComponent(ev.id);
   const text = [evTitle(ev), evWhen(ev), ev.venue].filter(Boolean).join(' · ');
   const shareData = { title: evTitle(ev), text: text + ' — MINImapp', url };
+  if (await iosNativeShare(shareData)) return; // v57: native share sheet in the iPhone app
   if (navigator.share) {
     try { await navigator.share(shareData); return; }
     catch (err) { if (err && err.name === 'AbortError') return; }
@@ -2875,6 +2962,7 @@ async function shareApp(btn) {
   const shareData = onAndroid
     ? { title: 'MINImapp', text: t('shareText') + '\n' + wordOf(WORD_SHARE_WEB) + WEB_URL, url: PLAY_URL }
     : { title: 'MINImapp', text: t('shareText'), url: WEB_URL };
+  if (await iosNativeShare(shareData)) return; // v57: native share sheet in the iPhone app
   if (navigator.share) {
     try { await navigator.share(shareData); return; }
     catch (err) { if (err && err.name === 'AbortError') return; /* user cancelled the native sheet; fall through to clipboard otherwise */ }
@@ -3278,6 +3366,7 @@ async function loadEventsAndInit() {
     if (!vl.includes(state.lang)) { state.lang = vl[0]; localStorage.setItem('pf_lang', state.lang); document.documentElement.lang = state.lang; }
   }
   render();
+  if (IS_IOS_APP) iosSyncReminders(false); // v57: refresh phone reminders (never asks for permission here)
   if (sharedEv) setTimeout(() => openDetail(sharedEv.id), 0);
 }
 // Start the app straight away; sign-in is attached once Firebase has loaded (if it can).
