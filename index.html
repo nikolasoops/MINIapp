@@ -381,6 +381,7 @@
   }
   .install-banner.show { display: flex; }
   .ios-app .install-banner, .ios-app .install-banner.show { display: none !important; }
+  .ios-app .corner-ribbon { top: env(safe-area-inset-top, 0px); }
   .install-hint { display: none; }
   .install-banner button { background: rgba(255,255,255,0.25); border: none; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
 
@@ -1713,6 +1714,23 @@ function todayIso() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+// Which day a heart tap saves for: the selected calendar day in Explore's
+// calendar view, else the day the date filter points at, else today.
+// Never a day that is already over.
+function heartSaveDay() {
+  const today = todayIso();
+  let day = today;
+  try {
+    if (state.tab === 'home' && state.exploreView === 'calendar' && state.calendarSelectedDate) {
+      day = state.calendarSelectedDate;
+    } else if (state.tab === 'home' && dateFilterActive()) {
+      const d = dateFilterStart();
+      day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+  } catch (e) { day = today; }
+  return day < today ? today : day;
+}
+
 /* ---------- search: clear button + its own "no results" message ---------- */
 function resetScroll() {
   contentEl.scrollTop = 0;
@@ -2144,10 +2162,11 @@ function attachCardHandlers(root) {
         persistSaved();
         render();
       } else {
-        // Save instantly with today's date — no picker in the way. The date
-        // can still be changed afterward by tapping the "Saved for..." badge.
-        const today = todayIso();
-        state.saved.set(id, { start: today, end: today });
+        // Save instantly — no picker in the way. The date is the day being
+        // looked at (calendar day, or the date filter's day), else today.
+        // It can still be changed afterward by tapping the "Saved for..." badge.
+        const day = heartSaveDay();
+        state.saved.set(id, { start: day, end: day });
         persistSaved();
         render();
       }
@@ -3191,13 +3210,13 @@ function openDetail(id, opts) {
   document.getElementById('modalSave').onclick = () => {
     // Just flip the heart in place and keep the details open — closing the
     // whole modal is only supposed to happen when tapping outside it. Saving
-    // is instant (today's date, no picker); the date can be changed later
+    // is instant (the day being looked at, else today; no picker); the date can be changed later
     // from the saved-date badge in list view.
     if (state.saved.has(ev.id)) {
       state.saved.delete(ev.id);
     } else {
-      const today = todayIso();
-      state.saved.set(ev.id, { start: today, end: today });
+      const day = heartSaveDay();
+      state.saved.set(ev.id, { start: day, end: day });
     }
     persistSaved();
     render();
