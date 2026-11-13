@@ -854,6 +854,21 @@ async function iosSyncReminders(mayAsk) {
     });
   } catch (e) {}
 })();
+// v59: built-in reminder test for the iPhone app (type "remindertest" in the search box, or open index.html?remindertest=1).
+// Shows how many reminders are planned and sends one test reminder after 60 seconds (visible once the app is in the background).
+async function iosReminderTest() {
+  const LN = capPlugin('LocalNotifications');
+  if (!LN) return;
+  try {
+    await iosSyncReminders(true);
+    const pending = await LN.getPending();
+    const list = (pending && pending.notifications) || [];
+    const next = list.slice().sort((a, b) => new Date(a.schedule && a.schedule.at) - new Date(b.schedule && b.schedule.at))[0];
+    await LN.schedule({ notifications: [{ id: 999999, title: 'MINImapp test', body: 'Reminders work on this iPhone.', schedule: { at: new Date(Date.now() + 60000) } }] });
+    const nextTxt = next ? (next.body + ' — ' + new Date(next.schedule.at).toLocaleString()) : 'none';
+    window.alert('Planned reminders: ' + list.length + '\nNext: ' + nextTxt + '\n\nA test reminder arrives in 1 minute. Go to the home screen now.');
+  } catch (e) { window.alert('Reminder test failed: ' + (e && e.message ? e.message : e)); }
+}
 // Native share sheet in the iPhone app (the web share API is not available there).
 async function iosNativeShare(data) {
   const SH = capPlugin('Share');
@@ -2893,7 +2908,6 @@ function addToCalendar(ev, btn) {
       title: evTitle(ev), location: ev.venue || '', isAllDay: true,
       startDate: new Date(days.start + 'T00:00:00').getTime(),
       endDate: new Date(days.end + 'T23:59:00').getTime(),
-      alerts: [-359.9999, 480.0001], // v58: 18:00 the day before, 08:00 on the day (decimals so the plugin reads them as numbers)
       url: ev.source || link,
       description: [evWhen(ev), wordOf(WORD_CAL_DESC_REM), link].filter(Boolean).join('\n'),
     }).catch((err) => console.error('[MINImapp iOS] calendar', err));
@@ -3249,6 +3263,8 @@ backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDeta
 
 /* ===================== EVENTS ===================== */
 document.getElementById('searchInput').addEventListener('input', (e) => {
+  // v59: typing "remindertest" in the search box of the iPhone app runs the reminder test.
+  if (IS_IOS_APP && e.target.value.trim().toLowerCase() === 'remindertest') { e.target.value = ''; state.search = ''; syncSearchClear(); render(); iosReminderTest(); return; }
   state.search = e.target.value;
   syncSearchClear();
   render();
@@ -3367,6 +3383,7 @@ async function loadEventsAndInit() {
   }
   render();
   if (IS_IOS_APP) iosSyncReminders(false); // v57: refresh phone reminders (never asks for permission here)
+  if (IS_IOS_APP && /[?&]remindertest=1/.test(location.search)) { history.replaceState(history.state, '', location.pathname); setTimeout(iosReminderTest, 800); } // v59
   if (sharedEv) setTimeout(() => openDetail(sharedEv.id), 0);
 }
 // Start the app straight away; sign-in is attached once Firebase has loaded (if it can).
