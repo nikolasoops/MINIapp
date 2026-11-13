@@ -825,9 +825,9 @@ async function iosSyncReminders(mayAsk) {
     const list = [];
     for (const [id, info] of state.saved.entries()) {
       const ev = EVENTS.find(e => String(e.id) === String(id));
-      if (!ev || ev.ongoing || isPastEvent(ev)) continue;
-      const startIso = (info && info.start) || ev.date;
-      if (!startIso) continue;
+      // v58: use the day the user saved it for (also for long-running/ongoing events); skip days already past.
+      const startIso = (info && info.start) || (ev && ev.date);
+      if (!ev || !startIso || startIso < todayIso()) continue;
       const day = new Date(startIso + 'T00:00:00');
       const eve = new Date(day); eve.setDate(eve.getDate() - 1); eve.setHours(18, 0, 0, 0);
       const morning = new Date(day); morning.setHours(8, 0, 0, 0);
@@ -2893,7 +2893,7 @@ function addToCalendar(ev, btn) {
       title: evTitle(ev), location: ev.venue || '', isAllDay: true,
       startDate: new Date(days.start + 'T00:00:00').getTime(),
       endDate: new Date(days.end + 'T23:59:00').getTime(),
-      alerts: [-360, 480],
+      alerts: [-359.9999, 480.0001], // v58: 18:00 the day before, 08:00 on the day (decimals so the plugin reads them as numbers)
       url: ev.source || link,
       description: [evWhen(ev), wordOf(WORD_CAL_DESC_REM), link].filter(Boolean).join('\n'),
     }).catch((err) => console.error('[MINImapp iOS] calendar', err));
