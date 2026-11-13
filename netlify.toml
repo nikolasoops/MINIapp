@@ -16,3 +16,15 @@
   for = "/.well-known/apple-app-site-association"
   [headers.values]
     Content-Type = "application/json"
+
+# iPhone app (v56): the app's own copy of the page runs at capacitor://localhost and fetches the live data from here.
+# Public, read-only data, so any origin may read it.
+[[headers]]
+  for = "/events.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/photo_credits.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

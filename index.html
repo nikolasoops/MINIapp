@@ -765,6 +765,10 @@ const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.gotitasarrum
 // v54: true when running inside the iPhone/iPad app (Capacitor shell). The shell also appends "MINImappIOS" to the user agent.
 const IS_IOS_APP = (function () { try { return (window.Capacitor && typeof window.Capacitor.getPlatform === 'function' && window.Capacitor.getPlatform() === 'ios') || /MINImappIOS/.test(navigator.userAgent || ''); } catch (e) { return false; } })();
 if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
+// v56: true when the page runs from the files bundled inside the iPhone app (capacitor://localhost) instead of the website.
+// Data files are then fetched from the website (DATA_BASE); a copy of events.json inside the app is the offline fallback.
+const IS_BUNDLED = window.location.protocol === 'capacitor:';
+const DATA_BASE = IS_BUNDLED ? 'https://app.minimappkids.com/' : '';
 // v55: iPhone app opened by a link (e.g. the emailed sign-in link via Apple universal links): load that link inside the app.
 // A link opened while the app runs arrives as 'appUrlOpen'; a link that started the app comes from getLaunchUrl().
 // sessionStorage remembers handled links so the same launch link is never loaded twice (no reload loop).
@@ -778,6 +782,8 @@ if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
       const done = JSON.parse(sessionStorage.getItem('pf_opened_links') || '[]');
       if (done.indexOf(url) !== -1 || url === window.location.href) return;
       done.push(url); sessionStorage.setItem('pf_opened_links', JSON.stringify(done.slice(-10)));
+      // v56: inside the bundled app, keep the link's parameters (e.g. the sign-in code) but load the app's own copy of the page.
+      if (IS_BUNDLED) { const u = new URL(url); window.location.href = 'index.html' + u.search + u.hash; return; }
       window.location.href = url;
     } catch (e) { console.error('[MINImapp iOS] open link failed', e); }
   }
@@ -3200,7 +3206,7 @@ document.getElementById('installBtn').addEventListener('click', async () => {
 /* ===================== SERVICE WORKER ===================== */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    if (!IS_BUNDLED) navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
 }
 
@@ -3219,9 +3225,9 @@ setTimeout(() => {
 // never lets a data-load failure crash the page (EVENTS just stays []).
 async function loadEventsAndInit() {
   // Not awaited: credits only matter when a detail view opens, so they must not delay first paint.
-  fetch('photo_credits.json').then(r => r.ok ? r.json() : null).then(j => { if (j) PHOTO_CREDITS = j; }).catch(() => {});
+  fetch(DATA_BASE + 'photo_credits.json').then(r => r.ok ? r.json() : null).then(j => { if (j) PHOTO_CREDITS = j; }).catch(() => {});
   try {
-    const res = await fetch('events.json', { cache: 'no-store' });
+    const res = await fetch(DATA_BASE + 'events.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('bad response ' + res.status);
     const data = await res.json();
     EVENTS = data;
@@ -3239,6 +3245,10 @@ async function loadEventsAndInit() {
         if (cached) EVENTS = await cached.json();
       }
     } catch (e2) { /* leave EVENTS as [] */ }
+    // v56: iPhone app with no network and no cached copy: use the events.json bundled inside the app.
+    if (IS_BUNDLED && (!EVENTS || !EVENTS.length)) {
+      try { const r2 = await fetch('events.json'); if (r2.ok) EVENTS = await r2.json(); } catch (e3) { /* leave EVENTS as [] */ }
+    }
   }
 
   // Reconcile a stored language that isn't valid for the stored city (e.g. after this
