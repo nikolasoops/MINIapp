@@ -2116,7 +2116,12 @@ function dateFilterLabel() {
 
 function priceTag(ev) {
   if (ev.free === true) return `<span class="tag price-free">${t('chipFree')}</span>`;
-  if (ev.free === false) return `<span class="tag price-paid">${t('tagPaid')}</span>`;
+  // v63: an optional ev.price text (e.g. "€15") is shown next to "Paid".
+  if (ev.free === false) {
+    const pr = typeof ev.price === 'string' && ev.price.trim()
+      ? ' · ' + ev.price.trim().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+    return `<span class="tag price-paid">${t('tagPaid')}${pr}</span>`;
+  }
   return `<span class="tag price-unknown">${t('tagPriceUnconfirmed')}</span>`;
 }
 
