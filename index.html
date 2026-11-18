@@ -383,7 +383,7 @@
   .ios-app .install-banner, .ios-app .install-banner.show { display: none !important; }
   .ios-app .corner-ribbon { top: env(safe-area-inset-top, 0px); }
   .install-hint { display: none; }
-  .install-banner button { background: rgba(255,255,255,0.25); border: none; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; }
+  .install-banner button { background: rgba(255,255,255,0.25); border: none; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 10px; border-radius: 8px; font-family: inherit; cursor: pointer; white-space: nowrap; flex: none; }
 
   .reminder-banner { margin: 10px 18px 0; background: var(--kids-bg); color: var(--kids); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; line-height: 1.4; display: none; align-items: center; gap: 8px; font-weight: 600; }
   .reminder-banner.show { display: flex; }
@@ -471,7 +471,7 @@
     .seg-act:hover { box-shadow: 0 3px 10px rgba(23,50,79,0.14); }
     .desk-back { display: inline-flex; align-items: center; gap: 6px; margin: 4px 32px 6px; padding: 8px 14px; border-radius: 12px; border: none; background: #ece4a8; color: var(--primary); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
     /* v52: install box sits in the view row, left of Minimission, same height */
-    .seg-row .install-banner { position: relative; margin: 0 0 0 auto; max-width: none; height: 44px; padding: 0 8px 0 20px; border-radius: 13px; gap: 16px; font-size: 16px; flex: none; }
+    .seg-row .install-banner { position: relative; margin: 0 0 0 auto; max-width: none; height: 44px; padding: 0 8px 0 20px; border-radius: 13px; gap: 10px; font-size: 16px; flex: none; }
     .seg-row .install-banner + .seg-mission { margin-left: 0; }
     .seg-row .install-banner button { font-size: 14px; padding: 7px 14px; border-radius: 10px; }
     .install-hint { display: none; position: absolute; top: calc(100% + 8px); right: 0; width: 340px; background: var(--accent); color: #fff; border-radius: 14px; padding: 12px 16px; font-size: 13.5px; line-height: 1.4; box-shadow: 0 10px 24px rgba(23,50,79,0.25); z-index: 8; }
@@ -551,6 +551,7 @@
     <div class="install-hint" id="installHintBox"></div>
     <span>Instala esta app no teu telemóvel para acesso rápido.</span>
     <button id="installBtn">Instalar</button>
+    <button id="installAppStoreBtn" type="button" style="display:none">App Store</button>
   </div>
 
   <div class="reminder-banner" id="reminderBanner"></div>
@@ -763,9 +764,13 @@ const WORD_FOLLOW_TEXT = { pt: 'Novidades, eventos e dicas para famílias.', en:
 const INSTAGRAM_URL = 'https://www.instagram.com/minimapp_kids/';
 const APP_URL = 'https://app.minimappkids.com/index.html';
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.gotitasarrumadas.miniapp';
+// v65: App Store page of the iPhone app (the store opens in the visitor's own country).
+const APPSTORE_URL = 'https://apps.apple.com/app/id6834067272';
 // v54: true when running inside the iPhone/iPad app (Capacitor shell). The shell also appends "MINImappIOS" to the user agent.
 const IS_IOS_APP = (function () { try { return (window.Capacitor && typeof window.Capacitor.getPlatform === 'function' && window.Capacitor.getPlatform() === 'ios') || /MINImappIOS/.test(navigator.userAgent || ''); } catch (e) { return false; } })();
 if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
+// v65: iPhone/iPad visiting the website in a browser (not the app): offer the App Store instead of Google Play.
+const IS_IOS_WEB = (function () { try { if (IS_IOS_APP) return false; const ua = navigator.userAgent || ''; return /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); } catch (e) { return false; } })();
 // v56: true when the page runs from the files bundled inside the iPhone app (capacitor://localhost) instead of the website.
 // Data files are then fetched from the website (DATA_BASE); a copy of events.json inside the app is the offline fallback.
 const IS_BUNDLED = window.location.protocol === 'capacitor:';
@@ -3136,8 +3141,17 @@ function renderDesktopExtras() {
   if (ibn && !IS_IOS_APP) {
     if (deskMq.matches && !standalone) { if (!ibn.classList.contains('show')) deskBannerForced = true; ibn.classList.add('show'); }
     else if (!deskMq.matches && deskBannerForced && !installPromptReady()) { ibn.classList.remove('show'); deskBannerForced = false; }
+    // v65: iPhone/iPad in a browser always gets the box with only an App Store button.
+    if (IS_IOS_WEB) ibn.classList.add('show');
     const sp = ibn.querySelector('span');
     if (sp) sp.textContent = deskMq.matches ? t('installShort') : t('installText');
+    // v65: on a computer the box offers both stores; on Android only Install; on iPhone/iPad only the App Store.
+    const ib1 = document.getElementById('installBtn'), ib2 = document.getElementById('installAppStoreBtn');
+    if (ib1 && ib2) {
+      if (deskMq.matches) { ib1.style.display = ''; ib1.textContent = 'Google Play'; ib2.style.display = ''; }
+      else if (IS_IOS_WEB) { ib1.style.display = 'none'; ib2.style.display = ''; }
+      else { ib1.style.display = ''; ib2.style.display = 'none'; }
+    }
     const hb = document.getElementById('installHintBox');
     if (hb) { hb.textContent = t('installHint'); hb.classList.toggle('open', deskMq.matches && !installPromptReady() && installHintOpen); }
     const mission = document.getElementById('segMission');
@@ -3390,6 +3404,12 @@ document.getElementById('installBtn').addEventListener('click', async () => {
   await deferredPrompt.userChoice;
   deferredPrompt = null;
   document.getElementById('installBanner').classList.remove('show');
+});
+
+document.getElementById('installAppStoreBtn').addEventListener('click', () => {
+  // v65: iPhone/iPad open the App Store app directly; a computer opens the App Store page in a new tab.
+  if (IS_IOS_WEB) { window.location.href = APPSTORE_URL; return; }
+  window.open(APPSTORE_URL, '_blank', 'noopener');
 });
 
 /* ===================== SERVICE WORKER ===================== */
