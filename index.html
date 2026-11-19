@@ -542,7 +542,7 @@
         <button class="search-clear" id="searchClear" type="button" aria-label="Clear search">✕</button>
         <span class="sic">⌕</span>
       </div>
-      <button class="filtros-btn" id="filtrosBtn" aria-label="Filtros" title="Filtros">☰</button>
+      <button class="filtros-btn" id="filtrosBtn" aria-label="Filtros" title="Filtros"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 7h3.6M12 7h9M3 17h9M17.4 17H21"/><circle cx="9.3" cy="7" r="2.7"/><circle cx="14.7" cy="17" r="2.7"/></svg></button>
     </div>
     <div class="active-chips" id="activeChips"></div>
   </div>
@@ -746,6 +746,7 @@ const WORD_SHARE_WEB = { pt: 'Noutros telemóveis: ', en: 'Other phones: ', es: 
 const WORD_CLEAR_SEARCH = { pt: 'Limpar pesquisa', en: 'Clear search', es: 'Borrar búsqueda', fr: 'Effacer la recherche', da: 'Ryd søgning' };
 const WORD_SURPRISE = { pt: 'Minimissão!', en: 'Minimission!', es: '¡Minimisión!', fr: 'Mini-mission !', da: 'Minimission!' };
 const WORD_TRY_ANOTHER = { pt: 'Mais uma mini-missão, por favor!', en: 'Another mini-mission please!', es: '¡Otra minimisión, por favor!', fr: "Encore une mini-mission, s'il te plaît !", da: 'En mini-mission mere, tak!' };
+const ICON_FILTER = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 7h3.6M12 7h9M3 17h9M17.4 17H21"/><circle cx="9.3" cy="7" r="2.7"/><circle cx="14.7" cy="17" r="2.7"/></svg>';
 const ICON_MISSION = '<svg viewBox="0 0 30 34" aria-hidden="true"><path d="M15 32s12-10.7 12-19.2A12 12 0 0 0 3 12.8C3 21.3 15 32 15 32z" fill="#fff" stroke="#2f62a8" stroke-width="2.2"/><path d="M15 5.6l2 5.4 5.4 2-5.4 2-2 5.4-2-5.4-5.4-2 5.4-2z" fill="#e8611f"/><path d="M6 2.2l.9 2.1 2.1.9-2.1.9L6 8.2l-.9-2.1-2.1-.9 2.1-.9z" fill="#fff"/></svg>';
 const ICON_BULB = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c0-3-4-4.6-4-9.5a8 8 0 0 1 16 0c0 4.9-4 6.5-4 9.5z"/><path d="M12.5 25.5h7M13.5 28.5h5"/><path d="M14 22v-5l2-2 2 2v5"/><path d="M16 1.5v2.5M5 6l1.8 1.8M27 6l-1.8 1.8M1.5 12.5H4M30.5 12.5H28"/></svg>';
 const WORD_CAL = { pt: '📅 Adicionar ao calendário', en: '📅 Add to calendar', es: '📅 Añadir al calendario', fr: '📅 Ajouter au calendrier', da: '📅 Tilføj til kalender' };
@@ -2270,7 +2271,7 @@ function renderHome() {
       <button data-view="map" class="${state.exploreView === 'map' ? 'on' : ''}">📍 ${t('viewMap')}</button>
       <button data-view="calendar" class="${state.exploreView === 'calendar' ? 'on' : ''}">🗓️ ${t('viewCalendar')}</button>
     </div>
-    <button class="filtros-btn seg-act" id="segFilter" type="button" aria-label="${t('filtrosTitle')}" title="${t('filtrosTitle')}">☰${segFilterBadge ? `<span class="count">${segFilterBadge}</span>` : ''}</button>
+    <button class="filtros-btn seg-act" id="segFilter" type="button" aria-label="${t('filtrosTitle')}" title="${t('filtrosTitle')}">${ICON_FILTER}${segFilterBadge ? `<span class="count">${segFilterBadge}</span>` : ''}</button>
     <button class="heart-btn seg-act" id="segSaved" type="button" aria-label="${t('navSaved')}" title="${t('navSaved')}">♥</button>
     <button class="surprise-btn seg-mission" id="segMission" type="button"><span class="dice">${ICON_MISSION}</span>${wordOf(WORD_SURPRISE)}</button>
     </div>
@@ -3086,7 +3087,7 @@ function render() {
   document.getElementById('searchInput').placeholder = t('searchPlaceholder');
   renderHeader();
   const filtrosBadge = activeFilterCount();
-  document.getElementById('filtrosBtn').innerHTML = `☰${filtrosBadge ? `<span class="count">${filtrosBadge}</span>` : ''}`;
+  document.getElementById('filtrosBtn').innerHTML = `${ICON_FILTER}${filtrosBadge ? `<span class="count">${filtrosBadge}</span>` : ''}`;
   document.getElementById('filtrosBtn').onclick = () => { state.filtersOpen = !state.filtersOpen; render(); };
   document.querySelector('.navitem[data-tab="home"]').innerHTML = `<span class="ic">🏠</span>${t('navHome')}`;
   document.querySelector('.navitem[data-tab="saved"]').innerHTML = `<span class="ic">♥</span>${t('navSaved')}`;
