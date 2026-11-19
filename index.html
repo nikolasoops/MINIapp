@@ -772,6 +772,22 @@ const IS_IOS_APP = (function () { try { return (window.Capacitor && typeof windo
 if (IS_IOS_APP) document.documentElement.classList.add('ios-app');
 // v65: iPhone/iPad visiting the website in a browser (not the app): offer the App Store instead of Google Play.
 const IS_IOS_WEB = (function () { try { if (IS_IOS_APP) return false; const ua = navigator.userAgent || ''; return /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); } catch (e) { return false; } })();
+// v67: web visitors. A plain browser visit to the web app first sees a "get the app" screen (with a link to carry on in the browser).
+// Not shown inside the iPhone app, the Android app, an installed home-screen app, or on a device switched to test mode (open the address with ?test=1; ?test=0 switches it off).
+const WEB_GATE_ON = (function () {
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.get('test') === '1') localStorage.setItem('pf_test', '1');
+    if (q.get('test') === '0') localStorage.removeItem('pf_test');
+    if (localStorage.getItem('pf_test') === '1') return false;
+    if (IS_IOS_APP) return false;
+    const mq = (m) => window.matchMedia && window.matchMedia(m).matches;
+    if (mq('(display-mode: standalone)') || mq('(display-mode: fullscreen)') || mq('(display-mode: minimal-ui)') || window.navigator.standalone === true) return false;
+    if ((document.referrer || '').indexOf('android-app://') === 0) return false;
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost') return false;
+    return true;
+  } catch (e) { return false; }
+})();
 // v56: true when the page runs from the files bundled inside the iPhone app (capacitor://localhost) instead of the website.
 // Data files are then fetched from the website (DATA_BASE); a copy of events.json inside the app is the offline fallback.
 const IS_BUNDLED = window.location.protocol === 'capacitor:';
@@ -3398,6 +3414,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 document.getElementById('installBtn').addEventListener('click', async () => {
   if (IS_IOS_APP) return;
+  // v67: a plain browser visit goes to the store version, not to a home-screen install of the web app
+  if (WEB_GATE_ON) { window.open(PLAY_URL + '&referrer=utm_source%3Dapp.minimappkids.com%26utm_medium%3Dinstall-box', '_blank', 'noopener'); return; }
   // On a computer the Install button takes you to the app on Google Play (v53)
   if (deskMq.matches) { window.open(PLAY_URL + '&referrer=utm_source%3Dapp.minimappkids.com%26utm_medium%3Dinstall-box', '_blank', 'noopener'); return; }
   if (!deferredPrompt) { installHintOpen = !installHintOpen; renderDesktopExtras(); return; }
@@ -3513,6 +3531,59 @@ function attachAuthListeners() {
   });
 }
 loadFirebaseInBackground();
+
+/* ===================== WEB VISITOR SCREEN (v67) ===================== */
+(function () {
+  if (!WEB_GATE_ON) return;
+  try { if (sessionStorage.getItem('pf_gate_seen') === '1') return; } catch (e) {}
+  const TX = {
+    pt: { h: 'Descarrega a app MINImapp', p: 'É grátis, para iPhone e Android. Esta versão web é só um teste.', c: 'Continuar na versão web por agora', a: 'Disponível na', g: 'Obtém no' },
+    en: { h: 'Get the MINImapp app', p: 'It is free, for iPhone and Android. This web version is only a test.', c: 'Continue with the web version for now', a: 'Available on the', g: 'Get it on' },
+    es: { h: 'Descarga la app MINImapp', p: 'Es gratis, para iPhone y Android. Esta versión web es solo una prueba.', c: 'Seguir en la versión web por ahora', a: 'Disponible en', g: 'Consíguela en' },
+    fr: { h: 'Télécharge l’app MINImapp', p: 'C’est gratuit, pour iPhone et Android. Cette version web n’est qu’un test.', c: 'Continuer sur la version web pour l’instant', a: 'Disponible sur', g: 'Disponible sur' },
+    da: { h: 'Hent MINImapp-appen', p: 'Den er gratis, til iPhone og Android. Denne webversion er kun en test.', c: 'Fortsæt på webversionen for nu', a: 'Hent i', g: 'Hent på' }
+  };
+  let lang = 'en';
+  try { lang = (localStorage.getItem('pf_lang') || navigator.language || 'en').slice(0, 2).toLowerCase(); } catch (e) {}
+  const x = TX[lang] || TX.en;
+  const css = document.createElement('style');
+  css.textContent =
+    '#webGate{position:fixed;inset:0;z-index:99999;background:#fcf3b6;display:flex;align-items:center;justify-content:center;padding:24px 20px;overflow:auto;font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;color:#2f62a8}' +
+    '#webGate .wg2{width:100%;max-width:360px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}' +
+    '#webGate img{width:96px;height:auto}' +
+    '#webGate h2{margin:0;font-size:30px;line-height:1.1;font-weight:800}' +
+    '#webGate p{margin:0;font-size:17px;line-height:1.35;color:#17324f}' +
+    '#webGate .wg2-tiles{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:6px}' +
+    '#webGate .wg2-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#2f62a8;color:#fff;border-radius:20px;box-shadow:-3px -3px 0 #234c86;padding:12px 16px;text-decoration:none;min-height:72px}' +
+    '#webGate .wg2-tile small{font-size:13px;font-weight:600;letter-spacing:.2px;opacity:.95}' +
+    '#webGate .wg2-tile b{font-size:24px;font-weight:700;line-height:1.1}' +
+    '#webGate .wg2-tile:focus-visible,#webGate .wg2-go:focus-visible{outline:3px solid #e8611f;outline-offset:3px}' +
+    '#webGate .wg2-go{margin-top:8px;background:none;border:0;font:inherit;font-size:16px;font-weight:600;color:#2f62a8;text-decoration:underline;cursor:pointer;padding:8px}';
+  document.head.appendChild(css);
+  const apple = '<a class="wg2-tile" href="' + APPSTORE_URL + '" id="wg2Apple"><small>' + x.a + '</small><b>App Store</b></a>';
+  const play = '<a class="wg2-tile" href="' + PLAY_URL + '&referrer=utm_source%3Dapp.minimappkids.com%26utm_medium%3Dweb-screen" id="wg2Play"><small>' + x.g + '</small><b>Google Play</b></a>';
+  const iosFirst = IS_IOS_WEB;
+  const box = document.createElement('div');
+  box.id = 'webGate';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  box.setAttribute('aria-labelledby', 'wg2Title');
+  box.innerHTML =
+    '<div class="wg2">' +
+      '<img src="https://minimappkids.com/qr/img/mascot.png" alt="" width="96" height="135" onerror="this.style.display=\'none\'">' +
+      '<h2 id="wg2Title"></h2><p id="wg2Text"></p>' +
+      '<div class="wg2-tiles">' + (iosFirst ? apple + play : play + apple) + '</div>' +
+      '<button type="button" class="wg2-go" id="wg2Go"></button>' +
+    '</div>';
+  box.querySelector('#wg2Title').textContent = x.h;
+  box.querySelector('#wg2Text').textContent = x.p;
+  box.querySelector('#wg2Go').textContent = x.c;
+  document.body.appendChild(box);
+  box.querySelector('#wg2Go').addEventListener('click', () => {
+    try { sessionStorage.setItem('pf_gate_seen', '1'); } catch (e) {}
+    box.remove();
+  });
+})();
 </script>
 </body>
 </html>
